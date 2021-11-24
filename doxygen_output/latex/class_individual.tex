@@ -1,0 +1,203 @@
+\hypertarget{class_individual}{}\doxysection{Individual Class Reference}
+\label{class_individual}\index{Individual@{Individual}}
+
+
+Define what properties a base \mbox{\hyperlink{class_individual}{Individual}} object requires.  
+
+
+
+
+{\ttfamily \#include $<$individual.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_individual_ab19562372da7172396e631ab6aa7e894}{Individual}} (double \&\mbox{\hyperlink{class_individual_af579e93900cbed93d73670698d47c2ba}{age}}, int \&\mbox{\hyperlink{class_individual_a481c3ef7ce060d409988c80ba44a01ab}{age\+\_\+bracket}})
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{class_individual}{Individual}} object. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_individual_a3b076afb9944b68b2023ea5cbddf03e7}{get\+Susceptibility}} (double \&t)
+\item 
+double \mbox{\hyperlink{class_individual_a33b7a590d0784b9f02167fa27992cddb}{get\+Probability\+Symptomatic}} (double \&t)
+\item 
+double \mbox{\hyperlink{class_individual_aad49f6eec8bf471a7dee32f522e39ff1}{get\+Transmissibility}} (double \&t)
+\item 
+double \mbox{\hyperlink{class_individual_a5307055054a5e1a2221fa66a77b5a9d8}{get\+Protection\+Infection}} (double \&t)
+\item 
+double \mbox{\hyperlink{class_individual_a009b8d33059f5d093d31ed4a8da83f86}{get\+Protection\+Symptoms}} (double \&t)
+\item 
+double \mbox{\hyperlink{class_individual_a37c4df4b4e6a18644a932ab8c604405a}{get\+Protection\+Onwards}} (double \&t)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_individual_a481c3ef7ce060d409988c80ba44a01ab}{age\+\_\+bracket}}
+\item 
+int \mbox{\hyperlink{class_individual_ad19bc6f5ce318d058c5db7a46b129ab7}{secondary\+\_\+infections}}
+\item 
+double \mbox{\hyperlink{class_individual_af579e93900cbed93d73670698d47c2ba}{age}}
+\item 
+double \mbox{\hyperlink{class_individual_afdc7d6ff5ce398308f65a20c42460347}{log10\+\_\+neutralising\+\_\+antibodies}}
+\item 
+double \mbox{\hyperlink{class_individual_a40f48a12a609b6811a5e0bd68f2098c8}{time\+\_\+last\+\_\+boost}}
+\item 
+double \mbox{\hyperlink{class_individual_a03abab25755a70b3ecbfe239f0ce5399}{decay\+\_\+rate}}
+\item 
+double \mbox{\hyperlink{class_individual_aa0b0758e6e081513a1f24634a636ee96}{time\+\_\+isolated}}
+\item 
+double \mbox{\hyperlink{class_individual_a2b2e80d26cc00f98d13985e1e69c506f}{time\+\_\+finish\+\_\+isolation}}
+\item 
+bool \mbox{\hyperlink{class_individual_aa168f3bbffeaa5e39354ea8335322416}{is\+Covid\+Naive}}
+\item 
+bool \mbox{\hyperlink{class_individual_a1594e37e139abe2476ce6acce17c6475}{is\+Vaccinated}}
+\item 
+\mbox{\hyperlink{class_disease}{Disease}} \mbox{\hyperlink{class_individual_a6c3bfef4d555cbd910e7803a36dbad83}{covid}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_disease}{Disease}} status of the individual stored in an object. \end{DoxyCompactList}\item 
+std\+::vector$<$ Vaccine $>$ \mbox{\hyperlink{class_individual_a76f3beaf33291a6b6eba01884d698051}{vaccinations}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Define what properties a base \mbox{\hyperlink{class_individual}{Individual}} object requires. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_individual_ab19562372da7172396e631ab6aa7e894}\label{class_individual_ab19562372da7172396e631ab6aa7e894}} 
+\index{Individual@{Individual}!Individual@{Individual}}
+\index{Individual@{Individual}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{Individual()}{Individual()}}
+{\footnotesize\ttfamily Individual\+::\+Individual (\begin{DoxyParamCaption}\item[{double \&}]{age,  }\item[{int \&}]{age\+\_\+bracket }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{class_individual}{Individual}} object. 
+
+Create an individual using the output from QUANTIUM.
+
+
+\begin{DoxyParams}{Parameters}
+{\em age} & \\
+\hline
+{\em age\+\_\+bracket} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_individual_a33b7a590d0784b9f02167fa27992cddb}\label{class_individual_a33b7a590d0784b9f02167fa27992cddb}} 
+\index{Individual@{Individual}!getProbabilitySymptomatic@{getProbabilitySymptomatic}}
+\index{getProbabilitySymptomatic@{getProbabilitySymptomatic}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{getProbabilitySymptomatic()}{getProbabilitySymptomatic()}}
+{\footnotesize\ttfamily double Individual\+::get\+Probability\+Symptomatic (\begin{DoxyParamCaption}\item[{double \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_individual_a5307055054a5e1a2221fa66a77b5a9d8}\label{class_individual_a5307055054a5e1a2221fa66a77b5a9d8}} 
+\index{Individual@{Individual}!getProtectionInfection@{getProtectionInfection}}
+\index{getProtectionInfection@{getProtectionInfection}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{getProtectionInfection()}{getProtectionInfection()}}
+{\footnotesize\ttfamily double Individual\+::get\+Protection\+Infection (\begin{DoxyParamCaption}\item[{double \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_individual_a37c4df4b4e6a18644a932ab8c604405a}\label{class_individual_a37c4df4b4e6a18644a932ab8c604405a}} 
+\index{Individual@{Individual}!getProtectionOnwards@{getProtectionOnwards}}
+\index{getProtectionOnwards@{getProtectionOnwards}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{getProtectionOnwards()}{getProtectionOnwards()}}
+{\footnotesize\ttfamily double Individual\+::get\+Protection\+Onwards (\begin{DoxyParamCaption}\item[{double \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_individual_a009b8d33059f5d093d31ed4a8da83f86}\label{class_individual_a009b8d33059f5d093d31ed4a8da83f86}} 
+\index{Individual@{Individual}!getProtectionSymptoms@{getProtectionSymptoms}}
+\index{getProtectionSymptoms@{getProtectionSymptoms}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{getProtectionSymptoms()}{getProtectionSymptoms()}}
+{\footnotesize\ttfamily double Individual\+::get\+Protection\+Symptoms (\begin{DoxyParamCaption}\item[{double \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_individual_a3b076afb9944b68b2023ea5cbddf03e7}\label{class_individual_a3b076afb9944b68b2023ea5cbddf03e7}} 
+\index{Individual@{Individual}!getSusceptibility@{getSusceptibility}}
+\index{getSusceptibility@{getSusceptibility}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{getSusceptibility()}{getSusceptibility()}}
+{\footnotesize\ttfamily double Individual\+::get\+Susceptibility (\begin{DoxyParamCaption}\item[{double \&}]{t }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_individual_aad49f6eec8bf471a7dee32f522e39ff1}\label{class_individual_aad49f6eec8bf471a7dee32f522e39ff1}} 
+\index{Individual@{Individual}!getTransmissibility@{getTransmissibility}}
+\index{getTransmissibility@{getTransmissibility}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{getTransmissibility()}{getTransmissibility()}}
+{\footnotesize\ttfamily double Individual\+::get\+Transmissibility (\begin{DoxyParamCaption}\item[{double \&}]{t }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_individual_af579e93900cbed93d73670698d47c2ba}\label{class_individual_af579e93900cbed93d73670698d47c2ba}} 
+\index{Individual@{Individual}!age@{age}}
+\index{age@{age}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{age}{age}}
+{\footnotesize\ttfamily double Individual\+::age}
+
+Age of the individual. \mbox{\Hypertarget{class_individual_a481c3ef7ce060d409988c80ba44a01ab}\label{class_individual_a481c3ef7ce060d409988c80ba44a01ab}} 
+\index{Individual@{Individual}!age\_bracket@{age\_bracket}}
+\index{age\_bracket@{age\_bracket}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{age\_bracket}{age\_bracket}}
+{\footnotesize\ttfamily int Individual\+::age\+\_\+bracket}
+
+Age bracket of the individual \mbox{\Hypertarget{class_individual_a6c3bfef4d555cbd910e7803a36dbad83}\label{class_individual_a6c3bfef4d555cbd910e7803a36dbad83}} 
+\index{Individual@{Individual}!covid@{covid}}
+\index{covid@{covid}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{covid}{covid}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_disease}{Disease}} Individual\+::covid}
+
+
+
+\mbox{\hyperlink{class_disease}{Disease}} status of the individual stored in an object. 
+
+\mbox{\Hypertarget{class_individual_a03abab25755a70b3ecbfe239f0ce5399}\label{class_individual_a03abab25755a70b3ecbfe239f0ce5399}} 
+\index{Individual@{Individual}!decay\_rate@{decay\_rate}}
+\index{decay\_rate@{decay\_rate}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{decay\_rate}{decay\_rate}}
+{\footnotesize\ttfamily double Individual\+::decay\+\_\+rate}
+
+Rate of neutralising antibody decay. This could be defined upon creation of the individual? \mbox{\Hypertarget{class_individual_aa168f3bbffeaa5e39354ea8335322416}\label{class_individual_aa168f3bbffeaa5e39354ea8335322416}} 
+\index{Individual@{Individual}!isCovidNaive@{isCovidNaive}}
+\index{isCovidNaive@{isCovidNaive}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{isCovidNaive}{isCovidNaive}}
+{\footnotesize\ttfamily bool Individual\+::is\+Covid\+Naive}
+
+Has the individual been infected previously? This is required for determining the height of the boost. \mbox{\Hypertarget{class_individual_a1594e37e139abe2476ce6acce17c6475}\label{class_individual_a1594e37e139abe2476ce6acce17c6475}} 
+\index{Individual@{Individual}!isVaccinated@{isVaccinated}}
+\index{isVaccinated@{isVaccinated}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{isVaccinated}{isVaccinated}}
+{\footnotesize\ttfamily bool Individual\+::is\+Vaccinated}
+
+Has the individual recieved a vaccine dose. \mbox{\Hypertarget{class_individual_afdc7d6ff5ce398308f65a20c42460347}\label{class_individual_afdc7d6ff5ce398308f65a20c42460347}} 
+\index{Individual@{Individual}!log10\_neutralising\_antibodies@{log10\_neutralising\_antibodies}}
+\index{log10\_neutralising\_antibodies@{log10\_neutralising\_antibodies}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{log10\_neutralising\_antibodies}{log10\_neutralising\_antibodies}}
+{\footnotesize\ttfamily double Individual\+::log10\+\_\+neutralising\+\_\+antibodies}
+
+Level of neutralising antibodies. \mbox{\Hypertarget{class_individual_ad19bc6f5ce318d058c5db7a46b129ab7}\label{class_individual_ad19bc6f5ce318d058c5db7a46b129ab7}} 
+\index{Individual@{Individual}!secondary\_infections@{secondary\_infections}}
+\index{secondary\_infections@{secondary\_infections}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{secondary\_infections}{secondary\_infections}}
+{\footnotesize\ttfamily int Individual\+::secondary\+\_\+infections}
+
+The number of individuals that they have infected. \mbox{\Hypertarget{class_individual_a2b2e80d26cc00f98d13985e1e69c506f}\label{class_individual_a2b2e80d26cc00f98d13985e1e69c506f}} 
+\index{Individual@{Individual}!time\_finish\_isolation@{time\_finish\_isolation}}
+\index{time\_finish\_isolation@{time\_finish\_isolation}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{time\_finish\_isolation}{time\_finish\_isolation}}
+{\footnotesize\ttfamily double Individual\+::time\+\_\+finish\+\_\+isolation}
+
+The time an individual finishes isolation (set to recovery time). \mbox{\Hypertarget{class_individual_aa0b0758e6e081513a1f24634a636ee96}\label{class_individual_aa0b0758e6e081513a1f24634a636ee96}} 
+\index{Individual@{Individual}!time\_isolated@{time\_isolated}}
+\index{time\_isolated@{time\_isolated}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{time\_isolated}{time\_isolated}}
+{\footnotesize\ttfamily double Individual\+::time\+\_\+isolated}
+
+The time an individual starts isolation. \mbox{\Hypertarget{class_individual_a40f48a12a609b6811a5e0bd68f2098c8}\label{class_individual_a40f48a12a609b6811a5e0bd68f2098c8}} 
+\index{Individual@{Individual}!time\_last\_boost@{time\_last\_boost}}
+\index{time\_last\_boost@{time\_last\_boost}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{time\_last\_boost}{time\_last\_boost}}
+{\footnotesize\ttfamily double Individual\+::time\+\_\+last\+\_\+boost}
+
+Time of the last boost to neutralising antibodies. \mbox{\Hypertarget{class_individual_a76f3beaf33291a6b6eba01884d698051}\label{class_individual_a76f3beaf33291a6b6eba01884d698051}} 
+\index{Individual@{Individual}!vaccinations@{vaccinations}}
+\index{vaccinations@{vaccinations}!Individual@{Individual}}
+\doxysubsubsection{\texorpdfstring{vaccinations}{vaccinations}}
+{\footnotesize\ttfamily std\+::vector$<$Vaccine$>$ Individual\+::vaccinations}
+
+Dynamic array that stores vaccination times for the individual 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/abm/\mbox{\hyperlink{individual_8h}{individual.\+h}}\end{DoxyCompactItemize}
