@@ -42,9 +42,10 @@ class disease_model{
   disease_model(double beta_C, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w);
 
   std::vector<double> beta_C; /**<  Community transmission probability.*/
-  
-
+  std::vector<double> xi; /**< Age stratified susceptibility. */
+  std::vector<double> q; /**< Probability of symptoms */
   std::vector<std::vector<double>> contact_matrix; /**< Contacts per day in each age bracket.*/
+  
   
   // Distributions! The disease model should initialise some distributions that wil be used!
   std::gamma_distribution<double> gen_tau_E; /**< Time moving from exposed to infected. */
@@ -148,21 +149,37 @@ class disease_model{
   double  covid_one_step_ascm_R0(std::vector<Individual>& residents,  std::vector<std::vector<int>>& age_ref, double t0, double dt, std::vector<size_t>& E, std::vector<size_t>& I,std::vector<size_t>& newly_symptomatic);  
 
   // Seed infection
-  void seed_infection(Individual&resident);
-  void seed_infection(Individual&resident);
-  void seed_exposure(Individual& resident);
   void seed_exposure(Individual& resident, double& t);
 
+  // Functions for each event. 
+  void expose_individual(Individual& person, double& t);
+  void infect_individual(Individual& person);
+  void recover_individual(Individual& person);
+  void susceptible_individual(Individual& person);
+
   // Expose infect and recover an Individual. 
-  void expose_individual(Individual&);
-  void infect_individual(Individual&);
-  void recover_individual(Individual&);
-  void susceptible_individual(Individual& resident);
+  // void expose_individual(Individual&);
+  // void infect_individual(Individual&);
+  // void recover_individual(Individual&);
+  
 
   // Expose infect and recover an Individual.
-  void expose_individual(Individual&, double&);
-  void infect_individual(Individual&, double&);
-  void recover_individual(Individual&, double&);
-  void susceptible_individual(Individual& resident, double&);
-};
+  // void expose_individual(Individual&, double&);
+  // void infect_individual(Individual&, double&);
+  // void recover_individual(Individual&, double&);
+  // void susceptible_individual(Individual& resident, double&);
+
+
+
+  double getSusceptibility(const Individual& ,double& t); // (1-ProtectInfection)*xi 
+  double getProbabilitySymptomatic(const Individual&, double& t); // (1- PS)*q
+  void assignTransmissibility(Individual& , double& t); // (1-PO)
+
+  double getProtectionInfection(const Individual&, double& t);
+  double getProtectionSymptoms(const Individual&, double& t);
+  double getProtectionOnwards(const Individual&, double& t);
+
+  double calculateNeuts(const Individual& person,double&t);
+  void boostNeutsInfection(Individual& person,double&t);
+}; 
 #endif

@@ -101,18 +101,14 @@ bool disease_model::distribution_exposed_update(Individual & person, size_t & in
 }
 
 void disease_model::infection_ascm(double t, Individual &infected_individual, std::vector<Individual> & residents, std::vector<std::vector<int>> & age_ref, double dt, std::vector<size_t> & newly_exposed){
-  
-  // It is definitely worth splitting this function up into generating
-  // contacts and infections. This function does not change anything about
-  // house or the infected Individual. Beta is the probability of infection
-  // given contact. Assume they have contact with everyone in the household.
-  // Incorporate all of the household information as well for the quarantine.
-  
-  // This function will alter the infection status of any contacts.
+   
+  // This function will alter the infection status of any contacts that are infected
   int individual_bracket = infected_individual.age_bracket; // Infected individuals age bracket.
   int cluster_number = infected_individual.covid.cluster_number;
-  bool isolated = (t > infected_individual.time_isolated); // Are they isolated.
-  
+  bool isolated = (t >= infected_individual.time_isolated); // Are they isolated at this current time. I dont have to put in  check for the maximum time, because they will only be isolated for the time they are infectious and I dont check if they are isolated at the point of infection.
+  double beta_individual = beta_C[individual_bracket];
+
+
   if(std::isnan(infected_individual.time_isolated)){
       throw std::logic_error("Probability of infection is Nan.");
   }
@@ -146,6 +142,7 @@ void disease_model::infection_ascm(double t, Individual &infected_individual, st
     // The dt scale is so that it makes sense.
     size_t num_in_strata = age_ref[age_strata].size(); // Must be obtained from the reference to the age matrix.
 #endif
+
     if(num_in_strata == 0){
         continue;    // Skip strata as no-one is in it.
     }
@@ -165,13 +162,11 @@ void disease_model::infection_ascm(double t, Individual &infected_individual, st
       if(contact.covid.infection_status == 'S'){
         // Do they get infected.
         double r = genunf_std(generator);
-        // double prob_transmission = (!isolated)*infected_individual.covid.transmissibility*beta_C[individual_bracket]*contact.vaccine_status.get_susceptibility(t);
-        
-        double prob_transmission = (!isolated)*infected_individual.covid.transmissibility*beta_C[individual_bracket]*contact.getSusceptibility(t);
+        double prob_transmission = (!isolated)*infected_individual.covid.transmissibility*beta_individual*getSusceptibility(contact,t);
 
-        if(t < infected_individual.covid.time_of_symptom_onset){
-          prob_transmission = prob_transmission*2.29;
-        }
+        // if(t < infected_individual.covid.time_of_symptom_onset){
+        //   prob_transmission = prob_transmission*2.29;
+        // }
 
         if(r < prob_transmission){   // This part doesnt need the dt, because the dt is taken into account earlier by limiting the number of contacts per timesteps.
           newly_exposed.push_back(contact_ref);
@@ -198,37 +193,35 @@ double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, s
     // Loop over all infected individuals, removing those that recover. This
     // will alter a vector newly_exposed to have the newly exposed individuals.
     auto recovered_it = std::remove_if(I.begin(),I.end(),[&](size_t & ind_ref)->bool{
-       
-        // Infected Individual
-        Individual & person = residents[ind_ref];
-        
-            //Error check.
-            if(person.covid.infection_status!='I'){
-                throw std::logic_error("Individual in I vector does not match infection status.");
-            }
+      
+      // Infected Individual
+      Individual & person = residents[ind_ref];
+      
+      //Error check.
+      if(person.covid.infection_status!='I'){
+          throw std::logic_error("Individual in I vector does not match infection status.");
+      }
 
-        // Community infection model.
-        infection_ascm(t0, person, residents, age_ref, dt, newly_exposed);
-        
-        return distribution_infected_update(person, ind_ref, newly_symptomatic, t0); // If infected, do they recover, this function must alter the Individual disease status.
+      // Community infection model.
+      infection_ascm(t0, person, residents, age_ref, dt, newly_exposed);
+      
+      return distribution_infected_update(person, ind_ref, newly_symptomatic, t0); // If infected, do they recover, this function must alter the Individual disease status.
     });
     
     // Loop over Exposed individuals. Note that this does not include
     // newly_exposed individuals.
     auto infected_it = std::remove_if(E.begin(),E.end(),[&](size_t & ind_ref)->bool{
         
-        // Get person of interest.
-        Individual & person = residents[ind_ref];
-        
-            //Error check.
-            if(person.covid.infection_status!='E'){
-                throw std::logic_error("Individual in I vector does not match infection status.");
-            }
-        
-        bool infected = distribution_exposed_update(person,ind_ref,newly_infected, t0); // Distribution exposed update should now update individuals to be infected., this function must alter the Individual disease status.
-        
-        return infected;
-        
+      // Get person of interest.
+      Individual & person = residents[ind_ref];
+      
+      //Error check.
+      if(person.covid.infection_status!='E'){
+          throw std::logic_error("Individual in I vector does not match infection status.");
+      }
+      
+      bool infected = distribution_exposed_update(person,ind_ref,newly_infected, t0); // Distribution exposed update should now update individuals to be infected., this function must alter the Individual disease status.
+      return infected;
     });
     
     // We have a vector of newly exposed individuals and an iterator,
@@ -246,7 +239,7 @@ double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, s
     // branch prediction. It is still stochastic so its not just perfect order,
     // but its better! (Very likely to be false at the end).
 
-    return t0 + dt;
+  return t0 + dt;
 }
 
 void disease_model::seed_exposure(Individual & resident, double & t){
@@ -258,8 +251,8 @@ void disease_model::infect_individual(Individual & resident){
 }
 
 
-void disease_model::recover_individual(Individual & resident){
-    resident.covid.infection_status = 'R';
+void disease_model::recover_individual(Individual & resident){ 
+    susceptible_individual(resident);
 }
 
 void disease_model::susceptible_individual(Individual & resident){
@@ -274,25 +267,26 @@ void disease_model::expose_individual(Individual & resident, double & t){
     resident.covid.time_of_symptom_onset = resident.covid.time_of_infection + gen_tau_S(generator);
     resident.covid.time_of_recovery = resident.covid.time_of_symptom_onset + gen_tau_R(generator);
     resident.time_isolated = resident.covid.time_of_symptom_onset + gen_tau_isolation(generator); // This is hardcoded for now.
-    
-    // Determine if the Individual will be asymptomatic and the severity of the
-    // disease.
 
-    // std::uniform_real_distribution<double> gen_r(0.0,1.0);
-    // double r = gen_r(generator);
-    // double prob_asymptomatic = resident.vaccine_status.get_probability_asymptomatic(t);
-    // bool   asymptomatic = r > prob_asymptomatic; // To fix the asymptomatic should just be symptomatic. It was defined the opposite way. woops.
-    // resident.covid.asymptomatic = asymptomatic;
+    // Determine if the Individual will be asymptomatic and the severity of the disease. 
+    double r = genunf_std(generator);
+    double prob_symptomatic = getProbabilitySymptomatic(resident, t);
+    bool   asymptomatic = r > prob_symptomatic; // You are asymptomatic. 
+    resident.covid.asymptomatic = asymptomatic;
+    resident.covid.check_symptoms = true; // Set the symptom latch. 
     
-    // // Severity check (Currently in model of care).
-    // resident.covid.severe = false; // This is currently disabled.
+    // Severity check (Currently in model of care).
+    resident.covid.severe = false; // This is currently disabled.
     
-    // // Determine the transmissibility of the Individual.
-    // resident.covid.transmissibility = resident.vaccine_status.get_transmissibility(t,asymptomatic?1:0); // This will remain over the course of their infection.
-    
-    resident.covid.transmissibility = resident.getTransmissibility(t);
+    // Determine the transmissibility of the Individual. 
+    assignTransmissibility(resident, t); //(This is 1 - VE_O and is constant throughout the infecton period)
 
-    // // Set statistics for tracking.
+
+    // Set Neut levels!  You have been exposed to covid your neutralising antibodies will now do a thing.
+    resident.old_log10_neutralising_antibodies = calculateNeuts(resident,t); // For James (could be fun for some delays in the future)
+    boostNeutsInfection(resident,t); // What do the neuts go to 
+
+    // Set statistics for tracking.
     // if(resident.vaccine_status.get_time_of_vaccination()<=(t - 14.0)){
     //     resident.infection_statistics.set_infection_stats(resident.vaccine_status.get_type(), resident.vaccine_status.get_dose(), resident.vaccine_status.get_time_of_vaccination());
     // }else{
@@ -302,12 +296,12 @@ void disease_model::expose_individual(Individual & resident, double & t){
     //         resident.infection_statistics.set_infection_stats(resident.vaccine_status.get_type(), resident.vaccine_status.get_dose()-1, resident.vaccine_status.get_time_of_vaccination());
     //     }
     // }
-    
 }
 
 
 // This code is used to check the R0.
 double disease_model::covid_ascm_R0(std::vector<Individual> & residents, std::vector<std::vector<int>> & age_ref, double t0, double t1, double dt, std::vector<size_t> & E, std::vector<size_t> & I,std::vector<size_t> & newly_symptomatic){
+
 //  Evaluates a covid model based on Individual contacts from t0 to t1 with
 //  timestep of dt. Returns the current time value.
 
@@ -353,19 +347,19 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
     // will alter a vector newly_exposed to have the newly exposed individuals.
     auto recovered_it = std::remove_if(I.begin(),I.end(),[&](size_t & ind_ref)->bool{
        
-        // Infected Individual
-        Individual & person = residents[ind_ref];
-        
-            //Error check.
-            if(person.covid.infection_status!='I'){
-                throw std::logic_error("Individual in I vector does not match infection status.");
-            }
+      // Infected Individual
+      Individual & person = residents[ind_ref];
+      
+      //Error check.
+      if(person.covid.infection_status!='I'){
+          throw std::logic_error("Individual in I vector does not match infection status.");
+      }
             
         
-        // Community infection model.
-        infection_ascm(t0, person, residents, age_ref, dt, newly_exposed);
-        
-        return distribution_infected_update(person, ind_ref, newly_symptomatic, t0); // If infected, do they recover, this function must alter the Individual disease status.
+      // Community infection model.
+      infection_ascm(t0, person, residents, age_ref, dt, newly_exposed);
+      
+      return distribution_infected_update(person, ind_ref, newly_symptomatic, t0); // If infected, do they recover, this function must alter the Individual disease status.
     });
     
     // Loop over Exposed individuals. Note that this does not include
@@ -385,7 +379,6 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
         return infected;
         
     });
-    
     // We have a vector of newly exposed individuals and an iterator,
     // recovered_it, that points to the location of recovered individuals.
     I.erase(recovered_it,I.end()); // Remove the recovered individuals from the vector of infections (could be done at the end).
@@ -396,4 +389,20 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
     E.erase(infected_it,E.end()); // Remove the exposed individuals that are now infected.
     // Do not add newly exposed individuals, we just want them to be exposed.
     return t0 + dt;
+}
+
+void disease_model::boostNeutsInfection(Individual & person, double &t){
+  person.log10_neutralising_antibodies = 0.0;
+}
+
+double disease_model::getSusceptibility(const Individual& person, double & t){
+  return (1 - getProtectionInfection(person,t))*xi[person.age_bracket];
+}
+
+double disease_model::getProbabilitySymptomatic(const Individual& person, double & t){
+  return (1 - getProtectionSymptoms(person,t))*q[person.age_bracket];
+}
+
+void disease_model::assignTransmissibility(Individual& person, double& t){
+  person.covid.transmissibility = 1 - getProtectionOnwards(person,t);
 }

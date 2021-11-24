@@ -40,7 +40,6 @@ class Disease
 
   // Public member data
   char    infection_status;               //  Determine if individual is S E I R or whatever you want really... 
-  bool    symptoms = false;               //  Does the individual have symptoms. This will be based off some probability. 
   bool    asymptomatic = false;           //  Is the individual asymptomatic. 
   bool    severe = false;                 //  Is this a severe disease.
   
@@ -56,14 +55,9 @@ class Disease
   // Latch to determine if pre-symptomatic time is over.
   bool    check_symptoms           = true; // Symptomatic latch.
   
-  // Case detections.
-  bool    detected_case           = false; // Were they a detected case of COVID.
-  double  time_of_detection       = std::nan("5");
-
   // Future development.
   int cluster_number = -1; // We can track the clusters through time. That could be fun. It can be passed from exposure to exposure.
 
-  void reset(); // This function should reset the Disease class for an individual (recover the individual?)
 };
 
 
@@ -92,11 +86,13 @@ class Individual{
   
   double age; /**< Age of the individual.*/
   double log10_neutralising_antibodies; /**< Level of neutralising antibodies.*/ 
+  double old_log10_neutralising_antibodies; /**< Old level of neutralising antibodies (the value that it was at the time of the boost, but before it was boosted).*/
+
   double  time_last_boost; /**< Time of the last boost to neutralising antibodies. */
   double  decay_rate; /**< Rate of neutralising antibody decay. This could be defined upon creation of the individual? */ 
 
   double  time_isolated; /**< The time an individual starts isolation.*/
-  double  time_finish_isolation; /**< The time an individual finishes isolation (set to recovery time). */
+  // const double xi; /**< Base susceptibility */ 
 
   bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. */ 
   bool isVaccinated; /**< Has the individual recieved a vaccine dose. */
@@ -108,14 +104,5 @@ class Individual{
   Disease covid; /**< Set up the disease parameters for the individual. */ // It would be cool to have some pointer indirection here and allow for an arbitrary disease. 
 
   // std::vector<Vaccine> vaccinations; /**< Dynamic array that stores vaccination times for the individual */ 
-
-  double getSusceptibility(double& t);// (1-ProtectInfection)*xi 
-  double getProbabilitySymptomatic(double& t); // (1- PS)*q
-  double getTransmissibility(double& t);// (1-PO)*tau
-
-  double getProtectionInfection(double& t);
-  double getProtectionSymptoms(double& t);
-  double getProtectionOnwards(double& t);
-
 };
 #endif
