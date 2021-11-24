@@ -157,29 +157,15 @@ class disease_model{
   void recover_individual(Individual& person);
   void susceptible_individual(Individual& person);
 
-  // Expose infect and recover an Individual. 
-  // void expose_individual(Individual&);
-  // void infect_individual(Individual&);
-  // void recover_individual(Individual&);
-  
+  double getSusceptibility(const Individual& person, double& t); // (1-ProtectInfection)*xi 
+  double getProbabilitySymptomatic(const Individual& person, double& t); // (1- PS)*q
+  void assignTransmissibility(Individual& person, double& t); // (1-PO)
 
-  // Expose infect and recover an Individual.
-  // void expose_individual(Individual&, double&);
-  // void infect_individual(Individual&, double&);
-  // void recover_individual(Individual&, double&);
-  // void susceptible_individual(Individual& resident, double&);
+  double getProtectionInfection(const Individual& person, double& t);
+  double getProtectionSymptoms(const Individual& person, double& t);
+  double getProtectionOnwards(const Individual& person, double& t);
 
-
-
-  double getSusceptibility(const Individual& ,double& t); // (1-ProtectInfection)*xi 
-  double getProbabilitySymptomatic(const Individual&, double& t); // (1- PS)*q
-  void assignTransmissibility(Individual& , double& t); // (1-PO)
-
-  double getProtectionInfection(const Individual&, double& t);
-  double getProtectionSymptoms(const Individual&, double& t);
-  double getProtectionOnwards(const Individual&, double& t);
-
-  double calculateNeuts(const Individual& person,double&t);
-  void boostNeutsInfection(Individual& person,double&t);
+  double calculateNeuts(const Individual& person, double&t);
+  void boostNeutsInfection(Individual& person, double&t);
 }; 
 #endif

@@ -38,7 +38,7 @@ disease_model::disease_model(double beta_C_in, std::vector<std::vector<double>> 
 
 //  Covid model Age stratified Individual contacts. (ASCM - age stratified
 //  contact model)
-double disease_model::covid_ascm(std::vector<Individual> & residents, std::vector<std::vector<int>> & age_ref, double t0, double t1, double dt, std::vector<size_t> & E, std::vector<size_t> & I,std::vector<size_t> & newly_symptomatic){
+double disease_model::covid_ascm(std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double t0, double t1, double dt, std::vector<size_t>& E, std::vector<size_t>& I,std::vector<size_t>& newly_symptomatic){
 //  Evaluates a covid model based on Individual contacts from t0 to t1 with
 //  timestep of dt. Returns the current time value.
 
@@ -69,7 +69,7 @@ return t;
 }
 
  
-bool disease_model::distribution_infected_update(Individual & person, size_t & ind_number, std::vector<size_t> & newly_symptomatic, double & t){
+bool disease_model::distribution_infected_update(Individual& person, size_t& ind_number, std::vector<size_t>& newly_symptomatic, double& t){
     
     // This function is in charge of determining the updates of infected
     // individuals.
@@ -90,7 +90,7 @@ bool disease_model::distribution_infected_update(Individual & person, size_t & i
 }
 
 
-bool disease_model::distribution_exposed_update(Individual & person, size_t & ind_number, std::vector<size_t> & newly_infected, double & t){
+bool disease_model::distribution_exposed_update(Individual& person, size_t& ind_number, std::vector<size_t>& newly_infected, double& t){
     // This function returns true if you move from exposed to infected.
     bool infected = (t > person.covid.time_of_infection);
         if(infected){
@@ -100,7 +100,7 @@ bool disease_model::distribution_exposed_update(Individual & person, size_t & in
     return infected;
 }
 
-void disease_model::infection_ascm(double t, Individual &infected_individual, std::vector<Individual> & residents, std::vector<std::vector<int>> & age_ref, double dt, std::vector<size_t> & newly_exposed){
+void disease_model::infection_ascm(double t, Individual&infected_individual, std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double dt, std::vector<size_t>& newly_exposed){
    
   // This function will alter the infection status of any contacts that are infected
   int individual_bracket = infected_individual.age_bracket; // Infected individuals age bracket.
@@ -156,7 +156,7 @@ void disease_model::infection_ascm(double t, Individual &infected_individual, st
       // This is where we can finish generating contacts, the rest of
       // the loop calculated whether they are infected. Should this be
       // split ?
-      Individual & contact = residents[contact_ref]; // Define which community member was contacted.
+      Individual& contact = residents[contact_ref]; // Define which community member was contacted.
       // Track all contacts (We can then implement how good contact
       // tracing is currently disabled)
       if(contact.covid.infection_status == 'S'){
@@ -179,7 +179,7 @@ void disease_model::infection_ascm(double t, Individual &infected_individual, st
   }
 };
 
-double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, std::vector<std::vector<int>> & age_ref, double t0, double dt, std::vector<size_t> & E, std::vector<size_t> & I,std::vector<size_t> & newly_symptomatic){
+double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double t0, double dt, std::vector<size_t>& E, std::vector<size_t>& I,std::vector<size_t>& newly_symptomatic){
     // The ordering of this function is important. Infected individuals, then
     // exposed. There is a shift in memory location for each true statement that
     // comes from std::remove_if. This is faster than creating a new vector
@@ -192,10 +192,10 @@ double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, s
     
     // Loop over all infected individuals, removing those that recover. This
     // will alter a vector newly_exposed to have the newly exposed individuals.
-    auto recovered_it = std::remove_if(I.begin(),I.end(),[&](size_t & ind_ref)->bool{
+    auto recovered_it = std::remove_if(I.begin(),I.end(),[&](size_t& ind_ref)->bool{
       
       // Infected Individual
-      Individual & person = residents[ind_ref];
+      Individual& person = residents[ind_ref];
       
       //Error check.
       if(person.covid.infection_status!='I'){
@@ -210,10 +210,10 @@ double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, s
     
     // Loop over Exposed individuals. Note that this does not include
     // newly_exposed individuals.
-    auto infected_it = std::remove_if(E.begin(),E.end(),[&](size_t & ind_ref)->bool{
+    auto infected_it = std::remove_if(E.begin(),E.end(),[&](size_t& ind_ref)->bool{
         
       // Get person of interest.
-      Individual & person = residents[ind_ref];
+      Individual& person = residents[ind_ref];
       
       //Error check.
       if(person.covid.infection_status!='E'){
@@ -242,24 +242,24 @@ double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, s
   return t0 + dt;
 }
 
-void disease_model::seed_exposure(Individual & resident, double & t){
+void disease_model::seed_exposure(Individual& resident, double& t){
     expose_individual(resident, t);
 }
 
-void disease_model::infect_individual(Individual & resident){
+void disease_model::infect_individual(Individual& resident){
     resident.covid.infection_status = 'I';
 }
 
 
-void disease_model::recover_individual(Individual & resident){ 
+void disease_model::recover_individual(Individual& resident){ 
     susceptible_individual(resident);
 }
 
-void disease_model::susceptible_individual(Individual & resident){
+void disease_model::susceptible_individual(Individual& resident){
     resident.covid.infection_status = 'S';
 }
 
-void disease_model::expose_individual(Individual & resident, double & t){
+void disease_model::expose_individual(Individual& resident, double& t){
     
     resident.covid.infection_status = 'E';
     resident.covid.time_of_exposure = t;
@@ -300,7 +300,7 @@ void disease_model::expose_individual(Individual & resident, double & t){
 
 
 // This code is used to check the R0.
-double disease_model::covid_ascm_R0(std::vector<Individual> & residents, std::vector<std::vector<int>> & age_ref, double t0, double t1, double dt, std::vector<size_t> & E, std::vector<size_t> & I,std::vector<size_t> & newly_symptomatic){
+double disease_model::covid_ascm_R0(std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double t0, double t1, double dt, std::vector<size_t>& E, std::vector<size_t>& I,std::vector<size_t>& newly_symptomatic){
 
 //  Evaluates a covid model based on Individual contacts from t0 to t1 with
 //  timestep of dt. Returns the current time value.
@@ -331,7 +331,7 @@ double t = t0;
 return t;
 }
 
-double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents, std::vector<std::vector<int>> & age_ref, double t0, double dt, std::vector<size_t> & E, std::vector<size_t> & I,std::vector<size_t> & newly_symptomatic){
+double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double t0, double dt, std::vector<size_t>& E, std::vector<size_t>& I,std::vector<size_t>& newly_symptomatic){
     // E and I are all that is needed to generate incidence? (Do I want to add E
     // and I to the disease_model class?)
 
@@ -345,10 +345,10 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
     
     // Loop over all infected individuals, removing those that recover. This
     // will alter a vector newly_exposed to have the newly exposed individuals.
-    auto recovered_it = std::remove_if(I.begin(),I.end(),[&](size_t & ind_ref)->bool{
+    auto recovered_it = std::remove_if(I.begin(),I.end(),[&](size_t& ind_ref)->bool{
        
       // Infected Individual
-      Individual & person = residents[ind_ref];
+      Individual& person = residents[ind_ref];
       
       //Error check.
       if(person.covid.infection_status!='I'){
@@ -364,10 +364,10 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
     
     // Loop over Exposed individuals. Note that this does not include
     // newly_exposed individuals.
-    auto infected_it = std::remove_if(E.begin(),E.end(),[&](size_t & ind_ref)->bool{
+    auto infected_it = std::remove_if(E.begin(),E.end(),[&](size_t& ind_ref)->bool{
         
         // Get person of interest.
-        Individual & person = residents[ind_ref];
+        Individual& person = residents[ind_ref];
         
             //Error check.
             if(person.covid.infection_status!='E'){
@@ -391,18 +391,34 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
     return t0 + dt;
 }
 
-void disease_model::boostNeutsInfection(Individual & person, double &t){
-  person.log10_neutralising_antibodies = 0.0;
-}
-
-double disease_model::getSusceptibility(const Individual& person, double & t){
+double disease_model::getSusceptibility(const Individual& person, double& t){
   return (1 - getProtectionInfection(person,t))*xi[person.age_bracket];
 }
 
-double disease_model::getProbabilitySymptomatic(const Individual& person, double & t){
+double disease_model::getProbabilitySymptomatic(const Individual& person, double& t){
   return (1 - getProtectionSymptoms(person,t))*q[person.age_bracket];
 }
 
 void disease_model::assignTransmissibility(Individual& person, double& t){
   person.covid.transmissibility = 1 - getProtectionOnwards(person,t);
+}
+
+double disease_model::getProtectionInfection(const Individual& person, double& t){
+  return 0.0;
+}
+
+double disease_model::getProtectionSymptoms(const Individual& person, double& t){
+  return 0.0;
+}
+
+double disease_model::getProtectionOnwards(const Individual& person, double& t){
+  return 0.0;
+}
+
+double disease_model::calculateNeuts(const Individual& person, double&t){
+  return 0.0;
+}
+
+void disease_model::boostNeutsInfection(Individual& person, double&t){
+  person.log10_neutralising_antibodies = 0.0;
 }
