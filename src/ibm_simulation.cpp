@@ -106,7 +106,6 @@ void disease_model::infection_ascm(double t, Individual&infected_individual, std
   int individual_bracket = infected_individual.age_bracket; // Infected individuals age bracket.
   int cluster_number = infected_individual.covid.cluster_number;
   bool isolated = (t >= infected_individual.time_isolated); // Are they isolated at this current time. I dont have to put in  check for the maximum time, because they will only be isolated for the time they are infectious and I dont check if they are isolated at the point of infection.
-  double beta_individual = beta_C[individual_bracket];
 
 
   if(std::isnan(infected_individual.time_isolated)){
@@ -162,7 +161,7 @@ void disease_model::infection_ascm(double t, Individual&infected_individual, std
       if(contact.covid.infection_status == 'S'){
         // Do they get infected.
         double r = genunf_std(generator);
-        double prob_transmission = (!isolated)*infected_individual.covid.transmissibility*beta_individual*getSusceptibility(contact,t);
+        double prob_transmission = (!isolated)*infected_individual.covid.transmissibility*getSusceptibility(contact,t);
 
         // if(t < infected_individual.covid.time_of_symptom_onset){
         //   prob_transmission = prob_transmission*2.29;
@@ -253,6 +252,8 @@ void disease_model::infect_individual(Individual& resident){
 
 void disease_model::recover_individual(Individual& resident){ 
     susceptible_individual(resident);
+    //Write output of the infection here ? 
+    
 }
 
 void disease_model::susceptible_individual(Individual& resident){
@@ -260,42 +261,33 @@ void disease_model::susceptible_individual(Individual& resident){
 }
 
 void disease_model::expose_individual(Individual& resident, double& t){
-    
-    resident.covid.infection_status = 'E';
-    resident.covid.time_of_exposure = t;
-    resident.covid.time_of_infection = resident.covid.time_of_exposure + gen_tau_E(generator);
-    resident.covid.time_of_symptom_onset = resident.covid.time_of_infection + gen_tau_S(generator);
-    resident.covid.time_of_recovery = resident.covid.time_of_symptom_onset + gen_tau_R(generator);
-    resident.time_isolated = resident.covid.time_of_symptom_onset + gen_tau_isolation(generator); // This is hardcoded for now.
+  
+  resident.covid.infection_status = 'E';
+  resident.covid.time_of_exposure = t;
+  resident.covid.time_of_infection = resident.covid.time_of_exposure + gen_tau_E(generator);
+  resident.covid.time_of_symptom_onset = resident.covid.time_of_infection + gen_tau_S(generator);
+  resident.covid.time_of_recovery = resident.covid.time_of_symptom_onset + gen_tau_R(generator);
+  resident.time_isolated = resident.covid.time_of_symptom_onset + gen_tau_isolation(generator); // This is hardcoded for now.
 
-    // Determine if the Individual will be asymptomatic and the severity of the disease. 
-    double r = genunf_std(generator);
-    double prob_symptomatic = getProbabilitySymptomatic(resident, t);
-    bool   asymptomatic = r > prob_symptomatic; // You are asymptomatic. 
-    resident.covid.asymptomatic = asymptomatic;
-    resident.covid.check_symptoms = true; // Set the symptom latch. 
-    
-    // Severity check (Currently in model of care).
-    resident.covid.severe = false; // This is currently disabled.
-    
-    // Determine the transmissibility of the Individual. 
-    assignTransmissibility(resident, t); //(This is 1 - VE_O and is constant throughout the infecton period)
+  // Determine if the Individual will be asymptomatic and the severity of the disease. 
+  double r = genunf_std(generator);
+  double prob_symptomatic = getProbabilitySymptomatic(resident, t);
+  bool   asymptomatic = r > prob_symptomatic; // You are asymptomatic. 
+  resident.covid.asymptomatic = asymptomatic;
+  resident.covid.check_symptoms = true; // Set the symptom latch. 
+  
+  // Severity check (Currently in model of care).
+  resident.covid.severe = false; // This is currently disabled.
+  
+  // Determine the transmissibility of the Individual. 
+  assignTransmissibility(resident, t); // This is 1 - VE_O and is constant throughout the infecton period)
 
+  // Set Neut levels!  You have been exposed to covid your neutralising antibodies will now do a thing.
+  boostNeutsInfection(resident,t); // What do the neuts go to (also assigns old Neutralising antibody levels)
 
-    // Set Neut levels!  You have been exposed to covid your neutralising antibodies will now do a thing.
-    resident.old_log10_neutralising_antibodies = calculateNeuts(resident,t); // For James (could be fun for some delays in the future)
-    boostNeutsInfection(resident,t); // What do the neuts go to 
+  // Set statistics for tracking - required for log10 neuts.
+  // Write log10 neuts for MOC. 
 
-    // Set statistics for tracking.
-    // if(resident.vaccine_status.get_time_of_vaccination()<=(t - 14.0)){
-    //     resident.infection_statistics.set_infection_stats(resident.vaccine_status.get_type(), resident.vaccine_status.get_dose(), resident.vaccine_status.get_time_of_vaccination());
-    // }else{
-    //     if(resident.vaccine_status.get_dose()==1){
-    //         resident.infection_statistics.set_infection_stats(vaccine_type::none, 0, resident.vaccine_status.get_time_of_vaccination());
-    //     }else{
-    //         resident.infection_statistics.set_infection_stats(resident.vaccine_status.get_type(), resident.vaccine_status.get_dose()-1, resident.vaccine_status.get_time_of_vaccination());
-    //     }
-    // }
 }
 
 
@@ -392,18 +384,18 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
 }
 
 double disease_model::getSusceptibility(const Individual& person, double& t){
-  return (1 - getProtectionInfection(person,t))*xi[person.age_bracket];
+  return (1 - getProtectionInfection(person,t))*xi[person.age_bracket]; // This should be an odds ratio. 
 }
 
 double disease_model::getProbabilitySymptomatic(const Individual& person, double& t){
   return (1 - getProtectionSymptoms(person,t))*q[person.age_bracket];
 }
 
-void disease_model::assignTransmissibility(Individual& person, double& t){
-  person.covid.transmissibility = 1 - getProtectionOnwards(person,t);
+void disease_model::assignTransmissibility(Individual& person, double& t) {
+  person.covid.transmissibility = (1 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
 }
 
-double disease_model::getProtectionInfection(const Individual& person, double& t){
+double disease_model::getProtectionInfection(const Individual& person, double& t) {
   return 0.0;
 }
 
@@ -411,14 +403,16 @@ double disease_model::getProtectionSymptoms(const Individual& person, double& t)
   return 0.0;
 }
 
-double disease_model::getProtectionOnwards(const Individual& person, double& t){
+double disease_model::getProtectionOnwards(const Individual& person, double& t) {
   return 0.0;
 }
 
-double disease_model::calculateNeuts(const Individual& person, double&t){
-  return 0.0;
+double disease_model::calculateNeuts(const Individual& person, double& t){
+  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost); // We are working in log neuts. 
 }
 
-void disease_model::boostNeutsInfection(Individual& person, double&t){
+void disease_model::boostNeutsInfection(Individual& person, double& t){
+  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here? 
   person.log10_neutralising_antibodies = 0.0;
+  person.time_last_boost = t; 
 }
