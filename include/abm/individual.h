@@ -51,6 +51,8 @@ class Disease
   double  time_of_symptom_onset    = std::nan("2");
   double  time_of_infection        = std::nan("3");
   double  time_of_recovery         = std::nan("4");
+  
+  double log10_neuts_at_exposure; 
 
   // Latch to determine if pre-symptomatic time is over.
   bool    check_symptoms           = true; // Symptomatic latch.

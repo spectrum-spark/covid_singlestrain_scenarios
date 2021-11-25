@@ -287,6 +287,7 @@ void disease_model::expose_individual(Individual& resident, double& t){
 
   // Set statistics for tracking - required for log10 neuts.
   // Write log10 neuts for MOC. 
+  resident.covid.log10_neuts_at_exposure = resident.old_log10_neutralising_antibodies; 
 
 }
 
@@ -412,7 +413,7 @@ double disease_model::calculateNeuts(const Individual& person, double& t){
 }
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
-  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here? 
+  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
   person.log10_neutralising_antibodies = 0.0;
   person.time_last_boost = t; 
 }
