@@ -51,7 +51,7 @@ class Disease
   double  time_of_symptom_onset    = std::nan("2");
   double  time_of_infection        = std::nan("3");
   double  time_of_recovery         = std::nan("4");
-  
+
   double log10_neuts_at_exposure; 
 
   // Latch to determine if pre-symptomatic time is over.
@@ -83,6 +83,9 @@ class Individual{
    */
   Individual(double& age, int& age_bracket); 
   
+  bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. */ 
+  bool isVaccinated; /**< Has the individual recieved a vaccine dose. */
+
   int   age_bracket; /**< Age bracket of the individual */
   int   secondary_infections; /**< The number of individuals that they have infected. */ 
   
@@ -94,11 +97,6 @@ class Individual{
   double  decay_rate; /**< Rate of neutralising antibody decay. This could be defined upon creation of the individual? */ 
 
   double  time_isolated; /**< The time an individual starts isolation.*/
-  // const double xi; /**< Base susceptibility */ 
-
-  bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. */ 
-  bool isVaccinated; /**< Has the individual recieved a vaccine dose. */
-
   /**
    * @brief Disease status of the individual stored in an object. 
    * 

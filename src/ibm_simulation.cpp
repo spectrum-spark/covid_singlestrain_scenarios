@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "abm/nbinrnd.h"
-#include "abm/USER_random.h"
+#include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
 
 // Constructor for disease model, vector beta's
@@ -385,15 +385,15 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
 }
 
 double disease_model::getSusceptibility(const Individual& person, double& t){
-  return (1 - getProtectionInfection(person,t))*xi[person.age_bracket]; // This should be an odds ratio. 
+  return (1.0 - getProtectionInfection(person,t))*xi[person.age_bracket]; // This should be an odds ratio. 
 }
 
 double disease_model::getProbabilitySymptomatic(const Individual& person, double& t){
-  return (1 - getProtectionSymptoms(person,t))*q[person.age_bracket];
+  return (1.0 - getProtectionSymptoms(person,t))*q[person.age_bracket];
 }
 
 void disease_model::assignTransmissibility(Individual& person, double& t) {
-  person.covid.transmissibility = (1 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
+  person.covid.transmissibility = (1.0 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
 }
 
 double disease_model::getProtectionInfection(const Individual& person, double& t) {
