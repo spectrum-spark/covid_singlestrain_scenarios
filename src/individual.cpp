@@ -24,8 +24,8 @@ Individual::Individual(double& age_in, int& age_bracket_in)
       old_log10_neutralising_antibodies(0.0),
       time_last_boost(0.0),
       decay_rate(0.0),
-      time_isolated(std::nan("7"))
-      ,isCovidNaive(true),
+      time_isolated(std::nan("7")),
+      isCovidNaive(true),
       isVaccinated(false) {}
 
 // // // Individual constructor - modified for the vaccination_parameters class.

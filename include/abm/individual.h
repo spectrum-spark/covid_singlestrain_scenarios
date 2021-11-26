@@ -30,7 +30,7 @@ class Disease
   //   R  /**< Recovered flag (may be ignored in the waning immunity project). */
   // };
 
-  // state infection_status; // At one point this wil lbe built into the code instead of characters. 
+  // state infection_status; // At one point this will be built into the code instead of characters. 
 
   /**
    * @brief Construct a new disease object

@@ -13,3 +13,6 @@ all: $(OBJECTS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
+
+clean: 
+	rm build/*
