@@ -1,4 +1,4 @@
-#include "nbinrnd.h"
+#include "abm/nbinrnd.h"
 
 int nbinrnd::operator()(std::default_random_engine & generator){
     

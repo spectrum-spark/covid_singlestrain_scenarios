@@ -397,7 +397,7 @@ void disease_model::assignTransmissibility(Individual& person, double& t) {
 }
 
 double disease_model::getProtectionInfection(const Individual& person, double& t) {
-  return 0.0;
+  return static_cast<double>(person.log10_neutralising_antibodies>0.0);
 }
 
 double disease_model::getProtectionSymptoms(const Individual& person, double& t){
@@ -414,6 +414,6 @@ double disease_model::calculateNeuts(const Individual& person, double& t){
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  person.log10_neutralising_antibodies = 0.0;
+  person.log10_neutralising_antibodies = 1.0;
   person.time_last_boost = t; 
 }

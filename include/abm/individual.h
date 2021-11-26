@@ -44,21 +44,21 @@ class Disease
   bool    severe = false;                 //  Is this a severe disease.
   
   // Variables that are assigned at time of exposure.
-  double  transmissibility = std::nan("1"); // Assigned at time of exposure. Is a function of vaccination. This is a constant throughout transmission so reassigned here at exposure (else just use vaccine::get_transmissibility(t).
-  
+  double  transmissibility; // Assigned at time of exposure. Is a function of vaccination. This is a constant throughout transmission so reassigned here at exposure (else just use vaccine::get_transmissibility(t).
+   
   // When does event occur.
-  double  time_of_exposure         = std::nan("1");
-  double  time_of_symptom_onset    = std::nan("2");
-  double  time_of_infection        = std::nan("3");
-  double  time_of_recovery         = std::nan("4");
+  double  time_of_exposure;
+  double  time_of_symptom_onset;
+  double  time_of_infection;
+  double  time_of_recovery;
 
   double log10_neuts_at_exposure; 
 
   // Latch to determine if pre-symptomatic time is over.
-  bool    check_symptoms           = true; // Symptomatic latch.
+  bool    check_symptoms; // Symptomatic latch.
   
   // Future development.
-  int cluster_number = -1; // We can track the clusters through time. That could be fun. It can be passed from exposure to exposure.
+  int cluster_number; // We can track the clusters through time. That could be fun. It can be passed from exposure to exposure. -1 will be the default value. 
 
 };
 

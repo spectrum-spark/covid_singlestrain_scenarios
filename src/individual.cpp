@@ -2,12 +2,31 @@
 #include "abm/abmrandom.h"
 
 //  Define constructor for the disease class (removed the trivial constructor)
-Disease::Disease(char status):infection_status(status),asymptomatic(false),severe(false),transmissibility(std::nan("1")),time_of_exposure(std::nan("2")),time_of_symptom_onset(std::nan("3")),time_of_infection(std::nan("4")),time_of_recovery(std::nan("5")),log10_neuts_at_exposure(std::nan("6")),check_symptoms(true),cluster_number(-1){
-  // Set all values in the disease class. 
-  
-}
+Disease::Disease(char status)
+    : infection_status(status),
+      asymptomatic(false),
+      severe(false),
+      transmissibility(std::nan("1")),
+      time_of_exposure(std::nan("2")),
+      time_of_symptom_onset(std::nan("3")),
+      time_of_infection(std::nan("4")),
+      time_of_recovery(std::nan("5")),
+      log10_neuts_at_exposure(std::nan("6")),
+      check_symptoms(true),
+      cluster_number(-1) {}
 
-Individual::Individual(double& age_in, int& age_bracket_in):covid('S'),age(age_in),age_bracket(age_bracket_in),secondary_infections(0),log10_neutralising_antibodies(0.0),old_log10_neutralising_antibodies(0.0),time_last_boost(0.0),decay_rate(0.0),time_isolated(std::nan("7")),isCovidNaive(true),isVaccinated(false) {}
+Individual::Individual(double& age_in, int& age_bracket_in) 
+    : covid('S'),
+      age(age_in),
+      age_bracket(age_bracket_in),
+      secondary_infections(0),
+      log10_neutralising_antibodies(0.0),
+      old_log10_neutralising_antibodies(0.0),
+      time_last_boost(0.0),
+      decay_rate(0.0),
+      time_isolated(std::nan("7"))
+      ,isCovidNaive(true),
+      isVaccinated(false) {}
 
 // // // Individual constructor - modified for the vaccination_parameters class.
 // // individual::individual(double age, int age_bracket_in, int home_id, int community_id, vaccine_parameters & Vaccination):age_bracket(age_bracket_in),age(age),home_id(home_id),community_id(community_id),covid(disease('S')),vaccine_status(vaccine(Vaccination,age_bracket_in)){
@@ -63,19 +82,4 @@ Individual::Individual(double& age_in, int& age_bracket_in):covid('S'),age(age_i
 //     };
 
 //     return (int) age_brackets.size()-1;
-// }
-
-// // Contact class. 
-// trace_contact::trace_contact(int ind_number, double t):time(t),who(ind_number){}
-// trace_contact::trace_contact(){}
-
-// void trace_contact::update_time(double t){
-//     time = t;
-// }
-
-// simulation_statistics::simulation_statistics(){};
-// void simulation_statistics::set_infection_stats(vaccine_type vax, int number_doses, double time_latest){
-//     vaccine_status = vax;
-//     doses = number_doses;
-//     time_of_last_dose = time_latest;
 // }
