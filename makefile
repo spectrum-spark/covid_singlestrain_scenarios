@@ -6,8 +6,6 @@ OBJ = build
 SRC = src
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
-# $(OBJ)/*.o: $(SRC)/*.cpp	
-
 
 all: $(OBJECTS)
 
