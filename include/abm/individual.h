@@ -81,7 +81,7 @@ class Individual{
    * @param age 
    * @param age_bracket 
    */
-  Individual(double& age, int& age_bracket); 
+  Individual(double& age); 
   
   bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. */ 
   bool isVaccinated; /**< Has the individual recieved a vaccine dose. */

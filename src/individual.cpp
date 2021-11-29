@@ -15,10 +15,9 @@ Disease::Disease(char status)
       check_symptoms(true),
       cluster_number(-1) {}
 
-Individual::Individual(double& age_in, int& age_bracket_in) 
+Individual::Individual(double& age_in) 
     : covid('S'),
       age(age_in),
-      age_bracket(age_bracket_in),
       secondary_infections(0),
       log10_neutralising_antibodies(std::numeric_limits<double>::min()),
       old_log10_neutralising_antibodies(0.0),
@@ -26,7 +25,14 @@ Individual::Individual(double& age_in, int& age_bracket_in)
       decay_rate(0.0),
       time_isolated(std::nan("7")),
       isCovidNaive(true),
-      isVaccinated(false) {}
+      isVaccinated(false) {
+        
+// Calculate the age brackets.
+
+age_bracket = 1;
+
+
+      }
 
 // // // Individual constructor - modified for the vaccination_parameters class.
 // // individual::individual(double age, int age_bracket_in, int home_id, int community_id, vaccine_parameters & Vaccination):age_bracket(age_bracket_in),age(age),home_id(home_id),community_id(community_id),covid(disease('S')),vaccine_status(vaccine(Vaccination,age_bracket_in)){
