@@ -52,7 +52,7 @@ class Disease
   double  time_of_infection;
   double  time_of_recovery;
 
-  double log10_neuts_at_exposure; 
+  double log10_neuts_at_exposure; // For storing and outputs. 
 
   // Latch to determine if pre-symptomatic time is over.
   bool    check_symptoms; // Symptomatic latch.

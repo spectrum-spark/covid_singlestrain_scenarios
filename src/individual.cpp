@@ -20,7 +20,7 @@ Individual::Individual(double& age_in, int& age_bracket_in)
       age(age_in),
       age_bracket(age_bracket_in),
       secondary_infections(0),
-      log10_neutralising_antibodies(0.0),
+      log10_neutralising_antibodies(std::numeric_limits<double>::min()),
       old_log10_neutralising_antibodies(0.0),
       time_last_boost(0.0),
       decay_rate(0.0),

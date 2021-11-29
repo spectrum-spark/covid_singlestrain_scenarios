@@ -385,11 +385,12 @@ double  disease_model::covid_one_step_ascm_R0(std::vector<Individual>& residents
 }
 
 double disease_model::getSusceptibility(const Individual& person, double& t){
-  return (1.0 - getProtectionInfection(person,t))*xi[person.age_bracket]; // This should be an odds ratio. 
+  return (1.0 - getProtectionInfection(person,t))*xi[person.age_bracket];
 }
 
 double disease_model::getProbabilitySymptomatic(const Individual& person, double& t){
   return (1.0 - getProtectionSymptoms(person,t))*q[person.age_bracket];
+   // This should be an odds ratio. 
 }
 
 void disease_model::assignTransmissibility(Individual& person, double& t) {
@@ -397,7 +398,7 @@ void disease_model::assignTransmissibility(Individual& person, double& t) {
 }
 
 double disease_model::getProtectionInfection(const Individual& person, double& t) {
-  return static_cast<double>(person.log10_neutralising_antibodies>0.0);
+  return static_cast<double>(person.log10_neutralising_antibodies > std::numeric_limits<double>::min()); // SEIR for now
 }
 
 double disease_model::getProtectionSymptoms(const Individual& person, double& t){
@@ -409,7 +410,7 @@ double disease_model::getProtectionOnwards(const Individual& person, double& t) 
 }
 
 double disease_model::calculateNeuts(const Individual& person, double& t){
-  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost); // We are working in log neuts. 
+  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
