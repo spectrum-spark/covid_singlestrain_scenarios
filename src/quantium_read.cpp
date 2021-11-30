@@ -117,61 +117,74 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     string_value_stream >> booster_vaccine;
   } 
 
-  // Assign values. 
-  std::getline(individual_group,string_value,',');
-  if(string_value.empty()){
-    // What do we do for empty stuff. 
-    time_dose_1 = std::numeric_limits<double>::max();
-  } else {
-    string_value_stream = std::stringstream(string_value);
+  std::vector<double> Time_doses;
+  std::string time_dose_1_string;
+  std::getline(individual_group,time_dose_1_string,',');
+  if(!time_dose_1_string.empty()) {
+ 
+    // Get the value. 
+    string_value_stream = std::stringstream(time_dose_1_string);
     string_value_stream >> time_dose_1;
-  } 
+    Time_doses.push_back(time_dose_1);
+
+  }
 
   // Assign values. 
-  std::getline(individual_group,string_value,',');
-  if(string_value.empty()){
-    // What do we do for empty stuff. 
-    time_dose_2 = std::numeric_limits<double>::max();
-  } else {
-    string_value_stream = std::stringstream(string_value);
+  std::string time_dose_2_string;
+  std::getline(individual_group,time_dose_2_string,',');
+  if(!time_dose_2_string.empty()){
+    assert(Time_doses.size()==1); // If you are getting second dose, you have to have had first. 
+    string_value_stream = std::stringstream(time_dose_2_string);
     string_value_stream >> time_dose_2;
+    Time_doses.push_back(time_dose_2);
   } 
   
   // Assign values. 
-  std::getline(individual_group,string_value,',');
-  if(string_value.empty()){
-    // What do we do for empty stuff. 
-    time_booster = std::numeric_limits<double>::max();
-  } else {
-    string_value_stream = std::stringstream(string_value);
+  std::string time_booster_string;
+  std::getline(individual_group,time_booster_string,',');
+  if(!time_booster_string.empty()){
+    assert(Time_doses.size()==2);
+    string_value_stream = std::stringstream(time_booster_string);
     string_value_stream >> time_booster;
+    Time_doses.push_back(time_booster);
   } 
   
   // Assign values. 
   std::getline(individual_group,string_value,',');
   if(string_value.empty()){
-    // What do we do for empty stuff. 
+    // What do we do for empty stuff.
+    num_people = 0; 
   } else {
     string_value_stream = std::stringstream(string_value);
     string_value_stream >> num_people;
   } 
 
-  std::cout << age_band_id <<", "<< vaccine <<", "<< booster_vaccine <<", "<< time_dose_1 <<", "<< time_dose_2 <<", "<< time_booster <<", "<< num_people << std::endl;
 
+  // std::cout << age_band_id <<", "<< vaccine <<", "<< booster_vaccine <<", "<< time_dose_1 <<", "<< time_dose_2 <<", "<< time_booster <<", "<< num_people << std::endl;
+
+  std::cout << "Creating " << num_people << " individuals in age band " << age_band_id << std::endl; 
+  std::cout << "Time of vaccinations: ";
+  for(auto x:Time_doses){
+    std::cout << x << ", ";
+  }
+  std::cout << std::endl;
+  
   if(age_band_id > generate_age.size()){
     throw std::logic_error("Age band reference is past the length of ages.");
   }
   // Loop through and create the individuals. 
+  // Assign people the time of vaccine in a vector for the constructor. 
+  
   for(size_t i = 0; i < num_people;++i){
     // Create an individual! 
-    std::cout << i << ", " << generate_age[age_band_id-1](generator) << std::endl;
-    
+    double age = generate_age[age_band_id-1](generator);
+    std::cout << i << ", " << age << std::endl;
+    // residents.push_back(Individual(age));
   }
-
 }
 
 
-std::vector<Individual> read_individuals(std::string vaccinations_filename, std::vector<std::uniform_real_distribution<double>>& generate_age) {
+std::vector<Individual> read_individuals(std::string vaccinations_filename,  std::vector<std::uniform_real_distribution<double>>& generate_age) {
 
   std::vector<Individual> residents; // This will contain all residents. 
 
