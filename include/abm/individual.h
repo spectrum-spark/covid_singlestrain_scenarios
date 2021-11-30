@@ -97,10 +97,7 @@ class Individual{
   double  decay_rate; /**< Rate of neutralising antibody decay. This could be defined upon creation of the individual? */ 
 
   double  time_isolated; /**< The time an individual starts isolation.*/
-  /**
-   * @brief Disease status of the individual stored in an object. 
-   * 
-   */
+ 
   Disease covid; /**< Set up the disease parameters for the individual. */ // It would be cool to have some pointer indirection here and allow for an arbitrary disease. 
 
   // std::vector<Vaccine> vaccinations; /**< Dynamic array that stores vaccination times for the individual */ 

@@ -6,11 +6,13 @@ static int age_sort(double& age, std::vector<double>& age_brackets){
   // Return the age bracket of the individual.
   // Agesort needs a minus one for the final one because referenced from zero!
   for(int i = 0; i < (int) age_brackets.size()-1; i++){
-      if(age < age_brackets[i+1]){
-          return i;
-      }
+    if(age < age_brackets[i+1]){
+        return i;
+    }
   }
+
   return (int) (age_brackets.size()-1);
+  
 }
 
 //  Define constructor for the disease class (removed the trivial constructor)
