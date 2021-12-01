@@ -32,7 +32,7 @@ Disease::Disease(char status)
 Individual::Individual(double& age_in, std::vector<double>& age_brackets_in) 
     : covid('S'),
       age(age_in),
-      age_bracket(age_sort(age,age_brackets_in)),
+      age_bracket(age_sort(age_in,age_brackets_in)),
       secondary_infections(0),
       log10_neutralising_antibodies(std::numeric_limits<double>::min()),
       old_log10_neutralising_antibodies(0.0),
@@ -41,3 +41,8 @@ Individual::Individual(double& age_in, std::vector<double>& age_brackets_in)
       time_isolated(std::nan("7")),
       isCovidNaive(true),
       isVaccinated(false) {}
+
+std::ostream& operator<<(std::ostream& os, const Individual & person) {
+  os << person.age <<", " << person.age_bracket <<", " << person.covid.infection_status;
+  return os;
+}

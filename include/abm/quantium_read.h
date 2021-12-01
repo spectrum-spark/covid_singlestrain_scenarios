@@ -30,5 +30,5 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
  * @param generate_age
  * @return std::vector<Individual> 
  */
-std::vector<Individual> read_individuals(std::string vaccinations, std::vector<std::uniform_real_distribution<double>>& generate_age);
+std::vector<Individual> read_individuals(std::string vaccinations, std::vector<std::uniform_real_distribution<double>>& generate_age,std::vector<double> & age_brackets);
 #endif

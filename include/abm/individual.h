@@ -10,7 +10,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#include<vector>
+#include <vector>
+#include <iostream>
 
 /**
  * @brief 
@@ -92,14 +93,13 @@ class Individual{
   double age; /**< Age of the individual.*/
   double log10_neutralising_antibodies; /**< Level of neutralising antibodies.*/ 
   double old_log10_neutralising_antibodies; /**< Old level of neutralising antibodies (the value that it was at the time of the boost, but before it was boosted).*/
-
   double  time_last_boost; /**< Time of the last boost to neutralising antibodies. */
   double  decay_rate; /**< Rate of neutralising antibody decay. This could be defined upon creation of the individual? */ 
-
   double  time_isolated; /**< The time an individual starts isolation.*/
  
   Disease covid; /**< Set up the disease parameters for the individual. */ // It would be cool to have some pointer indirection here and allow for an arbitrary disease. 
 
   // std::vector<Vaccine> vaccinations; /**< Dynamic array that stores vaccination times for the individual */ 
+  friend std::ostream& operator<<(std::ostream& os, const Individual& person); /**< Overloaded ostream for output */
 };
 #endif

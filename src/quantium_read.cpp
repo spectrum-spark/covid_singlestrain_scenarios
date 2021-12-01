@@ -77,7 +77,7 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
 
 }
 
-static void create_individuals(std::stringstream& individual_group, std::vector<Individual>& residents, std::vector<std::uniform_real_distribution<double>>& generate_age){
+static void create_individuals(std::stringstream& individual_group, std::vector<Individual>& residents, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double> & age_brackets){
   // See what the string looks like. Push it back into the residents. 
   std::string string_value; 
   std::stringstream string_value_stream;
@@ -179,12 +179,12 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     // Create an individual! 
     double age = generate_age[age_band_id-1](generator);
     std::cout << i << ", " << age << std::endl;
-    // residents.push_back(Individual(age));
+    residents.push_back(Individual(age,age_brackets));
   }
 }
 
 
-std::vector<Individual> read_individuals(std::string vaccinations_filename,  std::vector<std::uniform_real_distribution<double>>& generate_age) {
+std::vector<Individual> read_individuals(std::string vaccinations_filename,  std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double>& age_brackets) {
 
   std::vector<Individual> residents; // This will contain all residents. 
 
@@ -201,7 +201,7 @@ std::vector<Individual> read_individuals(std::string vaccinations_filename,  std
     while(std::getline(vaccinations_read,line)){
       // Read until end of file.
       std::stringstream individuals_stream(line);
-      create_individuals(individuals_stream, residents, generate_age); // Create a group at a time. 
+      create_individuals(individuals_stream, residents, generate_age,age_brackets); // Create a group at a time. 
     }
   
   } else {
@@ -209,6 +209,7 @@ std::vector<Individual> read_individuals(std::string vaccinations_filename,  std
     throw std::logic_error("The vaccination file " + vaccinations_filename + " was not opened (found?).");
 
   }
+
   vaccinations_read.close(); // Close file.
   return residents; // Hopefully a move constructor haha!s
 }
