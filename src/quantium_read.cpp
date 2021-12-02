@@ -79,6 +79,8 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
 
 static void create_individuals(std::stringstream& individual_group, std::vector<Individual>& residents, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double> & age_brackets){
   // See what the string looks like. Push it back into the residents. 
+
+  //Im not psyched about this function, I havent checked that vaccine_booster is empty and that booster time is empty, its just assumed that it works. It's fine for now, but I wouldnt want anyone to run this function without their own quality checks on the input data. 
   std::string string_value; 
   std::stringstream string_value_stream;
 
@@ -117,7 +119,8 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     string_value_stream >> booster_vaccine;
   } 
 
-  std::vector<double> Time_doses;
+  // std::vector<double> Time_doses;
+  std::vector<std::pair<double, size_t>> Time_and_Vaccine;
   std::string time_dose_1_string;
   std::getline(individual_group,time_dose_1_string,',');
   if(!time_dose_1_string.empty()) {
@@ -125,7 +128,8 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     // Get the value. 
     string_value_stream = std::stringstream(time_dose_1_string);
     string_value_stream >> time_dose_1;
-    Time_doses.push_back(time_dose_1);
+    // Time_doses.push_back(time_dose_1);
+    Time_and_Vaccine.push_back(std::make_pair(time_dose_1,vaccine));
 
   }
 
@@ -133,20 +137,22 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
   std::string time_dose_2_string;
   std::getline(individual_group,time_dose_2_string,',');
   if(!time_dose_2_string.empty()){
-    assert(Time_doses.size()==1); // If you are getting second dose, you have to have had first. 
+    assert(Time_and_Vaccine.size()==1); // If you are getting second dose, you have to have had first. 
     string_value_stream = std::stringstream(time_dose_2_string);
     string_value_stream >> time_dose_2;
-    Time_doses.push_back(time_dose_2);
+    // Time_doses.push_back(time_dose_2);
+    Time_and_Vaccine.push_back(std::make_pair(time_dose_2,vaccine));
   } 
   
   // Assign values. 
   std::string time_booster_string;
   std::getline(individual_group,time_booster_string,',');
   if(!time_booster_string.empty()){
-    assert(Time_doses.size()==2);
+    assert(Time_and_Vaccine.size()==2);
     string_value_stream = std::stringstream(time_booster_string);
     string_value_stream >> time_booster;
-    Time_doses.push_back(time_booster);
+    // Time_doses.push_back(time_booster);
+    Time_and_Vaccine.push_back(std::make_pair(time_booster,booster_vaccine));
   } 
   
   // Assign values. 
@@ -162,12 +168,13 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
 
   // std::cout << age_band_id <<", "<< vaccine <<", "<< booster_vaccine <<", "<< time_dose_1 <<", "<< time_dose_2 <<", "<< time_booster <<", "<< num_people << std::endl;
 
-  std::cout << "Creating " << num_people << " individuals in age band " << age_band_id << std::endl; 
-  std::cout << "Time of vaccinations: ";
-  for(auto x:Time_doses){
-    std::cout << x << ", ";
-  }
-  std::cout << std::endl;
+  // std::cout << "Creating " << num_people << " individuals in age band " << age_band_id << std::endl; 
+  // std::cout << "Time of vaccinations: ";
+
+  // for(auto x:Time_and_Vaccine){
+  //   std::cout << x.first << ", "  << x.second << ", ";
+  // }
+  // std::cout << std::endl;
   
   if(age_band_id > generate_age.size()){
     throw std::logic_error("Age band reference is past the length of ages.");
@@ -178,8 +185,8 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
   for(size_t i = 0; i < num_people;++i){
     // Create an individual! 
     double age = generate_age[age_band_id-1](generator);
-    std::cout << i << ", " << age << std::endl;
-    residents.push_back(Individual(age,age_brackets));
+    // std::cout << i << ", " << age << std::endl;
+    residents.push_back(Individual(age,age_brackets,Time_and_Vaccine));
   }
 }
 

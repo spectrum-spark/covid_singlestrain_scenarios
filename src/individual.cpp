@@ -29,7 +29,7 @@ Disease::Disease(char status)
       check_symptoms(true),
       cluster_number(-1) {}
 
-Individual::Individual(double& age_in, std::vector<double>& age_brackets_in) 
+Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std::vector<std::pair<double,size_t>>& Vaccinations) 
     : covid('S'),
       age(age_in),
       age_bracket(age_sort(age_in,age_brackets_in)),
