@@ -60,7 +60,28 @@ class Disease
   
   // Future development.
   int cluster_number; // We can track the clusters through time. That could be fun. It can be passed from exposure to exposure. -1 will be the default value. 
+  friend std::ostream& operator<<(std::ostream& os, const Disease& covid); /**< Overloaded ostream for output */
 
+};
+
+/**
+ * @brief Define the properties of a vaccination. 
+ * 
+ */
+class Vaccination {
+  private:
+
+  protected:
+
+  public:
+  enum class VaccineType{
+    none, 
+    pfizer, 
+    astrazeneca, 
+    moderna}; // Declare an enum for the different tpes of vaccines.
+
+  double time;
+  VaccineType vaccine;
 };
 
 
@@ -70,6 +91,7 @@ class Disease
  */
 class Individual{
   private:
+  using VaccineHistory = std::vector<Vaccination>;
 
   protected:
 
@@ -99,7 +121,7 @@ class Individual{
  
   Disease covid; /**< Set up the disease parameters for the individual. */ // It would be cool to have some pointer indirection here and allow for an arbitrary disease. 
 
-  // std::vector<Vaccine> vaccinations; /**< Dynamic array that stores vaccination times for the individual */ 
+  VaccineHistory vaccinations; /**< Dynamic array that stores vaccination times for the individual */ 
   friend std::ostream& operator<<(std::ostream& os, const Individual& person); /**< Overloaded ostream for output */
 };
 #endif

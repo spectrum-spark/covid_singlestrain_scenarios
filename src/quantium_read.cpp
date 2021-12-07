@@ -1,6 +1,7 @@
 #include <fstream> 
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #include "abm/abmrandom.h"
 #include "abm/quantium_read.h"
 
@@ -18,22 +19,23 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
     std::getline(ageband_read,line); // Get the title line.
     
     // Check that the file satisfies what we know. 
-    {// Restrict the lifetime of titleline and num columns. 
-      std::stringstream titleline(line);
-      size_t num_columns = 0; 
-      // Split at comma for column names. 
-      while(std::getline(titleline,line,',')) { 
-        ++num_columns;
-        // Check if they match. 
-        if(num_columns==1) {
-          assert(line.compare("age_band_id")==0);
-        } else if(num_columns==2) {
-          assert(line.compare("age_band")==0);
-        } else {
-          throw std::logic_error("Too many columns in " + dim_age_filename);
-        }
-      }
-    } // Finish checking that the file matches the criteria. 
+    // {// Restrict the lifetime of titleline and num columns. 
+    //   std::stringstream titleline(line);
+    //   size_t num_columns = 0; 
+    //   // Split at comma for column names. 
+    //   while(std::getline(titleline,line,',')) { 
+    //     ++num_columns;
+    //     // Check if they match. 
+    //     if(num_columns==1) {
+    //       assert(line.compare("age_band_id")==0);
+    //     } else if(num_columns==2) {
+    //       std::cout << line << std::endl;
+    //       assert(line.compare("age_band")==0);
+    //     } else {
+    //       throw std::logic_error("Too many columns in " + dim_age_filename);
+    //     }
+    //   }
+    // } // Finish checking that the file matches the criteria. 
 
     while(std::getline(ageband_read,line)){
       double lower_bound;
@@ -59,12 +61,20 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
   }
 
   ageband_read.close(); // Close file.
+  
 
   // Max age must be above the max age already known.
   if(max_age <= lower_age_band.back()){
     max_age = lower_age_band.back() + 10.0;
     std::cout << "Max age updated to be " << max_age << std::endl;
   }
+
+  std::cout << "Lower age bands " << std::endl;
+  for(auto x: lower_age_band){
+    std::cout << x << ", ";
+  }
+  std::cout << max_age << std::endl;
+
 
   lower_age_band.push_back(max_age); // Add max age. 
 
@@ -164,17 +174,6 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     string_value_stream = std::stringstream(string_value);
     string_value_stream >> num_people;
   } 
-
-
-  // std::cout << age_band_id <<", "<< vaccine <<", "<< booster_vaccine <<", "<< time_dose_1 <<", "<< time_dose_2 <<", "<< time_booster <<", "<< num_people << std::endl;
-
-  // std::cout << "Creating " << num_people << " individuals in age band " << age_band_id << std::endl; 
-  // std::cout << "Time of vaccinations: ";
-
-  // for(auto x:Time_and_Vaccine){
-  //   std::cout << x.first << ", "  << x.second << ", ";
-  // }
-  // std::cout << std::endl;
   
   if(age_band_id > generate_age.size()){
     throw std::logic_error("Age band reference is past the length of ages.");
@@ -204,9 +203,10 @@ std::vector<Individual> read_individuals(std::string vaccinations_filename,  std
 
     std::string line; 
     std::getline(vaccinations_read,line); // Get the title line (dont do anything)
-
+  // std::cout << line << std::endl;
     while(std::getline(vaccinations_read,line)){
       // Read until end of file.
+      // std::cout << line << std::endl;
       std::stringstream individuals_stream(line);
       create_individuals(individuals_stream, residents, generate_age,age_brackets); // Create a group at a time. 
     }

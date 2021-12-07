@@ -10,9 +10,7 @@ static int age_sort(double& age, std::vector<double>& age_brackets){
         return i;
     }
   }
-
   return (int) (age_brackets.size()-1);
-  
 }
 
 //  Define constructor for the disease class (removed the trivial constructor)
@@ -42,7 +40,12 @@ Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std:
       isCovidNaive(true),
       isVaccinated(false) {}
 
-std::ostream& operator<<(std::ostream& os, const Individual & person) {
+std::ostream& operator<<(std::ostream& os, const Individual& person) {
   os << person.age <<", " << person.age_bracket <<", " << person.covid.infection_status;
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Disease& covid) {
+  os << covid.log10_neuts_at_exposure << ", " << covid.asymptomatic << ", " << covid.time_of_symptom_onset;
   return os;
 }
