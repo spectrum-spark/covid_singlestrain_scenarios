@@ -397,24 +397,33 @@ void disease_model::assignTransmissibility(Individual& person, double& t) {
   person.covid.transmissibility = (1.0 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
 }
 
-double disease_model::getProtectionInfection(const Individual& person, double& t) {
-  return static_cast<double>(person.log10_neutralising_antibodies > std::numeric_limits<double>::min()); // SEIR for now
-}
-
-double disease_model::getProtectionSymptoms(const Individual& person, double& t){
-  return 0.0;
-}
-
-double disease_model::getProtectionOnwards(const Individual& person, double& t) {
-  return 0.0;
-}
-
 double disease_model::calculateNeuts(const Individual& person, double& t){
   return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  person.log10_neutralising_antibodies = 1.0;
   person.time_last_boost = t; 
+}
+
+static inline double prob_avoid_outcome(double& log10_neuts, double& k, double& n50) {
+  return 1.0/( 1.0 + exp(-k*(log10_neuts-n50)));
+}
+
+double disease_model::getProtectionInfection(const Individual& person, double& t) {
+  double n = calculateNeuts(person, t);
+  return prob_avoid_outcome(n, decay_rate, n50_acquisition);
+  
+}
+
+double disease_model::getProtectionSymptoms(const Individual& person, double& t){
+  double n = calculateNeuts(person, t);
+  return prob_avoid_outcome(n, decay_rate, n50_symptoms);
+  
+}
+
+double disease_model::getProtectionOnwards(const Individual& person, double& t) {
+  double n = calculateNeuts(person, t);
+  return prob_avoid_outcome(n, decay_rate, n50_transmission);
+  
 }

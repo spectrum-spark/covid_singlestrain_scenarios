@@ -53,6 +53,11 @@ class disease_model{
   std::gamma_distribution<double> gen_tau_R; /**< Time from infected to recovered. */
   std::piecewise_constant_distribution<double> gen_tau_isolation; /**< Time before symptoms the Individual is isolated.*/
   
+  // Neutralising antibody components. 
+  double decay_rate; 
+  double n50_acquisition;
+  double n50_symptoms;
+  double n50_transmission;
   
   /**
    * @brief COVID-19 Age Stratified Contact Model. 
