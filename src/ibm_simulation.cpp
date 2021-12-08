@@ -417,7 +417,7 @@ double disease_model::calculateNeuts(const Individual& person, double& t){
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  std::normal_distribution<double> sample_neuts(-0.193159173, 0.4647092); // Currently set to pfizre. 
+  std::normal_distribution<double> sample_neuts(0.0, 0.4647092); // Currently set to pfizer. 
 
   // New Neuts - check which is larger and assign. 
   double infection_neuts = sample_neuts(generator);
