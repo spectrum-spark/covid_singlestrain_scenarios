@@ -58,9 +58,9 @@ class disease_model{
   
   // Neutralising antibody components. 
   double k; 
-  double n50_acquisition;
-  double n50_symptoms;
-  double n50_transmission;
+  double c50_acquisition;
+  double c50_symptoms;
+  double c50_transmission;
   
   /**
    * @brief COVID-19 Age Stratified Contact Model. 

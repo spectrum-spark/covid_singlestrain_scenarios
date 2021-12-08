@@ -9,9 +9,9 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
       q(q_in),
       xi(xi_in),
       k(exp(1.201998516)), // logistic slope exp(1.130661), from Slack3.0977034055
-      n50_acquisition(-0.567888054),
-      n50_symptoms(-0.619448181),
-      n50_transmission(0.077153705) {
+      c50_acquisition(-0.567888054),
+      c50_symptoms(-0.619448181),
+      c50_transmission(0.077153705) {
 
     double scale_e = 4.817559;
     double scale_S = 1.013935;
@@ -32,9 +32,9 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
 // disease_model::disease_model(double beta_C_in, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w)
 //     : beta_C(beta_C_in),
 //       k(3.0977), // logistic slope exp(1.130661), from Slack
-//       n50_acquisition(-0.691),
-//       n50_symptoms(-0.697),
-//       n50_transmission(0.118) {
+//       c50_acquisition(-0.691),
+//       c50_symptoms(-0.697),
+//       c50_transmission(0.118) {
 
 //     double scale_e = 4.817559;
 //     double scale_S = 1.013935;
@@ -432,21 +432,21 @@ void disease_model::boostNeutsInfection(Individual& person, double& t){
 
 }
 
-static inline double prob_avoid_outcome(const double& log10_neuts, const double& k, const double& n50) {
-  return 1.0/( 1.0 + exp(-k*(log10_neuts-n50)));
+static inline double prob_avoid_outcome(const double& log10_neuts, const double& k, const double& c50) {
+  return 1.0/( 1.0 + exp(-k*(log10_neuts-c50)));
 }
 
 double disease_model::getProtectionInfection(const Individual& person, double& t) {
   double n = calculateNeuts(person, t);
-  return prob_avoid_outcome(n, k, n50_acquisition);
+  return prob_avoid_outcome(n, k, c50_acquisition);
 }
 
 double disease_model::getProtectionSymptoms(const Individual& person, double& t){
   double n = calculateNeuts(person, t);
-  return prob_avoid_outcome(n, k, n50_symptoms);
+  return prob_avoid_outcome(n, k, c50_symptoms);
 }
 
 double disease_model::getProtectionOnwards(const Individual& person, double& t) {
   double n = calculateNeuts(person, t);
-  return prob_avoid_outcome(n, k, n50_transmission); 
+  return prob_avoid_outcome(n, k, c50_transmission); 
 }
