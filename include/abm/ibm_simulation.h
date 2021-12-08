@@ -24,22 +24,25 @@ class disease_model{
    * @brief Construct a new disease model object
    * 
    * @param beta_C_in 
+   * @param q 
+   * @param xi 
    * @param contact_matrix_in 
    * @param b 
    * @param w 
    */
-  disease_model(std::vector<double> beta_C_in, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w);
+  disease_model(std::vector<double> beta_C_in, std::vector<double> q, std::vector<double> xi, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w);
 
   /**
    * @brief Construct a new disease model object
    * 
-   * @param beta_H 
    * @param beta_C 
+   * @param q 
+   * @param xi 
    * @param contact_matrix_in 
    * @param b 
    * @param w 
    */
-  disease_model(double beta_C, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w);
+  disease_model(double beta_C, double q, double xi, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w);
 
   std::vector<double> beta_C; /**<  Community transmission probability.*/
   std::vector<double> xi; /**< Age stratified susceptibility. */
@@ -54,7 +57,7 @@ class disease_model{
   std::piecewise_constant_distribution<double> gen_tau_isolation; /**< Time before symptoms the Individual is isolated.*/
   
   // Neutralising antibody components. 
-  double decay_rate; 
+  double k; 
   double n50_acquisition;
   double n50_symptoms;
   double n50_transmission;

@@ -32,16 +32,16 @@ Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std:
       age(age_in),
       age_bracket(age_sort(age_in,age_brackets_in)),
       secondary_infections(0),
-      log10_neutralising_antibodies(std::numeric_limits<double>::min()),
-      old_log10_neutralising_antibodies(0.0),
+      log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
+      old_log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
       time_last_boost(0.0),
-      decay_rate(0.0),
+      decay_rate(0.007274524),
       time_isolated(std::nan("7")),
       isCovidNaive(true),
-      isVaccinated(false) {}
+      isVaccinated(false){}
 
 std::ostream& operator<<(std::ostream& os, const Individual& person) {
-  os << person.age <<", " << person.age_bracket <<", " << person.covid.infection_status;
+  os << person.age <<", " << person.age_bracket <<", " << person.covid.infection_status <<", " << person.log10_neutralising_antibodies <<", " << person.old_log10_neutralising_antibodies <<", " << person.time_last_boost;
   return os;
 }
 

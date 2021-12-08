@@ -4,7 +4,15 @@
 #include "abm/ibm_simulation.h"
 
 // Constructor for disease model, vector beta's
-disease_model::disease_model(std::vector<double> beta_C_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b,std::vector<double> w):beta_C(beta_C_in){
+disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> q_in, std::vector<double> xi_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b,std::vector<double> w)
+    : beta_C(beta_C_in),
+      q(q_in),
+      xi(xi_in),
+      k(exp(1.201998516)), // logistic slope exp(1.130661), from Slack3.0977034055
+      n50_acquisition(-0.567888054),
+      n50_symptoms(-0.619448181),
+      n50_transmission(0.077153705) {
+
     double scale_e = 4.817559;
     double scale_S = 1.013935;
     double scale_r = 1.000000;
@@ -21,20 +29,26 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<std::vec
 
 
 // // Constructor for disease model, scalar beta's
-disease_model::disease_model(double beta_C_in, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w):beta_C(std::vector<double>(contact_matrix_in.size(),beta_C_in)){
-    double scale_e = 4.817559;
-    double scale_S = 1.013935;
-    double scale_r = 1.000000;
-    double mu = 1.5;
-    
-    contact_matrix = contact_matrix_in; 
-    gen_tau_E = std::gamma_distribution<double>(scale_e,2.5/scale_e); //1.7911264 0.8504219 0.5444788
-    gen_tau_R = std::gamma_distribution<double>(scale_r,mu/scale_r); //6.069358 2.189083 1.691274, 3.817559 1.013935 1.000000
-    
-    gen_tau_S = std::gamma_distribution<double>(scale_S,(5.1-2.5)/scale_S);
-    gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(),b.end(),w.begin()); // When are they isolated.
+// disease_model::disease_model(double beta_C_in, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w)
+//     : beta_C(beta_C_in),
+//       k(3.0977), // logistic slope exp(1.130661), from Slack
+//       n50_acquisition(-0.691),
+//       n50_symptoms(-0.697),
+//       n50_transmission(0.118) {
 
-};
+//     double scale_e = 4.817559;
+//     double scale_S = 1.013935;
+//     double scale_r = 1.000000;
+//     double mu = 1.5;
+    
+//     contact_matrix = contact_matrix_in; 
+//     gen_tau_E = std::gamma_distribution<double>(scale_e,2.5/scale_e); //1.7911264 0.8504219 0.5444788
+//     gen_tau_R = std::gamma_distribution<double>(scale_r,mu/scale_r); //6.069358 2.189083 1.691274, 3.817559 1.013935 1.000000
+    
+//     gen_tau_S = std::gamma_distribution<double>(scale_S,(5.1-2.5)/scale_S);
+//     gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(),b.end(),w.begin()); // When are they isolated.
+
+// };
 
 //  Covid model Age stratified Individual contacts. (ASCM - age stratified
 //  contact model)
@@ -398,32 +412,41 @@ void disease_model::assignTransmissibility(Individual& person, double& t) {
 }
 
 double disease_model::calculateNeuts(const Individual& person, double& t){
-  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
+  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
+  std::normal_distribution<double> sample_neuts(-0.193159173, 0.4647092); // Currently set to pfizre. 
+
+  // New Neuts - check which is larger and assign. 
+  double infection_neuts = sample_neuts(generator);
+  std::cout << infection_neuts << std::endl;
+  if(infection_neuts >= person.old_log10_neutralising_antibodies){
+    person.log10_neutralising_antibodies = infection_neuts;
+  } else {
+    person.log10_neutralising_antibodies = person.old_log10_neutralising_antibodies;
+  } 
+  // 
   person.time_last_boost = t; 
+
 }
 
-static inline double prob_avoid_outcome(double& log10_neuts, double& k, double& n50) {
+static inline double prob_avoid_outcome(const double& log10_neuts, const double& k, const double& n50) {
   return 1.0/( 1.0 + exp(-k*(log10_neuts-n50)));
 }
 
 double disease_model::getProtectionInfection(const Individual& person, double& t) {
   double n = calculateNeuts(person, t);
-  return prob_avoid_outcome(n, decay_rate, n50_acquisition);
-  
+  return prob_avoid_outcome(n, k, n50_acquisition);
 }
 
 double disease_model::getProtectionSymptoms(const Individual& person, double& t){
   double n = calculateNeuts(person, t);
-  return prob_avoid_outcome(n, decay_rate, n50_symptoms);
-  
+  return prob_avoid_outcome(n, k, n50_symptoms);
 }
 
 double disease_model::getProtectionOnwards(const Individual& person, double& t) {
   double n = calculateNeuts(person, t);
-  return prob_avoid_outcome(n, decay_rate, n50_transmission);
-  
+  return prob_avoid_outcome(n, k, n50_transmission); 
 }
