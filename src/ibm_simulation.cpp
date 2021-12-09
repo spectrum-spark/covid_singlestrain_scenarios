@@ -11,20 +11,24 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
       k(exp(1.201998516)), // logistic slope exp(1.130661), from Slack3.0977034055
       c50_acquisition(-0.567888054),
       c50_symptoms(-0.619448181),
-      c50_transmission(0.077153705) {
+      c50_transmission(0.077153705),
+      sd_log10_neut_titres(0.4647092),
+      log10_mean_neut_infection(0.0) {
 
     double scale_e = 4.817559;
     double scale_S = 1.013935;
     double scale_r = 1.000000;
     double mu = 1.5;
     
-    contact_matrix = contact_matrix_in; 
+    contact_matrix = contact_matrix_in; // Could move into initialiser list. 
+
     gen_tau_E = std::gamma_distribution<double>(scale_e,2.5/scale_e); //1.7911264 0.8504219 0.5444788
     gen_tau_R = std::gamma_distribution<double>(scale_r,mu/scale_r); //6.069358 2.189083 1.691274, 3.817559 1.013935 1.000000
     
     gen_tau_S = std::gamma_distribution<double>(scale_S,(5.1-2.5)/scale_S);
     gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(),b.end(),w.begin()); // When are they isolated.
-    
+
+    // Should do a bunch of checks on the beta q xi and contact matrix for sizes. 
 };
 
 
@@ -56,30 +60,30 @@ double disease_model::covid_ascm(std::vector<Individual>& residents, std::vector
 //  Evaluates a covid model based on Individual contacts from t0 to t1 with
 //  timestep of dt. Returns the current time value.
 
-    // Error check the size of the age_ref vs the contact matrix. Throw error if
-    // not the same size.
-    if(contact_matrix.size()!=age_ref.size()){
-        throw std::logic_error("The contact matrix and age reference matrix are not the same size. Check the dimensions of your stratification!");
-    }
+  // Error check the size of the age_ref vs the contact matrix. Throw error if
+  // not the same size.
+  if(contact_matrix.size()!=age_ref.size()){
+      throw std::logic_error("The contact matrix and age reference matrix are not the same size. Check the dimensions of your stratification!");
+  }
 
-    if(t0 >= t1){
-        throw std::logic_error("Incorrect time specified. t_0 is larger than (or equal to) t_1 in disease_model::covid_ascm.");
-    }
+  if(t0 >= t1){
+      throw std::logic_error("Incorrect time specified. t_0 is larger than (or equal to) t_1 in disease_model::covid_ascm.");
+  }
     
-double t = t0;
-// Timestep until the next step would be equal or pass the end time.
-    while(t < t1){
-        if(t+dt > t1){
-            //  Complete the last time step, ensuring that it finishes exactly
-            //  at tend.
-            dt = t1 - t;
-        }
-        // Run one step of the simulation.
-        t = covid_one_step_ascm(residents, age_ref, t, dt, E, I, newly_symptomatic);
-        
-    }
+  double t = t0;
+  // Timestep until the next step would be equal or pass the end time.
+  while(t < t1){
+      if(t+dt > t1){
+          //  Complete the last time step, ensuring that it finishes exactly
+          //  at tend.
+          dt = t1 - t;
+      }
+      // Run one step of the simulation.
+      t = covid_one_step_ascm(residents, age_ref, t, dt, E, I, newly_symptomatic);
+      
+  }
 // Return the time value, should always be tend.
-return t;
+  return t;
 }
 
  
@@ -105,13 +109,13 @@ bool disease_model::distribution_infected_update(Individual& person, size_t& ind
 
 
 bool disease_model::distribution_exposed_update(Individual& person, size_t& ind_number, std::vector<size_t>& newly_infected, double& t){
-    // This function returns true if you move from exposed to infected.
-    bool infected = (t > person.covid.time_of_infection);
-        if(infected){
-            infect_individual(person);
-            newly_infected.push_back(ind_number); // Must pass in Individual number here.
-        }
-    return infected;
+  // This function returns true if you move from exposed to infected.
+  bool infected = (t > person.covid.time_of_infection);
+  if(infected){
+    infect_individual(person);
+    newly_infected.push_back(ind_number); // Must pass in Individual number here.
+  }
+  return infected;
 }
 
 void disease_model::infection_ascm(double t, Individual&infected_individual, std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double dt, std::vector<size_t>& newly_exposed){
@@ -266,7 +270,8 @@ void disease_model::infect_individual(Individual& resident){
 
 void disease_model::recover_individual(Individual& resident){ 
     susceptible_individual(resident);
-    //Write output of the infection here ? 
+    //Write output of the infection here ? Where shall it get written. 
+
     
 }
 
@@ -294,7 +299,7 @@ void disease_model::expose_individual(Individual& resident, double& t){
   resident.covid.severe = false; // This is currently disabled.
   
   // Determine the transmissibility of the Individual. 
-  assignTransmissibility(resident, t); // This is 1 - VE_O and is constant throughout the infecton period)
+  assignTransmissibility(resident, t, asymptomatic); // This is 1 - VE_O and is constant throughout the infecton period) If theyre asymptomatic iy must be smaller!
 
   // Set Neut levels!  You have been exposed to covid your neutralising antibodies will now do a thing.
   boostNeutsInfection(resident,t); // What do the neuts go to (also assigns old Neutralising antibody levels)
@@ -407,31 +412,28 @@ double disease_model::getProbabilitySymptomatic(const Individual& person, double
    // This should be an odds ratio. 
 }
 
-void disease_model::assignTransmissibility(Individual& person, double& t) {
-  person.covid.transmissibility = (1.0 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
+void disease_model::assignTransmissibility(Individual& person, double& t, bool& asymptomatic) {
+  person.covid.transmissibility = (1.0 - 0.5*(asymptomatic))*(1.0 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
 }
 
 double disease_model::calculateNeuts(const Individual& person, double& t){
-  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
+  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10.0); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  std::normal_distribution<double> sample_neuts(0.0, 0.4647092); // Currently set to pfizer. 
-
+  std::normal_distribution<double> sample_neuts(log10_mean_neut_infection, sd_log10_neut_titres); // Currently set to pfizer. 
   // New Neuts - check which is larger and assign. 
   double infection_neuts = sample_neuts(generator);
-  std::cout << infection_neuts << std::endl;
   if(infection_neuts >= person.old_log10_neutralising_antibodies){
     person.log10_neutralising_antibodies = infection_neuts;
   } else {
     person.log10_neutralising_antibodies = person.old_log10_neutralising_antibodies;
   } 
-  // 
   person.time_last_boost = t; 
-
 }
 
+// used multiple times. 
 static inline double prob_avoid_outcome(const double& log10_neuts, const double& k, const double& c50) {
   return 1.0/( 1.0 + exp(-k*(log10_neuts-c50)));
 }

@@ -19,6 +19,21 @@
  * 
  */
 class disease_model{
+  private:
+
+    // Neutralising antibody components - make private as they wont change. 
+    double k; 
+    double c50_acquisition;
+    double c50_symptoms;
+    double c50_transmission;
+    double sd_log10_neut_titres;
+    double log10_mean_neut_infection;
+    double log10_mean_neut_AZ_dose_1;
+    double log10_mean_neut_AZ_dose_2;
+    double log10_mean_neut_Pfizer_dose_1;
+    double log10_mean_neut_Pfizer_dose_2;
+    double log10_mean_neut_Pfizer_dose_3;
+
   public:
   /**
    * @brief Construct a new disease model object
@@ -56,11 +71,8 @@ class disease_model{
   std::gamma_distribution<double> gen_tau_R; /**< Time from infected to recovered. */
   std::piecewise_constant_distribution<double> gen_tau_isolation; /**< Time before symptoms the Individual is isolated.*/
   
-  // Neutralising antibody components. 
-  double k; 
-  double c50_acquisition;
-  double c50_symptoms;
-  double c50_transmission;
+
+
   
   /**
    * @brief COVID-19 Age Stratified Contact Model. 
@@ -101,7 +113,7 @@ class disease_model{
    * @param dt Size of timestep. 
    * @param[in,out] newly_exposed Reference to an empty dynamic array that will be filled with the indices of newly exposed individuals. 
    */
-  void    infection_ascm(double t, Individual&infected_individual, std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double dt, std::vector<size_t>& newly_exposed);
+  void    infection_ascm(double t, Individual& infected_individual, std::vector<Individual>& residents, std::vector<std::vector<int>>& age_ref, double dt, std::vector<size_t>& newly_exposed);
 
   /**
    * @brief 
@@ -167,7 +179,7 @@ class disease_model{
 
   double getSusceptibility(const Individual& person, double& t); // (1-ProtectInfection)*xi 
   double getProbabilitySymptomatic(const Individual& person, double& t); // (1- PS)*q
-  void assignTransmissibility(Individual& person, double& t); // (1-PO)
+  void assignTransmissibility(Individual& person, double& t, bool& asymptomatic); // (1-PO)
 
   double getProtectionInfection(const Individual& person, double& t);
   double getProtectionSymptoms(const Individual& person, double& t);
