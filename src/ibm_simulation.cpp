@@ -3,12 +3,12 @@
 #include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
 
-// Constructor for disease model, vector beta's
+// Constructor for disease model, vector betas
 disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> q_in, std::vector<double> xi_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b,std::vector<double> w)
     : beta_C(beta_C_in),
       q(q_in),
       xi(xi_in),
-      k(exp(1.201998516)), // logistic slope exp(1.130661), from Slack3.0977034055
+      k(exp(1.201998516)), // Logistic slope exp(1.130661), from Slack3.0977034055
       c50_acquisition(-0.567888054),
       c50_symptoms(-0.619448181),
       c50_transmission(0.077153705),
@@ -234,7 +234,7 @@ double  disease_model::covid_one_step_ascm(std::vector<Individual>& residents, s
       
       //Error check.
       if(person.covid.infection_status!='E'){
-          throw std::logic_error("Individual in I vector does not match infection status.");
+          throw std::logic_error("Individual in E vector does not match infection status.");
       }
       
       bool infected = distribution_exposed_update(person,ind_ref,newly_infected, t0); // Distribution exposed update should now update individuals to be infected., this function must alter the Individual disease status.
@@ -271,8 +271,7 @@ void disease_model::infect_individual(Individual& resident){
 void disease_model::recover_individual(Individual& resident){ 
     susceptible_individual(resident);
     //Write output of the infection here ? Where shall it get written. 
-
-    
+    // output.push_back(DiseaseOutput(resident));
 }
 
 void disease_model::susceptible_individual(Individual& resident){

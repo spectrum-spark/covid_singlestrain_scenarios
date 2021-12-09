@@ -13,6 +13,7 @@
 #include <vector>
 #include <random>
 #include "abm/individual.h"
+class DiseaseOutput;
 
 /**
  * @brief 
@@ -33,6 +34,8 @@ class disease_model{
     double log10_mean_neut_Pfizer_dose_1;
     double log10_mean_neut_Pfizer_dose_2;
     double log10_mean_neut_Pfizer_dose_3;
+
+    std::vector<DiseaseOutput> output; // Output file. Dynamically add. 
 
   public:
   /**
@@ -187,5 +190,9 @@ class disease_model{
 
   double calculateNeuts(const Individual& person, double&t);
   void boostNeutsInfection(Individual& person, double&t);
+
+  // Vaccination. 
+  void vaccinateIndividual(Individual& person, double& t);
+
 }; 
 #endif
