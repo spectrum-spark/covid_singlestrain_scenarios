@@ -419,17 +419,24 @@ double disease_model::calculateNeuts(const Individual& person, double& t){
   return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10.0); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
-void disease_model::boostNeutsInfection(Individual& person, double& t){
-  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  std::normal_distribution<double> sample_neuts(log10_mean_neut_infection, sd_log10_neut_titres); // Currently set to pfizer. 
-  // New Neuts - check which is larger and assign. 
-  double infection_neuts = sample_neuts(generator);
-  if(infection_neuts >= person.old_log10_neutralising_antibodies){
-    person.log10_neutralising_antibodies = infection_neuts;
+static void getNewNeutValue(const double& log10_neuts,const double& sd_log10_neuts, Individual& person, double& t) {
+
+  std::normal_distribution<double> sample_neuts(log10_neuts, sd_log10_neuts);
+  double new_neuts = sample_neuts(generator);
+
+  if(new_neuts >= person.old_log10_neutralising_antibodies){
+    person.log10_neutralising_antibodies = new_neuts;
   } else {
     person.log10_neutralising_antibodies = person.old_log10_neutralising_antibodies;
   } 
+  // If we really want, we can add a check for time here. 
   person.time_last_boost = t; 
+
+}
+
+void disease_model::boostNeutsInfection(Individual& person, double& t){
+  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
+  getNewNeutValue(log10_mean_neut_infection,sd_log10_neut_titres,person,t);
 }
 
 // used multiple times. 
