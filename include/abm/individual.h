@@ -13,6 +13,8 @@
 #include <vector>
 #include <iostream>
 
+enum class VaccineType {AZ1, AZ2, Pfizer1, Pfizer2, Moderna1, Moderna2, Booster};
+
 /**
  * @brief 
  * 

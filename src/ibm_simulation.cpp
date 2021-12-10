@@ -13,7 +13,13 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
       c50_symptoms(-0.619448181),
       c50_transmission(0.077153705),
       sd_log10_neut_titres(0.4647092),
-      log10_mean_neut_infection(0.0) {
+      log10_mean_neut_infection(0.0),
+      log10_mean_neut_AZ_dose_1(-0.642536778),
+      log10_mean_neut_AZ_dose_2(-0.193159173),
+      log10_mean_neut_Pfizer_dose_1(-0.331614187),
+      log10_mean_neut_Pfizer_dose_2(0.225736770),
+      log10_mean_neut_Pfizer_dose_3(1.128683850)
+       {
 
     double scale_e = 4.817559;
     double scale_S = 1.013935;
@@ -419,24 +425,64 @@ double disease_model::calculateNeuts(const Individual& person, double& t){
   return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10.0); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
-static void getNewNeutValue(const double& log10_neuts,const double& sd_log10_neuts, Individual& person, double& t) {
-
+// used multiple times. 
+static void assignNewNeutValue(const double& log10_neuts,const double& sd_log10_neuts, Individual& person, double& t) {
+  // Might include ucrrent neuts as inputs. 
   std::normal_distribution<double> sample_neuts(log10_neuts, sd_log10_neuts);
   double new_neuts = sample_neuts(generator);
+
+  // If we really want, we can add a check for time here. 
+  // if(person.time_last_boost + 14.0 >= t) {
+  //   // They were boosted so recent! Theyre still on the way up!
+  // }
 
   if(new_neuts >= person.old_log10_neutralising_antibodies){
     person.log10_neutralising_antibodies = new_neuts;
   } else {
     person.log10_neutralising_antibodies = person.old_log10_neutralising_antibodies;
   } 
-  // If we really want, we can add a check for time here. 
+
   person.time_last_boost = t; 
 
 }
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  getNewNeutValue(log10_mean_neut_infection,sd_log10_neut_titres,person,t);
+  assignNewNeutValue(log10_mean_neut_infection,sd_log10_neut_titres,person,t);
+}
+
+void disease_model::boostNeutsVaccination(Individual& person, double& t, VaccineType && vaccine ){
+  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); 
+
+  double log10_boost; 
+
+  switch(vaccine){
+    case VaccineType::AZ1 :
+      log10_boost = log10_mean_neut_AZ_dose_1;
+      break;
+    case VaccineType::AZ2 : 
+      log10_boost = log10_mean_neut_AZ_dose_2;
+      break;
+    case VaccineType::Pfizer1 :
+      log10_boost = log10_mean_neut_Pfizer_dose_1;
+      break;
+    case VaccineType::Pfizer2 :
+      log10_boost = log10_mean_neut_Pfizer_dose_2;
+      break;
+    case VaccineType::Moderna1 :
+      log10_boost = log10_mean_neut_Pfizer_dose_1;
+      break;
+    case VaccineType::Moderna2 :
+      log10_boost = log10_mean_neut_Pfizer_dose_2;
+      break;
+    case VaccineType::Booster :
+      log10_boost = log10_mean_neut_Pfizer_dose_3;
+      break;
+    default:
+    throw std::logic_error("Unrecognised vaccation in boostNeutsVaccination. \n");
+  }
+
+  assignNewNeutValue(log10_boost,sd_log10_neut_titres,person,t);
 }
 
 // used multiple times. 

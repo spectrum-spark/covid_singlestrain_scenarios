@@ -13,7 +13,6 @@
 #include <vector>
 #include <random>
 #include "abm/individual.h"
-// class DiseaseOutput;
 
 /**
  * @brief 
@@ -192,7 +191,7 @@ class disease_model{
   void boostNeutsInfection(Individual& person, double&t);
 
   // Vaccination. 
-  void vaccinateIndividual(Individual& person, double& t);
+  void boostNeutsVaccination(Individual& person, double& t, VaccineType && vaccine);
 
 }; 
 #endif
