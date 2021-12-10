@@ -14,6 +14,7 @@
 #include <iostream>
 
 enum class VaccineType {AZ1, AZ2, Pfizer1, Pfizer2, Moderna1, Moderna2, Booster};
+std::ostream& operator<<(std::ostream& os, const VaccineType& vaccine);
 
 /**
  * @brief 
@@ -66,26 +67,20 @@ class Disease
 
 };
 
-/**
- * @brief Define the properties of a vaccination. 
- * 
- */
-class Vaccination {
-  private:
+// /**
+//  * @brief Define the properties of a vaccination. 
+//  * 
+//  */
+// class Vaccination {
+//   private:
 
-  protected:
+//   protected:
 
-  public:
-  enum class VaccineType{
-    none, 
-    pfizer, 
-    astrazeneca, 
-    moderna}; // Declare an enum for the different tpes of vaccines.
+//   public:
 
-  double time;
-  VaccineType vaccine;
-};
-
+//   double time;
+//   VaccineType vaccine;
+// };
 
 /**
  * @brief Define what properties a base Individual object requires. 
@@ -93,11 +88,12 @@ class Vaccination {
  */
 class Individual{
   private:
-  using VaccineHistory = std::vector<Vaccination>;
+  
 
   protected:
 
   public:
+  using VaccineHistory = std::vector<std::pair<double, VaccineType>>;
 
   /**
    * @brief Construct a new Individual object
@@ -106,7 +102,7 @@ class Individual{
    * @param age 
    * @param age_bracket 
    */
-  Individual(double& age, std::vector<double>& age_brackets, std::vector<std::pair<double,size_t>>& Vaccinations); 
+  Individual(double& age, std::vector<double>& age_brackets, std::vector<std::pair<double,VaccineType>>& Vaccinations); 
   
   bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. */ 
   bool isVaccinated; /**< Has the individual recieved a vaccine dose. */
@@ -124,6 +120,7 @@ class Individual{
   Disease covid; /**< Set up the disease parameters for the individual. */ // It would be cool to have some pointer indirection here and allow for an arbitrary disease. 
 
   VaccineHistory vaccinations; /**< Dynamic array that stores vaccination times for the individual */ 
+  
   friend std::ostream& operator<<(std::ostream& os, const Individual& person); /**< Overloaded ostream for output */
 };
 #endif

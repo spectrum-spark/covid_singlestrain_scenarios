@@ -27,7 +27,7 @@ Disease::Disease(char status)
       check_symptoms(true),
       cluster_number(-1) {}
 
-Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std::vector<std::pair<double,size_t>>& Vaccinations) 
+Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std::vector<std::pair<double,VaccineType>>& vaccination_in) 
     : covid('S'),
       age(age_in),
       age_bracket(age_sort(age_in,age_brackets_in)),
@@ -38,7 +38,8 @@ Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std:
       decay_rate(0.007274524),
       time_isolated(std::nan("7")),
       isCovidNaive(true),
-      isVaccinated(false) {}
+      isVaccinated(false),
+      vaccinations(vaccination_in) {}
 
 std::ostream& operator<<(std::ostream& os, const Individual& person) {
   os << person.age <<", " << person.age_bracket <<", " << person.covid.infection_status <<", " << person.log10_neutralising_antibodies <<", " << person.old_log10_neutralising_antibodies <<", " << person.time_last_boost;
@@ -47,5 +48,36 @@ std::ostream& operator<<(std::ostream& os, const Individual& person) {
 
 std::ostream& operator<<(std::ostream& os, const Disease& covid) {
   os << covid.log10_neuts_at_exposure << ", " << covid.asymptomatic << ", " << covid.time_of_symptom_onset;
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const VaccineType& vaccine) {
+  std::string output;
+  switch(vaccine){
+    case VaccineType::AZ1 :
+    output = "AZ dose 1";
+    break;
+    case VaccineType::AZ2 :
+    output = "AZ dose 2";
+    break;
+    case VaccineType::Pfizer1 :
+    output = "Pfizer dose 1";
+    break;
+    case VaccineType::Pfizer2 :
+    output = "Pfizer dose 2";
+    break;
+    case VaccineType::Moderna1 :
+    output = "Moderna dose 1";
+    break;
+    case VaccineType::Moderna2 :
+    output = "Moderna dose 2";
+    break;
+    case VaccineType::Booster :
+    output = "mRNA booster";
+    break;
+    default:
+    throw std::logic_error("Unrecognised VaccineType. \n");
+  }
+  os << output;
   return os;
 }

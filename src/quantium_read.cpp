@@ -95,8 +95,8 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
   std::stringstream string_value_stream;
 
   size_t age_band_id; 
-  size_t vaccine;
-  size_t booster_vaccine;
+  size_t vaccine = 0;
+  size_t booster_vaccine = 0;
   double time_dose_1;
   double time_dose_2;
   double time_booster; 
@@ -130,16 +130,29 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
   } 
 
   // std::vector<double> Time_doses;
-  std::vector<std::pair<double, size_t>> Time_and_Vaccine;
+  std::vector<std::pair<double, VaccineType>> Time_and_Vaccine;
   std::string time_dose_1_string;
   std::getline(individual_group,time_dose_1_string,',');
+
   if(!time_dose_1_string.empty()) {
  
     // Get the value. 
     string_value_stream = std::stringstream(time_dose_1_string);
     string_value_stream >> time_dose_1;
+
+    VaccineType dose;
+    if(vaccine==1){
+      dose = VaccineType::AZ1;
+    } else if(vaccine==2) {
+      dose = VaccineType::Pfizer1;
+    } else if(vaccine==3) {
+      dose = VaccineType::Moderna1;
+    } else {
+      throw std::logic_error("Unrecognised vaccine \n");
+    }
     // Time_doses.push_back(time_dose_1);
-    Time_and_Vaccine.push_back(std::make_pair(time_dose_1,vaccine));
+    // Time_and_Vaccine.push_back(std::make_pair(time_dose_1,vaccine));
+    Time_and_Vaccine.push_back(std::make_pair(time_dose_1,dose));
 
   }
 
@@ -150,8 +163,18 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     assert(Time_and_Vaccine.size()==1); // If you are getting second dose, you have to have had first. 
     string_value_stream = std::stringstream(time_dose_2_string);
     string_value_stream >> time_dose_2;
-    // Time_doses.push_back(time_dose_2);
-    Time_and_Vaccine.push_back(std::make_pair(time_dose_2,vaccine));
+
+    VaccineType dose;
+    if(vaccine==1){
+      dose = VaccineType::AZ2;
+    } else if(vaccine==2) {
+      dose = VaccineType::Pfizer2;
+    } else if(vaccine==3) {
+      dose = VaccineType::Moderna2;
+    } else {
+      throw std::logic_error("Unrecognised vaccine \n");
+    }
+    Time_and_Vaccine.push_back(std::make_pair(time_dose_2,dose));
   } 
   
   // Assign values. 
@@ -162,7 +185,14 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     string_value_stream = std::stringstream(time_booster_string);
     string_value_stream >> time_booster;
     // Time_doses.push_back(time_booster);
-    Time_and_Vaccine.push_back(std::make_pair(time_booster,booster_vaccine));
+    VaccineType dose;
+    if(booster_vaccine ==4){
+      dose = VaccineType::Booster;
+    } else {
+      throw std::logic_error("Unrecognised vaccine \n");
+    }
+
+    Time_and_Vaccine.push_back(std::make_pair(time_booster,dose));
   } 
   
   // Assign values. 
