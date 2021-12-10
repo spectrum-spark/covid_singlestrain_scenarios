@@ -451,7 +451,7 @@ void disease_model::boostNeutsInfection(Individual& person, double& t){
   assignNewNeutValue(log10_mean_neut_infection,sd_log10_neut_titres,person,t);
 }
 
-void disease_model::boostNeutsVaccination(Individual& person, double& t, VaccineType && vaccine ){
+void disease_model::boostNeutsVaccination(Individual& person, double& t, VaccineType& vaccine ){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); 
 
   double log10_boost; 

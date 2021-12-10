@@ -191,7 +191,7 @@ class disease_model{
   void boostNeutsInfection(Individual& person, double&t);
 
   // Vaccination. 
-  void boostNeutsVaccination(Individual& person, double& t, VaccineType && vaccine);
+  void boostNeutsVaccination(Individual& person, double& t, VaccineType& vaccine);
 
 }; 
 #endif
