@@ -336,27 +336,29 @@ int main(int argc, char *argv[]){
   }
   
   // Write output to file.
-  std::ofstream output_file("PopulationAverageNoBooster.csv");
-  if(output_file.is_open()){
-    output_file << "Time, Protection, Type of immunity \n";
-    for(int i =0; i < population_mean_protectionInfection.size(); ++i) {
+  // std::ofstream output_file("PopulationAverageNoBooster.csv");
+  // if(output_file.is_open()){
+  //   output_file << "Time, Protection, Type of immunity \n";
+  //   for(int i =0; i < population_mean_protectionInfection.size(); ++i) {
 
-        output_file << tout[i] << ", " << population_mean_protectionInfection[i] << ", " << "Acquisition\n";
-        output_file << tout[i] << ", " << population_mean_protectionSymptoms[i] << ", " << "Symptoms\n";
-        output_file << tout[i] << ", " << population_mean_protectionOnwards[i] << ", " << "Onwards transmission\n";
-    }
+  //       output_file << tout[i] << ", " << population_mean_protectionInfection[i] << ", " << "Acquisition\n";
+  //       output_file << tout[i] << ", " << population_mean_protectionSymptoms[i] << ", " << "Symptoms\n";
+  //       output_file << tout[i] << ", " << population_mean_protectionOnwards[i] << ", " << "Onwards transmission\n";
+  //   }
   
-  output_file.close();
-  }
+  // output_file.close();
+  // }
+
+  std::string output_filename = directory  + "/AgeStratsim_number_" + std::to_string(sim_number) + ".csv";
   // Write output to file.
-  std::ofstream output_age_file("AgeStratifiedAverageNoBooster.csv");
+  std::ofstream output_age_file(output_filename);
   if(output_age_file.is_open()){
-    output_age_file << "Time, Age, Protection, Type of immunity \n";
+    output_age_file << "Time, Age, Protection, Type of immunity, Sim \n";
     for(int i =0; i < ageProtectionInfection.size(); ++i) {
       for(int j = 0; j < ageProtectionInfection[i].size(); ++j) {
-        output_age_file << tout[i] << ", " << j << ", " << ageProtectionInfection[i][j] << ", " << "Acquisition\n";
-        output_age_file << tout[i] << ", " << j << ", " << ageProtectionSymptoms[i][j] << ", " << "Symptoms\n";
-        output_age_file << tout[i] << ", " << j << ", " << ageProtectionOnwards[i][j] << ", " << "Onwards transmission\n";
+        output_age_file << tout[i] << ", " << j << ", " << ageProtectionInfection[i][j] << ", " << "Acquisition, " << sim_number << "\n";
+        output_age_file << tout[i] << ", " << j << ", " << ageProtectionSymptoms[i][j] << ", " << "Symptoms, " << sim_number << "\n";
+        output_age_file << tout[i] << ", " << j << ", " << ageProtectionOnwards[i][j] << ", " << "Onwards transmission, " << sim_number << "\n";
 
       }
     }
