@@ -69,11 +69,11 @@ int main(int argc, char *argv[]){
   // };
 
   // Will be used to construct individuals. 
-  std::vector<std::uniform_real_distribution<double>> generate_age = read_age_generation("2021-11-29-booster-uptake-scenarios/dim_age_band.csv",100.0);
+  std::vector<std::uniform_real_distribution<double>> generate_age = read_age_generation("../2021-11-29-booster-uptake-scenarios/dim_age_band.csv",100.0);
 
   // Create residents.  
   std::vector<double> age_brackets = sim_params_json["age_brackets"];
-  std::vector<Individual> residents = read_individuals("2021-11-29-booster-uptake-scenarios/scenario1.csv",generate_age, age_brackets);
+  std::vector<Individual> residents = read_individuals("../2021-11-29-booster-uptake-scenarios/scenario1.csv",generate_age, age_brackets);
   // std::vector<Individual> residents = read_individuals("vaccine_test.csv",generate_age, age_brackets);
   std::cout << "We made " << residents.size() << " Individuals\n";
   
