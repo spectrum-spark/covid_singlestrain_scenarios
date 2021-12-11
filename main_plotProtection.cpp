@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "abm/quantium_read.h"
 #include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
@@ -41,7 +43,7 @@ int main(int argc, char *argv[]){
     std::cout << "ERROR: Parameter file not loaded!" << std::endl;
     return 1;
   }
-  if(argc < 4){
+  if(argc < 5){
     std::cout << "ERROR did not load enough values" << std::endl;
     return 1;
   }
@@ -55,9 +57,31 @@ int main(int argc, char *argv[]){
   nlohmann::json sim_params_json = load_json(sim_params_filename);
 
   // Sim number
-  
-  // Vaccination scenario. 
+  int sim_number=0;
+  std::istringstream iss(argv[3]);
+  if(iss >> sim_number)
+  {
+      std::cout << "Sim number " << sim_number << std::endl;
+  }else{
+      throw std::logic_error("Sim number failed to convert\n");
+  }
 
+  // Vaccination scenario. 
+  std::string vaccination_scenario_name(argv[4]); // Reads in scenario name.
+
+  // Create output directory 
+
+  // Create the folder for outputs of the scenario. 
+  std::string folder = vaccination_scenario_name + (std::string) sim_params_json["folder_suffix"];
+  std::string directory = (std::string) sim_params_json["output_directory"] + folder;
+  #ifdef _WIN32
+        int top_folder = mkdir(((std::string) sim_params_json["output_directory"]).c_str());
+        int main_folder = mkdir(directory.c_str()); // Create folder.
+    #else
+        int top_folder = mkdir(((std::string) sim_params_json["output_directory"]).c_str(), 0777);
+        int main_folder = mkdir(directory.c_str(),0777); // Create folder.
+    #endif
+    (void) main_folder; // Unused variable;
 
   // Write json output to file for comparison later comparison. 
   // std::string output_json_for_save = directory  + "/secondary_infections" + file_suffix + "_input.json";
