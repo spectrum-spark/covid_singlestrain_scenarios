@@ -453,7 +453,7 @@ void disease_model::boostNeutsInfection(Individual& person, double& t){
 
 void disease_model::boostNeutsVaccination(Individual& person, double& t, VaccineType& vaccine ){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); 
-
+  // We can do fold increase in neuts here depending upon the individuals previous exposure ( + log10(N) would be an N fold increase)
   double log10_boost; 
 
   switch(vaccine){

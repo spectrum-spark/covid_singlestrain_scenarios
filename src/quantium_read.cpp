@@ -139,7 +139,7 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     // Get the value. 
     string_value_stream = std::stringstream(time_dose_1_string);
     string_value_stream >> time_dose_1;
-
+    time_dose_1 = time_dose_1*(7.0);
     VaccineType dose;
     if(vaccine==1){
       dose = VaccineType::AZ1;
@@ -163,7 +163,7 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     assert(Time_and_Vaccine.size()==1); // If you are getting second dose, you have to have had first. 
     string_value_stream = std::stringstream(time_dose_2_string);
     string_value_stream >> time_dose_2;
-
+    time_dose_2 = time_dose_2*(7.0);
     VaccineType dose;
     if(vaccine==1){
       dose = VaccineType::AZ2;
@@ -184,11 +184,13 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     assert(Time_and_Vaccine.size()==2);
     string_value_stream = std::stringstream(time_booster_string);
     string_value_stream >> time_booster;
+    time_booster = time_booster*(7.0);
     // Time_doses.push_back(time_booster);
     VaccineType dose;
-    if(booster_vaccine ==4){
+    if(booster_vaccine == 4){
       dose = VaccineType::Booster;
     } else {
+      std::cout << time_booster_string << std::endl; 
       throw std::logic_error("Unrecognised vaccine \n");
     }
 
