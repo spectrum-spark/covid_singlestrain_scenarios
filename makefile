@@ -15,16 +15,3 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 
 clean: 
 	rm build/* Run
-
-# 	CXX = g++
-# CPPFLAGS = -std=c++2a -DDUMP_INPUT
-# CFLAGS =
-# OBJECTS = covid-abm/build/*.o 
-
-# build_abm:
-# 	$(MAKE) -C covid-abm
-# 	$(CXX) $(CPPFLAGS) -o Run main_read.cpp $(OBJECTS) -Icovid-abm/include -I../ 
-
-# clean:
-# 	rm Run
-# 	$(MAKE) clean -C covid-abm
