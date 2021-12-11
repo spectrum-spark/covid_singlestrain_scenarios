@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH --job-name=Quarantine_Scen2
+#SBATCH --time=00:10:00
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=8G
+#SBATCH --cpus-per-task=1
+#SBATCH --array=1-50
+
+./Run VE_parameters.json simulation_parameters.json 1 scenario1
