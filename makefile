@@ -8,10 +8,11 @@ SOURCES := $(wildcard $(SRC)/*.cpp)
 OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
 
 all: $(OBJECTS)
-	$(CXX) $(CPPFLAGS) -o Run main_plotProtection.cpp $(OBJECTS) -Iinclude -I../../ 
+	$(CXX) $(CPPFLAGS) -o RunBooster main_plotProtection.cpp $(OBJECTS) -Iinclude -I../json/single_include
+	$(CXX) $(CPPFLAGS) -DDISABLE_BOOSTER -o RunNoBooster main_plotProtection.cpp $(OBJECTS) -Iinclude -I../json/single_include
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
 
 clean: 
-	rm build/* Run
+	rm build/* Run RunBooster RunNoBooster
