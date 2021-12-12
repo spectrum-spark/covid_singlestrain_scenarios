@@ -6,4 +6,4 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --array=1-50
 
-./Run VE_parameters.json simulation_parameters.json $SLURM_ARRAY_TASK_ID scenario1
+./Run VE_parameters.json simulation_parameters.json 1 scenario$SLURM_ARRAY_TASK_ID 
