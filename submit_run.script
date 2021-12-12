@@ -6,4 +6,4 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --array=1-24
 
-./RunBooster VE_parameters.json simulation_parameters.json 1 scenario$SLURM_ARRAY_TASK_ID 
+./RunBooster VE_parameters.json simulation_parameters.json 1 vaccine_scenarios scenario$SLURM_ARRAY_TASK_ID 
