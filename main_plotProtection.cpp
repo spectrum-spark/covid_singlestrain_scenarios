@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
     std::cout << "ERROR: Parameter file not loaded!" << std::endl;
     return 1;
   }
-  if(argc < 5){
+  if(argc!=6){
     std::cout << "ERROR did not load enough values" << std::endl;
     return 1;
   }
@@ -67,7 +67,8 @@ int main(int argc, char *argv[]){
   }
 
   // Vaccination scenario. 
-  std::string vaccination_scenario_name(argv[4]); // Reads in scenario name.
+  std::string vaccination_scenario_foldername(argv[4]); // Reads in scenario name.
+  std::string vaccination_scenario_name(argv[5]); // Reads in scenario name.
 
   // Create output directory 
 
@@ -93,12 +94,11 @@ int main(int argc, char *argv[]){
   // };
 
   // Will be used to construct individuals. 
-  std::vector<std::uniform_real_distribution<double>> generate_age = read_age_generation("../2021-11-29-booster-uptake-scenarios/dim_age_band.csv",100.0);
+  std::vector<std::uniform_real_distribution<double>> generate_age = read_age_generation(vaccination_scenario_foldername + "/dim_age_band.csv",100.0);
 
   // Create residents.  
   std::vector<double> age_brackets = sim_params_json["age_brackets"];
-  std::vector<Individual> residents = read_individuals("../2021-11-29-booster-uptake-scenarios/scenario1.csv",generate_age, age_brackets);
-  // std::vector<Individual> residents = read_individuals("vaccine_test.csv",generate_age, age_brackets);
+  std::vector<Individual> residents = read_individuals(vaccination_scenario_foldername + "/" + vaccination_scenario_name + ".csv",generate_age, age_brackets);
   std::cout << "We made " << residents.size() << " Individuals\n";
   
 
@@ -210,12 +210,13 @@ int main(int argc, char *argv[]){
 
   // Output informations. 
   std::vector<double> tout;
-  std::vector<double> population_mean_protectionInfection;
-  std::vector<double> population_mean_protectionSymptoms;
-  std::vector<double> population_mean_protectionOnwards;
+  // std::vector<double> population_mean_protectionInfection;
+  // std::vector<double> population_mean_protectionSymptoms;
+  // std::vector<double> population_mean_protectionOnwards;
   std::vector<std::vector<double>> ageProtectionInfection(0,std::vector<double>(num_brackets,0.0));
   std::vector<std::vector<double>> ageProtectionSymptoms(0,std::vector<double>(num_brackets,0.0));
   std::vector<std::vector<double>> ageProtectionOnwards(0,std::vector<double>(num_brackets,0.0));
+  std::vector<std::vector<double>> ageOverallReduction(0,std::vector<double>(num_brackets,0.0));
 
 
   // Vaccinate people! 
@@ -228,7 +229,7 @@ int main(int argc, char *argv[]){
     Individual & person = residents[i];
     Individual::VaccineHistory& vaccinations = residents[i].vaccinations;
     if(vaccinations.size()==0){
-      continue; /**< They do not have a first dosse */ 
+      continue; 
     } else {
     double time_dose = vaccinations[0].first;
     VaccineType v = vaccinations[0].second;
@@ -281,19 +282,19 @@ int main(int argc, char *argv[]){
     second_doses.erase(second_it,second_doses.end());
 
 
-    // // Loop through all booster doses (efficiency is not great oh well)
-    // auto booster_it = std::remove_if(booster_doses.begin(), booster_doses.end(),[&](auto & x)->bool{
-    //   if(x.t <= t) {
-    //     //Booster dose. 
-    //     // std::cout << x.t <<", " << x.person <<", " <<x.vaccine <<std::endl;
-    //     covid.boostNeutsVaccination(residents[x.person],t,x.vaccine);
+    // Loop through all booster doses (efficiency is not great oh well)
+    auto booster_it = std::remove_if(booster_doses.begin(), booster_doses.end(),[&](auto & x)->bool{
+      if(x.t <= t) {
+        //Booster dose. 
+        // std::cout << x.t <<", " << x.person <<", " <<x.vaccine <<std::endl;
+        covid.boostNeutsVaccination(residents[x.person],t,x.vaccine);
 
-    //     return true; 
-    //   } else {
-    //     return false;
-    //   }
-    // });
-    // booster_doses.erase(booster_it,booster_doses.end());
+        return true; 
+      } else {
+        return false;
+      }
+    });
+    booster_doses.erase(booster_it,booster_doses.end());
 
     // How do the neutralising antibodies decay. 
     double population_pInfect = 0.0;
@@ -302,6 +303,7 @@ int main(int argc, char *argv[]){
     std::vector<double> age_pInfect(num_brackets,0.0);
     std::vector<double> age_pSymptom(num_brackets,0.0);
     std::vector<double> age_pOnward(num_brackets,0.0);
+    std::vector<double> age_Overall(num_brackets,0.0);
     
     for(int i = 0; i < residents.size(); i++) {
       int age_bracket = residents[i].age_bracket;
@@ -314,6 +316,8 @@ int main(int argc, char *argv[]){
       age_pInfect[age_bracket]+= Infect;
       age_pSymptom[age_bracket]+= Symptom;
       age_pOnward[age_bracket]+=Onwards;
+      age_Overall[age_bracket]+= 1.0 - (1.0 - Infect)*(1.0 - Onwards);
+      
 
     }
 
@@ -321,16 +325,18 @@ int main(int argc, char *argv[]){
       age_pInfect[i] = age_pInfect[i]/age_bracket_count[i];
       age_pSymptom[i] = age_pSymptom[i]/age_bracket_count[i];
       age_pOnward[i] = age_pOnward[i]/age_bracket_count[i];
+      age_Overall[i] = age_Overall[i]/age_bracket_count[i];
     }
 
     tout.push_back(t);
-    population_mean_protectionInfection.push_back(population_pInfect/residents.size());
-    population_mean_protectionSymptoms.push_back(population_pSymptoms/residents.size());
-    population_mean_protectionOnwards.push_back(population_pOnwards/residents.size());
+    // population_mean_protectionInfection.push_back(population_pInfect/residents.size());
+    // population_mean_protectionSymptoms.push_back(population_pSymptoms/residents.size());
+    // population_mean_protectionOnwards.push_back(population_pOnwards/residents.size());
 
     ageProtectionInfection.push_back(age_pInfect);
     ageProtectionSymptoms.push_back(age_pSymptom);
     ageProtectionOnwards.push_back(age_pOnward);
+    ageOverallReduction.push_back(age_Overall);
 
     t+=dt;
   }
@@ -349,7 +355,7 @@ int main(int argc, char *argv[]){
   // output_file.close();
   // }
 
-  std::string output_filename = directory  + "/AgeStratsim_number_" + std::to_string(sim_number) + ".csv";
+  std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
   // Write output to file.
   std::ofstream output_age_file(output_filename);
   if(output_age_file.is_open()){
@@ -359,6 +365,7 @@ int main(int argc, char *argv[]){
         output_age_file << tout[i] << ", " << j << ", " << ageProtectionInfection[i][j] << ", " << "Acquisition, " << sim_number << "\n";
         output_age_file << tout[i] << ", " << j << ", " << ageProtectionSymptoms[i][j] << ", " << "Symptoms, " << sim_number << "\n";
         output_age_file << tout[i] << ", " << j << ", " << ageProtectionOnwards[i][j] << ", " << "Onwards transmission, " << sim_number << "\n";
+        output_age_file << tout[i] << ", " << j << ", " << ageOverallReduction[i][j] << ", " << "Overall reduction, " << sim_number << "\n";
 
       }
     }
