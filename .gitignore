@@ -5,6 +5,10 @@
 
 doxygen_output
 Run
+RunBooster
+RunNoBooster
+
+vaccine_scenarios/*
 # Node artifact files
 node_modules/
 dist/
