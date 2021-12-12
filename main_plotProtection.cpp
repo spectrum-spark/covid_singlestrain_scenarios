@@ -282,6 +282,7 @@ int main(int argc, char *argv[]){
     second_doses.erase(second_it,second_doses.end());
 
 
+#ifndef DISABLE_BOOSTERS
     // Loop through all booster doses (efficiency is not great oh well)
     auto booster_it = std::remove_if(booster_doses.begin(), booster_doses.end(),[&](auto & x)->bool{
       if(x.t <= t) {
@@ -295,6 +296,7 @@ int main(int argc, char *argv[]){
       }
     });
     booster_doses.erase(booster_it,booster_doses.end());
+#endif
 
     // How do the neutralising antibodies decay. 
     double population_pInfect = 0.0;
