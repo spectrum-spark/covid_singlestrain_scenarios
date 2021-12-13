@@ -238,7 +238,7 @@ int main(int argc, char *argv[]){
   // std::vector<std::vector<double>> population_protectionSymptoms(0,std::vector<double>(number_bins,0.0));
   // std::vector<std::vector<double>> population_protectionOnwards(0,std::vector<double>(number_bins,0.0));
 
-  std::vector<std::vector<double>> population_OverallReduction(0,std::vector<double>(number_bins,0.0));
+  // std::vector<std::vector<double>> population_OverallReduction(0,std::vector<double>(number_bins,0.0));
 
   std::vector<std::vector<double>> ageProtectionInfection(0,std::vector<double>(num_brackets,0.0));
   std::vector<std::vector<double>> ageProtectionSymptoms(0,std::vector<double>(num_brackets,0.0));
@@ -352,11 +352,11 @@ int main(int argc, char *argv[]){
       age_pSymptom[age_bracket]+= Symptom;
       age_pOnward[age_bracket]+=Onwards;
       // age_Overall[age_bracket]+= Infect;
-      age_Overall[age_bracket]+= Overall;
+      // age_Overall[age_bracket]+= Overall;
 
       // int bin = bin_data(Overall,bin_upperbound);
       // ++countOverall[bin]; // Incrememnt by one.
-      countOverall[i] = Infect; 
+      // countOverall[i] = Infect; 
       
 
     }
@@ -382,7 +382,7 @@ int main(int argc, char *argv[]){
     ageProtectionOnwards.push_back(age_pOnward);
     ageOverallReduction.push_back(age_Overall);
 
-    population_OverallReduction.push_back(countOverall);
+    // population_OverallReduction.push_back(countOverall);
 
     t+=dt;
   }
@@ -399,16 +399,16 @@ int main(int argc, char *argv[]){
   // output_file.close();
   // }
 
-   std::ofstream output_file("PopulationDistribution.csv");
-  if(output_file.is_open()){
-    output_file << "Time, ind, Proportion, Type of immunity \n";
-    for(int i =0; i < population_OverallReduction.size(); ++i) {
-      for(int j =0; j <population_OverallReduction[i].size(); ++j) {
-        output_file << tout[i] << ", " << j << ", " << population_OverallReduction[i][j] << ", " << "Reduction \n"; 
-      }
-    }
-  output_file.close();
-  }
+  //  std::ofstream output_file("PopulationDistribution.csv");
+  // if(output_file.is_open()){
+  //   output_file << "Time, ind, Proportion, Type of immunity \n";
+  //   for(int i =0; i < population_OverallReduction.size(); ++i) {
+  //     for(int j =0; j <population_OverallReduction[i].size(); ++j) {
+  //       output_file << tout[i] << ", " << j << ", " << population_OverallReduction[i][j] << ", " << "Reduction \n"; 
+  //     }
+  //   }
+  // output_file.close();
+  // }
 
   std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
   // Write output to file.
