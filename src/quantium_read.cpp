@@ -141,9 +141,9 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     string_value_stream >> time_dose_1;
     time_dose_1 = time_dose_1*(7.0);
     VaccineType dose;
-    if(vaccine==1){
+    if(vaccine==2){
       dose = VaccineType::AZ1;
-    } else if(vaccine==2) {
+    } else if(vaccine==1) {
       dose = VaccineType::Pfizer1;
     } else if(vaccine==3) {
       dose = VaccineType::Moderna1;
@@ -165,9 +165,9 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     string_value_stream >> time_dose_2;
     time_dose_2 = time_dose_2*(7.0);
     VaccineType dose;
-    if(vaccine==1){
+    if(vaccine==2){
       dose = VaccineType::AZ2;
-    } else if(vaccine==2) {
+    } else if(vaccine==1) {
       dose = VaccineType::Pfizer2;
     } else if(vaccine==3) {
       dose = VaccineType::Moderna2;

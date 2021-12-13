@@ -8,7 +8,7 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
     : beta_C(beta_C_in),
       q(q_in),
       xi(xi_in),
-      k(exp(1.201998516)), // Logistic slope exp(1.130661), from Slack3.0977034055
+      k(exp(1.201998516)),
       c50_acquisition(-0.567888054),
       c50_symptoms(-0.619448181),
       c50_transmission(0.077153705),
@@ -481,7 +481,7 @@ void disease_model::boostNeutsVaccination(Individual& person, double& t, Vaccine
     default:
     throw std::logic_error("Unrecognised vaccation in boostNeutsVaccination. \n");
   }
-
+  // std::cout << log10_boost << ", " << sd_log10_neut_titres << std::endl;
   assignNewNeutValue(log10_boost,sd_log10_neut_titres,person,t);
 }
 

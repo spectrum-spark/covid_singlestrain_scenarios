@@ -8,6 +8,19 @@
 #include "abm/ibm_simulation.h"
 #include "nlohmann/json.hpp"
 
+
+size_t bin_data(double& x, const std::vector<double>& upper_bounds){
+  if(x < 0) std::cout << x << std::endl;
+  if(x > 1) std::cout << x << std::endl;
+
+  for(size_t bin=0; bin < upper_bounds.size(); ++bin) {
+    if(x < upper_bounds[bin]){
+      return bin;
+    }
+  }
+  return -1;
+}
+
 nlohmann::json load_json(std::string filename) {
   std::ifstream json_stream(filename);
   if(!json_stream.is_open()){
@@ -209,10 +222,24 @@ int main(int argc, char *argv[]){
   disease_model covid(beta, q, xi, contact_matrix, b, w);
 
   // Output informations. 
+  // std::vector<double>bin_upperbound;
+  // double upper_bound = 0;
+  // while(upper_bound <= 1.0) {
+  //   bin_upperbound.push_back(upper_bound);
+  //   upper_bound+=pow(2,-10);  
+  // }
+  // size_t number_bins = bin_upperbound.size();
+  
+  size_t number_bins = residents.size();
+  
   std::vector<double> tout;
-  // std::vector<double> population_mean_protectionInfection;
-  // std::vector<double> population_mean_protectionSymptoms;
-  // std::vector<double> population_mean_protectionOnwards;
+  // This will bin the individuals into VE.
+  // std::vector<std::vector<double>> population_protectionInfection(0,std::vector<double>(number_bins,0.0));
+  // std::vector<std::vector<double>> population_protectionSymptoms(0,std::vector<double>(number_bins,0.0));
+  // std::vector<std::vector<double>> population_protectionOnwards(0,std::vector<double>(number_bins,0.0));
+
+  std::vector<std::vector<double>> population_OverallReduction(0,std::vector<double>(number_bins,0.0));
+
   std::vector<std::vector<double>> ageProtectionInfection(0,std::vector<double>(num_brackets,0.0));
   std::vector<std::vector<double>> ageProtectionSymptoms(0,std::vector<double>(num_brackets,0.0));
   std::vector<std::vector<double>> ageProtectionOnwards(0,std::vector<double>(num_brackets,0.0));
@@ -306,19 +333,30 @@ int main(int argc, char *argv[]){
     std::vector<double> age_pSymptom(num_brackets,0.0);
     std::vector<double> age_pOnward(num_brackets,0.0);
     std::vector<double> age_Overall(num_brackets,0.0);
+
+    std::vector<double> countOverall(number_bins,0);
     
     for(int i = 0; i < residents.size(); i++) {
       int age_bracket = residents[i].age_bracket;
       double Infect = covid.getProtectionInfection(residents[i],t);
       double Symptom = covid.getProtectionSymptoms(residents[i],t);
       double Onwards = covid.getProtectionOnwards(residents[i],t);
+      double Overall = 1.0 - (1.0 - Infect)*(1.0 - Onwards);
+      if(i == 1){
+        std::cout << Infect << " " << Symptom << " " << Onwards << " " << Overall <<" \n";
+      }
       population_pInfect += Infect;
       population_pSymptoms += Symptom;
       population_pOnwards += Onwards;
       age_pInfect[age_bracket]+= Infect;
       age_pSymptom[age_bracket]+= Symptom;
       age_pOnward[age_bracket]+=Onwards;
-      age_Overall[age_bracket]+= 1.0 - (1.0 - Infect)*(1.0 - Onwards);
+      // age_Overall[age_bracket]+= Overall;
+      age_Overall[age_bracket]+= Infect;
+
+      // int bin = bin_data(Overall,bin_upperbound);
+      // ++countOverall[bin]; // Incrememnt by one.
+      countOverall[i] = Infect; 
       
 
     }
@@ -329,6 +367,10 @@ int main(int argc, char *argv[]){
       age_pOnward[i] = age_pOnward[i]/age_bracket_count[i];
       age_Overall[i] = age_Overall[i]/age_bracket_count[i];
     }
+    
+    // for(auto&x :countOverall){ 
+    //   x = x/residents.size(); // Make a proportion. 
+    // }
 
     tout.push_back(t);
     // population_mean_protectionInfection.push_back(population_pInfect/residents.size());
@@ -340,22 +382,33 @@ int main(int argc, char *argv[]){
     ageProtectionOnwards.push_back(age_pOnward);
     ageOverallReduction.push_back(age_Overall);
 
+    population_OverallReduction.push_back(countOverall);
+
     t+=dt;
   }
   
   // Write output to file.
-  // std::ofstream output_file("PopulationAverageNoBooster.csv");
+  // std::ofstream output_file("PopulationDistribution.csv");
   // if(output_file.is_open()){
-  //   output_file << "Time, Protection, Type of immunity \n";
-  //   for(int i =0; i < population_mean_protectionInfection.size(); ++i) {
-
-  //       output_file << tout[i] << ", " << population_mean_protectionInfection[i] << ", " << "Acquisition\n";
-  //       output_file << tout[i] << ", " << population_mean_protectionSymptoms[i] << ", " << "Symptoms\n";
-  //       output_file << tout[i] << ", " << population_mean_protectionOnwards[i] << ", " << "Onwards transmission\n";
+  //   output_file << "Time, Bin, Proportion, Type of immunity \n";
+  //   for(int i =0; i < population_OverallReduction.size(); ++i) {
+  //     for(int j =0; j <population_OverallReduction[i].size(); ++j) {
+  //       output_file << tout[i] << ", " << bin_upperbound[j] << ", " << population_OverallReduction[i][j] << ", " << "Reduction \n"; 
+  //     }
   //   }
-  
   // output_file.close();
   // }
+
+   std::ofstream output_file("PopulationDistribution.csv");
+  if(output_file.is_open()){
+    output_file << "Time, ind, Proportion, Type of immunity \n";
+    for(int i =0; i < population_OverallReduction.size(); ++i) {
+      for(int j =0; j <population_OverallReduction[i].size(); ++j) {
+        output_file << tout[i] << ", " << j << ", " << population_OverallReduction[i][j] << ", " << "Reduction \n"; 
+      }
+    }
+  output_file.close();
+  }
 
   std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
   // Write output to file.
