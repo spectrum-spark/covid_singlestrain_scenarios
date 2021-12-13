@@ -352,7 +352,7 @@ int main(int argc, char *argv[]){
       age_pSymptom[age_bracket]+= Symptom;
       age_pOnward[age_bracket]+=Onwards;
       // age_Overall[age_bracket]+= Infect;
-      // age_Overall[age_bracket]+= Overall;
+      age_Overall[age_bracket]+= Overall;
 
       // int bin = bin_data(Overall,bin_upperbound);
       // ++countOverall[bin]; // Incrememnt by one.
