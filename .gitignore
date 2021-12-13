@@ -8,7 +8,8 @@ doxygen_output
 Run
 RunBooster
 RunNoBooster
-
+PopulationDistribution_Boosted.csv
+PopulationDistribution.csv
 vaccine_scenarios/*
 # Node artifact files
 node_modules/
