@@ -1,16 +1,20 @@
 #include "abm/individual.h"
 #include "abm/abmrandom.h"
+#include "nlohmann/json.hpp"
 
-// Take an age and sort it. 
-static int age_sort(double& age, std::vector<double>& age_brackets){
+// Take an age and sort it.
+static int age_sort(double &age, std::vector<double> &age_brackets)
+{
   // Return the age bracket of the individual.
   // Agesort needs a minus one for the final one because referenced from zero!
-  for(int i = 0; i < (int) age_brackets.size()-1; i++){
-    if(age < age_brackets[i+1]){
-        return i;
+  for (int i = 0; i < (int)age_brackets.size() - 1; i++)
+  {
+    if (age < age_brackets[i + 1])
+    {
+      return i;
     }
   }
-  return (int) (age_brackets.size()-1);
+  return (int)(age_brackets.size() - 1);
 }
 
 //  Define constructor for the disease class (removed the trivial constructor)
@@ -27,55 +31,62 @@ Disease::Disease(char status)
       check_symptoms(true),
       cluster_number(-1) {}
 
-Individual::Individual(double& age_in, std::vector<double>& age_brackets_in,std::vector<std::pair<double,VaccineType>>& vaccination_in) 
+Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std::vector<std::pair<double, VaccineType>> &vaccination_in, nlohmann::json &ve_params)
     : covid('S'),
       age(age_in),
-      age_bracket(age_sort(age_in,age_brackets_in)),
+      age_bracket(age_sort(age_in, age_brackets_in)),
       secondary_infections(0),
       log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
       old_log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
       time_last_boost(0.0),
-      decay_rate(0.007274524),
+      // decay_rate(0.007274524),
       time_isolated(std::nan("7")),
       isCovidNaive(true),
       isVaccinated(false),
-      vaccinations(vaccination_in) {}
+      vaccinations(vaccination_in)
+{
+  decay_rate = ve_params["neut_decay"];
+}
 
-std::ostream& operator<<(std::ostream& os, const Individual& person) {
-  os << person.age <<", " << person.age_bracket <<", " << person.covid.infection_status <<", " << person.log10_neutralising_antibodies <<", " << person.old_log10_neutralising_antibodies <<", " << person.time_last_boost;
+std::ostream &operator<<(std::ostream &os, const Individual &person)
+{
+  os << person.age << ", " << person.age_bracket << ", " << person.covid.infection_status << ", " << person.log10_neutralising_antibodies << ", " << person.old_log10_neutralising_antibodies << ", " << person.time_last_boost;
   return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Disease& covid) {
+std::ostream &operator<<(std::ostream &os, const Disease &covid)
+{
   os << covid.log10_neuts_at_exposure << ", " << covid.asymptomatic << ", " << covid.time_of_symptom_onset;
   return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const VaccineType& vaccine) {
+std::ostream &operator<<(std::ostream &os, const VaccineType &vaccine)
+{
   std::string output;
-  switch(vaccine){
-    case VaccineType::AZ1 :
+  switch (vaccine)
+  {
+  case VaccineType::AZ1:
     output = "AZ dose 1";
     break;
-    case VaccineType::AZ2 :
+  case VaccineType::AZ2:
     output = "AZ dose 2";
     break;
-    case VaccineType::Pfizer1 :
+  case VaccineType::Pfizer1:
     output = "Pfizer dose 1";
     break;
-    case VaccineType::Pfizer2 :
+  case VaccineType::Pfizer2:
     output = "Pfizer dose 2";
     break;
-    case VaccineType::Moderna1 :
+  case VaccineType::Moderna1:
     output = "Moderna dose 1";
     break;
-    case VaccineType::Moderna2 :
+  case VaccineType::Moderna2:
     output = "Moderna dose 2";
     break;
-    case VaccineType::Booster :
+  case VaccineType::Booster:
     output = "mRNA booster";
     break;
-    default:
+  default:
     throw std::logic_error("Unrecognised VaccineType. \n");
   }
   os << output;

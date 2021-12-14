@@ -102,7 +102,7 @@ class Individual{
    * @param age 
    * @param age_bracket 
    */
-  Individual(double& age, std::vector<double>& age_brackets, std::vector<std::pair<double,VaccineType>>& Vaccinations); 
+  Individual(double& age, std::vector<double>& age_brackets, std::vector<std::pair<double,VaccineType>>& Vaccinations, nlohmann::json& ve_params); 
   
   bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. */ 
   bool isVaccinated; /**< Has the individual recieved a vaccine dose. */

@@ -40,14 +40,15 @@ class disease_model{
   /**
    * @brief Construct a new disease model object
    * 
-   * @param beta_C_in 
+   * @param beta_C_in double vector
    * @param q 
    * @param xi 
    * @param contact_matrix_in 
    * @param b 
    * @param w 
+   * @param ve_params
    */
-  disease_model(std::vector<double> beta_C_in, std::vector<double> q, std::vector<double> xi, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w);
+  disease_model(std::vector<double> beta_C_in, std::vector<double> q, std::vector<double> xi, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w, nlohmann::json& ve_params);
 
   /**
    * @brief Construct a new disease model object
