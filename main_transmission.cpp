@@ -218,7 +218,7 @@ int main(int argc, char *argv[]){
   double beta_scale = TP/(sum_expression*((5.1-2.5) + 1.5)); // This is hardcoded, be careful if anything changes. 
   std::vector<double> beta = alpha;
   std::cout << "beta " << std::endl;
-  for(auto& x:beta){ // Scale so that it is the appropriate size. 
+  for(auto& x:beta){// Scale so that it is the appropriate size. 
     x = beta_scale*x;
     std::cout << x << std::endl;
   }
@@ -232,29 +232,11 @@ int main(int argc, char *argv[]){
   disease_model covid(beta, q, xi, contact_matrix, b, w);
 
   // Output informations. 
-  // std::vector<double>bin_upperbound;
-  // double upper_bound = 0;
-  // while(upper_bound <= 1.0) {
-  //   bin_upperbound.push_back(upper_bound);
-  //   upper_bound+=pow(2,-10);  
-  // }
-  // size_t number_bins = bin_upperbound.size();
+
   
   size_t number_bins = residents.size();
   
   std::vector<double> tout;
-  // This will bin the individuals into VE.
-  // std::vector<std::vector<double>> population_protectionInfection(0,std::vector<double>(number_bins,0.0));
-  // std::vector<std::vector<double>> population_protectionSymptoms(0,std::vector<double>(number_bins,0.0));
-  // std::vector<std::vector<double>> population_protectionOnwards(0,std::vector<double>(number_bins,0.0));
-
-  // std::vector<std::vector<double>> population_OverallReduction(0,std::vector<double>(number_bins,0.0));
-
-  std::vector<std::vector<double>> ageProtectionInfection(0,std::vector<double>(num_brackets,0.0));
-  std::vector<std::vector<double>> ageProtectionSymptoms(0,std::vector<double>(num_brackets,0.0));
-  std::vector<std::vector<double>> ageProtectionOnwards(0,std::vector<double>(num_brackets,0.0));
-  std::vector<std::vector<double>> ageOverallReduction(0,std::vector<double>(num_brackets,0.0));
-
 
   // Vaccinate people! 
   std::vector<VaccinationSchedule> first_doses;
@@ -357,10 +339,10 @@ int main(int argc, char *argv[]){
     std::vector<size_t> newly_symptomatic; newly_symptomatic.reserve(1000);
 
     // Simulate the disease model here. 
+    std::cout << t << ", ";
     t = covid.covid_ascm(residents,age_matrix,t,t+vaccination_dt,covid_dt,E_ref,I_ref,newly_symptomatic);
+    std::cout << t << std::endl;
   }
-  
-
 
   std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
   // Write output to file.
