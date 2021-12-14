@@ -1,10 +1,10 @@
 {
   "folder_suffix": "_tests",
   "output_directory": "outputs/",
-  "t_end": 100,
+  "t_end": 50,
   "initial_infections": 30,
   "TP_old": 6.32,
-  "TP": 1.5,
+  "TP": 2.0,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
   "prob_symptoms": [

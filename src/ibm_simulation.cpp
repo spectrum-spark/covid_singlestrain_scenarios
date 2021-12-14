@@ -12,7 +12,7 @@ DiseaseOutput::DiseaseOutput(const Individual& person)
       vaccine(person.covid.vaccine_at_exposure) {}
 
 std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid){
-  os << covid.age <<", " << covid.vaccine << ", " << covid.symptomatic << ", " << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << covid.secondary_infections;
+  os << covid.age <<", " << covid.vaccine << ", " << covid.symptomatic << ", " << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << ", " <<covid.secondary_infections;
   return os;
 }
 
@@ -363,8 +363,7 @@ void disease_model::expose_individual(Individual& resident, double& t){
   } else {
     vaccination = VaccineType::Unvaccinated;
   }
-  
-  std::cout << vaccination << std::endl;
+
   resident.covid.vaccine_at_exposure = vaccination;
   resident.secondary_infections = 0;
 
@@ -503,7 +502,13 @@ static void assignNewNeutValue(const double& log10_neuts,const double& sd_log10_
 
 void disease_model::boostNeutsInfection(Individual& person, double& t){
   person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
-  assignNewNeutValue(log10_mean_neut_infection,sd_log10_neut_titres,person,t);
+  double log10_neuts; 
+  if(person.isVaccinated){
+    log10_neuts = log10_mean_neut_Pfizer_dose_3;
+  } else {
+    log10_neuts = log10_mean_neut_infection;
+  }
+  assignNewNeutValue(log10_neuts,sd_log10_neut_titres,person,t);
 }
 
 void disease_model::boostNeutsVaccination(Individual& person, double& t, VaccineType& vaccine ){

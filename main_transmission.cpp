@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
   double t = 0.0;
   double t_end = sim_params_json["t_end"];
   double vaccination_dt = 7.0;
-  double covid_dt = pow(2.0,-4.0);
+  double covid_dt = pow(2.0,-5.0);
 
   // Contact matrix filename. 
   std::string contact_matrix_filename = sim_params_json["contact_matrix"];
@@ -307,7 +307,8 @@ int main(int argc, char *argv[]){
       // Function for second doses
       if(x.t <= t) {
         covid.boostNeutsVaccination(residents[x.person],t,x.vaccine);
-
+        residents[x.person].isVaccinated = true;
+        
         Individual::VaccineHistory& vaccinations = residents[x.person].vaccinations;
         // Will they get a booster!
         if(vaccinations.size()>2) {
@@ -341,13 +342,13 @@ int main(int argc, char *argv[]){
     std::cout << t << std::endl;
   }
 
-  // std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
-  // // Write output to file.
-  // std::ofstream output_file(output_filename);
-  // if(output_file.is_open()){  
-  //   output_file << covid;  
-  //   output_file.close();
-  // }
+  std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
+  // Write output to file.
+  std::ofstream output_file(output_filename);
+  if(output_file.is_open()){  
+    output_file << covid;  
+    output_file.close();
+  }
   
 
   
