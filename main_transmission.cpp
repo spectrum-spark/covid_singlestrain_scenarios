@@ -8,6 +8,15 @@
 #include "abm/ibm_simulation.h"
 #include "nlohmann/json.hpp"
 
+void assemble_age_matrix(const std::vector<Individual> & residents, std::vector<std::vector<int>> & age_matrix){
+
+    // Assign residents to their age matrix.
+    for(int i = 0; i < (int) residents.size(); i++){
+        int bracket = residents[i].age_bracket;
+        age_matrix[bracket].push_back(i);
+    }
+}
+
 
 size_t bin_data(double& x, const std::vector<double>& upper_bounds){
   if(x < 0) std::cout << x << std::endl;
@@ -265,6 +274,31 @@ int main(int argc, char *argv[]){
     }
   }
 
+  // Assemble the age_matrix (this is a list of people that are in each age bracket).
+  std::vector<std::vector<int>> age_matrix(num_brackets);
+  assemble_age_matrix(residents,age_matrix); // Nobody moves from the age matrix so only have to do it once.
+
+    // Create memory that tracks who is exposed, E_ref, and who is infected, I_ref. gen_res is used to sample from the list of residents uniformly.
+    std::vector<size_t> E_ref; E_ref.reserve(10000); // Magic number reserving memory.
+    std::vector<size_t> I_ref; I_ref.reserve(10000); // Magic number of reserved.
+
+    // // Use cluster ref to track the infections phylogenetic tree.
+    // std::uniform_int_distribution<size_t> gen_res(0,residents.size()-1); 
+    // int cluster_ref = 0; 
+    // int initial_infections = 0; // Count initial infections.
+    // int total_initial_infected = inputs["initial_infections"]; 
+    // while(initial_infections < total_initial_infected){
+    //     int exposed_resident = gen_res(generator); // Randomly sample from all the population.
+    //     if(residents[exposed_resident].vaccine_status.get_type()==vaccine_type::none){
+    //         if(residents[exposed_resident].covid.infection_status!='E'){
+    //             covid.seed_exposure(residents[exposed_resident],t); // Random resident has become infected
+    //             residents[exposed_resident].covid.cluster_number = cluster_ref;
+    //             ++initial_infections;
+    //             E_ref.push_back(exposed_resident); // Start tracking them.
+    //         }
+    //     }
+    // }
+
 
   while(t <= t_end) {
     std::cout << "Time is " << t << " \n";
@@ -320,9 +354,10 @@ int main(int argc, char *argv[]){
     });
     booster_doses.erase(booster_it,booster_doses.end());
 
+    std::vector<size_t> newly_symptomatic; newly_symptomatic.reserve(1000);
 
     // Simulate the disease model here. 
-    t+=vaccination_dt;
+    t = covid.covid_ascm(residents,age_matrix,t,t+vaccination_dt,covid_dt,E_ref,I_ref,newly_symptomatic);
   }
   
 
