@@ -13,7 +13,8 @@
 #include <vector>
 #include <iostream>
 
-enum class VaccineType {AZ1, AZ2, Pfizer1, Pfizer2, Moderna1, Moderna2, Booster};
+enum class VaccineType {AZ1, AZ2, Pfizer1, Pfizer2, Moderna1, Moderna2, Booster,Unvaccinated};
+
 std::ostream& operator<<(std::ostream& os, const VaccineType& vaccine);
 
 /**
@@ -63,6 +64,8 @@ class Disease
   
   // Future development.
   int cluster_number; // We can track the clusters through time. That could be fun. It can be passed from exposure to exposure. -1 will be the default value. 
+
+  VaccineType vaccine_at_exposure;
   friend std::ostream& operator<<(std::ostream& os, const Disease& covid); /**< Overloaded ostream for output */
 
 };

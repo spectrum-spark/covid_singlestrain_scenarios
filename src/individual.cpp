@@ -75,6 +75,9 @@ std::ostream& operator<<(std::ostream& os, const VaccineType& vaccine) {
     case VaccineType::Booster :
     output = "mRNA booster";
     break;
+    case VaccineType::Unvaccinated :
+    output = "Unvaccinated";
+    break;
     default:
     throw std::logic_error("Unrecognised VaccineType. \n");
   }

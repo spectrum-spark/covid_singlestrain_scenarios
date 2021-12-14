@@ -3,6 +3,34 @@
 #include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
 
+DiseaseOutput::DiseaseOutput(const Individual& person)
+    : age(person.age),
+      time_symptom_onset(person.covid.time_of_symptom_onset),
+      log10neuts_at_exposure(person.covid.log10_neuts_at_exposure),
+      symptomatic(!person.covid.asymptomatic),
+      secondary_infections(person.secondary_infections),
+      vaccine(person.covid.vaccine_at_exposure) {}
+
+std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid){
+  os << covid.age <<", " << covid.vaccine << ", " << covid.symptomatic << ", " << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << covid.secondary_infections;
+  return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const std::vector<DiseaseOutput>& covid){ 
+  
+  for(int i = 0; i < covid.size();++i){
+    os << covid[i] << std::endl;
+  }
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const disease_model& covid){
+  os << "age, vaccine, symptomatic, time_symptoms, log10_neuts, secondary_infections \n";
+  os << covid.output;
+  return os;
+}
+
 // Constructor for disease model, vector betas
 disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> q_in, std::vector<double> xi_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b,std::vector<double> w)
     : beta_C(beta_C_in),
@@ -34,6 +62,7 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
     gen_tau_S = std::gamma_distribution<double>(scale_S,(5.1-2.5)/scale_S);
     gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(),b.end(),w.begin()); // When are they isolated.
 
+    output.reserve(10000);
     // Should do a bunch of checks on the beta q xi and contact matrix for sizes. 
 };
 
@@ -277,7 +306,7 @@ void disease_model::infect_individual(Individual& resident){
 void disease_model::recover_individual(Individual& resident){ 
     susceptible_individual(resident);
     //Write output of the infection here ? Where shall it get written. 
-    // output.push_back(DiseaseOutput(resident));
+    output.push_back(DiseaseOutput(resident));
 }
 
 void disease_model::susceptible_individual(Individual& resident){
@@ -312,6 +341,32 @@ void disease_model::expose_individual(Individual& resident, double& t){
   // Set statistics for tracking - required for log10 neuts.
   // Write log10 neuts for MOC. 
   resident.covid.log10_neuts_at_exposure = resident.old_log10_neutralising_antibodies; 
+
+
+  // Find their vaccination status. 
+  Individual::VaccineHistory& vaccines = resident.vaccinations;
+
+  VaccineType vaccination;
+  if (vaccines.size() != 0) {
+    // Check the time against their vaccination status?
+    // vaccination = VaccineType::Pfizer1;
+    if (t < vaccines[0].first) {
+      vaccination = VaccineType::Unvaccinated;
+    } else {
+      for (auto it = vaccines.rbegin(); it != vaccines.rend(); ++it) {
+        if (t >= it->first) {
+          vaccination = it->second;
+          break;
+        }
+      }
+    }
+  } else {
+    vaccination = VaccineType::Unvaccinated;
+  }
+  
+  std::cout << vaccination << std::endl;
+  resident.covid.vaccine_at_exposure = vaccination;
+  resident.secondary_infections = 0;
 
 }
 
