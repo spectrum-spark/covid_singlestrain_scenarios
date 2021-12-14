@@ -13,6 +13,7 @@
 #include <vector>
 #include <random>
 #include "abm/individual.h"
+#include "nlohmann/json.hpp"
 
 /**
  * @brief Read in the age generations. 
@@ -30,5 +31,5 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
  * @param generate_age
  * @return std::vector<Individual> 
  */
-std::vector<Individual> read_individuals(std::string vaccinations, std::vector<std::uniform_real_distribution<double>>& generate_age,std::vector<double> & age_brackets);
+std::vector<Individual> read_individuals(std::string vaccinations, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double> & age_brackets, nlohmann::json& ve_params);
 #endif

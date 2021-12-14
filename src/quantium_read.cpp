@@ -87,7 +87,7 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
 
 }
 
-static void create_individuals(std::stringstream& individual_group, std::vector<Individual>& residents, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double> & age_brackets){
+static void create_individuals(std::stringstream& individual_group, std::vector<Individual>& residents, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double> & age_brackets, nlohmann::json& ve_params){
   // See what the string looks like. Push it back into the residents. 
 
   //Im not psyched about this function, I havent checked that vaccine_booster is empty and that booster time is empty, its just assumed that it works. It's fine for now, but I wouldnt want anyone to run this function without their own quality checks on the input data. 
@@ -217,12 +217,12 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     // Create an individual! 
     double age = generate_age[age_band_id-1](generator);
     // std::cout << i << ", " << age << std::endl;
-    residents.push_back(Individual(age,age_brackets,Time_and_Vaccine));
+    residents.push_back(Individual(age,age_brackets, Time_and_Vaccine, ve_params));
   }
 }
 
 
-std::vector<Individual> read_individuals(std::string vaccinations_filename,  std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double>& age_brackets) {
+std::vector<Individual> read_individuals(std::string vaccinations_filename, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double>& age_brackets, nlohmann::json& ve_params) {
 
   std::vector<Individual> residents; // This will contain all residents. 
 
@@ -240,7 +240,7 @@ std::vector<Individual> read_individuals(std::string vaccinations_filename,  std
       // Read until end of file.
       // std::cout << line << std::endl;
       std::stringstream individuals_stream(line);
-      create_individuals(individuals_stream, residents, generate_age,age_brackets); // Create a group at a time. 
+      create_individuals(individuals_stream, residents, generate_age, age_brackets, ve_params); // Create a group at a time. 
     }
   
   } else {

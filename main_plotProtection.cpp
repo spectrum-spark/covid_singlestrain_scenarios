@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
   // Create residents.
   std::vector<double> age_brackets = sim_params_json["age_brackets"];
-  std::vector<Individual> residents = read_individuals(vaccination_scenario_foldername + "/" + vaccination_scenario_name + ".csv", generate_age, age_brackets);
+  std::vector<Individual> residents = read_individuals(vaccination_scenario_foldername + "/" + vaccination_scenario_name + ".csv", generate_age, age_brackets, ve_params_json);
   std::cout << "We made " << residents.size() << " Individuals\n";
 
   // Assign neutralising antibodies to all residents.
