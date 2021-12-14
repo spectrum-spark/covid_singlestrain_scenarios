@@ -127,6 +127,8 @@ int main(int argc, char *argv[]){
   // Assign neutralising antibodies to all residents. 
   double t = 0.0;
   double t_end = sim_params_json["t_end"];
+  double seed_exposure = sim_params_json["seed_exposure"];
+  bool catch_exposure = false; 
   double vaccination_dt = 7.0;
   double covid_dt = pow(2.0,-5.0);
 
@@ -264,22 +266,6 @@ int main(int argc, char *argv[]){
     std::vector<size_t> E_ref; E_ref.reserve(10000); // Magic number reserving memory.
     std::vector<size_t> I_ref; I_ref.reserve(10000); // Magic number of reserved.
 
-    // Use cluster ref to track the infections phylogenetic tree.
-    std::uniform_int_distribution<size_t> gen_res(0,residents.size()-1); 
-    int cluster_ref = 0; 
-    int initial_infections = 0; // Count initial infections.
-    int total_initial_infected = sim_params_json["initial_infections"]; 
-    while(initial_infections < total_initial_infected){
-      int exposed_resident = gen_res(generator); // Randomly sample from all the population.
-      if(residents[exposed_resident].covid.infection_status!='E'){
-          covid.seed_exposure(residents[exposed_resident],t); // Random resident has become infected
-          residents[exposed_resident].covid.cluster_number = cluster_ref;
-          ++initial_infections;
-          E_ref.push_back(exposed_resident); // Start tracking them.
-      }
-    }
-
-
   while(t <= t_end) {
     std::cout << "Time is " << t << " and exposed = " << E_ref.size() << " with " << I_ref.size() << " infections \n";
     std::cout << first_doses.size() << " " << second_doses.size() << " " << booster_doses.size() << "\n";
@@ -308,7 +294,7 @@ int main(int argc, char *argv[]){
       if(x.t <= t) {
         covid.boostNeutsVaccination(residents[x.person],t,x.vaccine);
         residents[x.person].isVaccinated = true;
-        
+
         Individual::VaccineHistory& vaccinations = residents[x.person].vaccinations;
         // Will they get a booster!
         if(vaccinations.size()>2) {
@@ -334,6 +320,26 @@ int main(int argc, char *argv[]){
     });
     booster_doses.erase(booster_it,booster_doses.end());
 
+    if(t >= seed_exposure && !(catch_exposure)) {
+      catch_exposure = true; // Assign true so this will not trigger. 
+      // Use cluster ref to track the infections phylogenetic tree.
+      std::uniform_int_distribution<size_t> gen_res(0,residents.size()-1); 
+      int cluster_ref = 0; 
+      int initial_infections = 0; // Count initial infections.
+      int total_initial_infected = sim_params_json["initial_infections"]; 
+      while(initial_infections < total_initial_infected){
+        int exposed_resident = gen_res(generator); // Randomly sample from all the population.
+        if(residents[exposed_resident].covid.infection_status!='E'){
+            covid.seed_exposure(residents[exposed_resident],t); // Random resident has become infected
+            residents[exposed_resident].covid.cluster_number = cluster_ref;
+            ++initial_infections;
+            E_ref.push_back(exposed_resident); // Start tracking them.
+        }
+      }
+    }
+
+
+
     std::vector<size_t> newly_symptomatic; newly_symptomatic.reserve(1000);
 
     // Simulate the disease model here. 
@@ -346,7 +352,7 @@ int main(int argc, char *argv[]){
   // Write output to file.
   std::ofstream output_file(output_filename);
   if(output_file.is_open()){  
-    output_file << covid;  
+    output_file << covid;  // So sneaky. 
     output_file.close();
   }
   

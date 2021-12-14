@@ -349,7 +349,6 @@ void disease_model::expose_individual(Individual& resident, double& t){
   VaccineType vaccination;
   if (vaccines.size() != 0) {
     // Check the time against their vaccination status?
-    // vaccination = VaccineType::Pfizer1;
     if (t < vaccines[0].first) {
       vaccination = VaccineType::Unvaccinated;
     } else {
