@@ -2,7 +2,6 @@
 #include "abm/nbinrnd.h"
 #include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
-#include "nlohmann/json.hpp"
 
 // Constructor for disease model, vector betas
 disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> q_in, std::vector<double> xi_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b, std::vector<double> w, nlohmann::json& ve_params)

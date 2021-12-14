@@ -13,6 +13,7 @@
 #include <vector>
 #include <random>
 #include "abm/individual.h"
+#include "nlohmann/json.hpp"
 
 /**
  * @brief 

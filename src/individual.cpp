@@ -1,6 +1,5 @@
 #include "abm/individual.h"
 #include "abm/abmrandom.h"
-#include "nlohmann/json.hpp"
 
 // Take an age and sort it.
 static int age_sort(double &age, std::vector<double> &age_brackets)
