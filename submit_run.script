@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name=Quarantine_Scen2
-#SBATCH --time=00:10:00
+#SBATCH --job-name=NSW_Scen1
+#SBATCH --time=00:30:00
 #SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=8G
+#SBATCH --mem-per-cpu=16G
 #SBATCH --cpus-per-task=1
-#SBATCH --array=1-24
+#SBATCH --array=1-100
 
-./RunBooster VE_parameters.json simulation_parameters.json 1 vaccine_scenarios scenario$SLURM_ARRAY_TASK_ID 
+./RunBooster VE_parameters.json simulation_parameters.json $SLURM_ARRAY_TASK_ID  vaccine_scenarios scenario1
