@@ -90,7 +90,7 @@ std::vector<std::uniform_real_distribution<double>> read_age_generation(std::str
 static void create_individuals(std::stringstream& individual_group, std::vector<Individual>& residents, std::vector<std::uniform_real_distribution<double>>& generate_age, std::vector<double> & age_brackets){
   // See what the string looks like. Push it back into the residents. 
 
-  //Im not psyched about this function, I havent checked that vaccine_booster is empty and that booster time is empty, its just assumed that it works. It's fine for now, but I wouldnt want anyone to run this function without their own quality checks on the input data. 
+  //Im not psyched about this function, I havent checked that vaccine_booster is empty and that booster time is empty, its just assumed that it works. It's fine for now, but I wouldnt want anyone to run this function without their own quality checks on the input data like I have done. 
   std::string string_value; 
   std::stringstream string_value_stream;
 
