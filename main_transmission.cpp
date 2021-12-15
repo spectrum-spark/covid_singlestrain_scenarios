@@ -107,13 +107,62 @@ int main(int argc, char *argv[]){
     (void) main_folder; // Unused variable;
 
   // Write json output to file for comparison later comparison. 
-  // std::string output_json_for_save = directory  + "/secondary_infections" + file_suffix + "_input.json";
+  std::string output_json_for_save = directory  +   "_inputs.json";
 
-  // std::ofstream json_output(output_json_for_save);
-  // if(json_output.is_open()){
-  //     json_output << parameters_json;
-  //     json_output.close();
-  // };
+  std::ofstream json_output(output_json_for_save);
+  if(json_output.is_open()){
+      json_output << sim_params_json << std::endl << neuts_json;
+      json_output.close();
+  };
+
+
+  // Load the TTIQ distributions. 
+  std::ifstream ttiq_read("ttiq_distributions.csv");
+  std::vector<double> ttiq_days, partial, optimal;
+  if(ttiq_read.is_open()){
+      std::string line;
+      double value;
+      std::getline(ttiq_read,line); // Get first line. 
+      // Do nothing this is a title.
+      // Second line onwards. 
+      while(std::getline(ttiq_read,line)){
+          std::stringstream stream_line(line);
+          std::string row_val;
+          // std::vector<double> row;
+          for(int col_number = 0; col_number < 3; col_number++){
+              std::getline(stream_line,row_val,','); // Row val is the corresponding double we are after. 
+              std::stringstream stream_row(row_val);
+              stream_row >> value;
+              if(col_number ==0){
+                  ttiq_days.push_back(value);
+              }
+              if(col_number == 1){
+                  partial.push_back(value);
+              }
+              if(col_number ==2){
+                  optimal.push_back(value);
+              }
+          }
+      }
+      ttiq_read.close();
+  } else {
+      throw std::logic_error("The ttiq distributions file was not found.");
+  }
+
+#ifdef DUMP_INPUT
+std::cout << "TTIQ days, partial, optimal \n";
+  for(int i = 0; i < ttiq_days.size();++i) {
+    std::cout << ttiq_days[i] << ", " << partial[i] << ", " << optimal[i] << "\n";
+  }
+#endif
+    
+    // Error check. 
+    if(ttiq_days.size()!=partial.size() || ttiq_days.size()!= optimal.size()){
+        throw std::logic_error("Dimension mismatch in ttiq distributions! \n");
+    }
+
+
+  
 
   // Will be used to construct individuals. 
   std::vector<std::uniform_real_distribution<double>> generate_age = read_age_generation(vaccination_scenario_foldername + "/dim_age_band.csv",100.0);
@@ -130,7 +179,7 @@ int main(int argc, char *argv[]){
   double seed_exposure = sim_params_json["seed_exposure"];
   bool catch_exposure = false; 
   double vaccination_dt = 7.0;
-  double covid_dt = pow(2.0,-5.0);
+  double covid_dt = pow(2.0,-2.0);
 
   // Contact matrix filename. 
   std::string contact_matrix_filename = sim_params_json["contact_matrix"];
@@ -227,18 +276,20 @@ int main(int argc, char *argv[]){
   std::cout << std::endl;
 
   // TTIQ response. 
-  std::vector<double> b{1000.0,2000.0};
-  std::vector<double> w{1.0};
+  std::vector<double> b(ttiq_days.begin(),ttiq_days.end());
+  std::vector<double> w;
+  std::string ttiq_type = sim_params_json["ttiq"];
+
+  if(ttiq_type=="partial"){
+      w = std::vector<double>(partial.begin(),partial.end());
+  }else if(ttiq_type == "optimal"){
+      w = std::vector<double>(optimal.begin(), optimal.end());
+  }else{
+      throw std::logic_error("Unrecognised TTIQ_type, please choose either partial or optimal (CASE SENSITIVE)\n");
+  }
 
   // Calculate TP and load disease model. 
   disease_model covid(beta, q, xi, contact_matrix, b, w);
-
-  // Output informations. 
-
-  
-  size_t number_bins = residents.size();
-  
-  std::vector<double> tout;
 
   // Vaccinate people! 
   std::vector<VaccinationSchedule> first_doses;
@@ -266,7 +317,7 @@ int main(int argc, char *argv[]){
     std::vector<size_t> E_ref; E_ref.reserve(10000); // Magic number reserving memory.
     std::vector<size_t> I_ref; I_ref.reserve(10000); // Magic number of reserved.
 
-  while(t <= t_end) {
+  while(t < t_end) {
     std::cout << "Time is " << t << " and exposed = " << E_ref.size() << " with " << I_ref.size() << " infections \n";
     std::cout << first_doses.size() << " " << second_doses.size() << " " << booster_doses.size() << "\n";
     // Loop  through all first_doses (efficiency is not great oh well)
@@ -343,9 +394,9 @@ int main(int argc, char *argv[]){
     std::vector<size_t> newly_symptomatic; newly_symptomatic.reserve(1000);
 
     // Simulate the disease model here. 
-    std::cout << t << ", ";
+    
     t = covid.covid_ascm(residents,age_matrix,t,t+vaccination_dt,covid_dt,E_ref,I_ref,newly_symptomatic);
-    std::cout << t << std::endl;
+    
   }
 
   std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";

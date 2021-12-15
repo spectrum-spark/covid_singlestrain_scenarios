@@ -23,6 +23,7 @@ class DiseaseOutput {
   VaccineType vaccine;
   double age;
   double time_symptom_onset;
+  double time_isolated;
   double log10neuts_at_exposure;
   int secondary_infections;
   bool   symptomatic;

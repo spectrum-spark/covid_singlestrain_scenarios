@@ -9,10 +9,11 @@ DiseaseOutput::DiseaseOutput(const Individual& person)
       log10neuts_at_exposure(person.covid.log10_neuts_at_exposure),
       symptomatic(!person.covid.asymptomatic),
       secondary_infections(person.secondary_infections),
-      vaccine(person.covid.vaccine_at_exposure) {}
+      vaccine(person.covid.vaccine_at_exposure),
+      time_isolated(person.time_isolated) {}
 
 std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid){
-  os << covid.age <<", " << covid.vaccine << ", " << covid.symptomatic << ", " << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << ", " <<covid.secondary_infections;
+  os << covid.age <<", " << covid.vaccine << ", " << covid.symptomatic << ", " << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << ", " <<covid.secondary_infections <<", " << covid.time_isolated;
   return os;
 }
 
@@ -26,7 +27,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<DiseaseOutput>& cov
 }
 
 std::ostream& operator<<(std::ostream& os, const disease_model& covid){
-  os << "age, vaccine, symptomatic, time_symptoms, log10_neuts, secondary_infections \n";
+  os << "age, vaccine, symptomatic, time_symptoms, log10_neuts, secondary_infections, time_isolated \n";
   os << covid.output;
   return os;
 }
