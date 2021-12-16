@@ -32,22 +32,37 @@ std::ostream& operator<<(std::ostream& os, const disease_model& covid){
   return os;
 }
 
+// beta_C(beta_C_in),
+      // q(q_in),
+      // xi(xi_in),
+      // k(exp(1.201998516)),
+      // c50_acquisition(-0.567888054),
+      // c50_symptoms(-0.619448181),
+      // c50_transmission(0.077153705),
+      // sd_log10_neut_titres(0.4647092),
+      // log10_mean_neut_infection(0.0),
+      // log10_mean_neut_AZ_dose_1(-0.642536778),
+      // log10_mean_neut_AZ_dose_2(-0.193159173),
+      // log10_mean_neut_Pfizer_dose_1(-0.331614187),
+      // log10_mean_neut_Pfizer_dose_2(0.225736770),
+      // log10_mean_neut_Pfizer_dose_3(1.128683850)
+
 // Constructor for disease model, vector betas
 disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> q_in, std::vector<double> xi_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b,std::vector<double> w)
     : beta_C(beta_C_in),
       q(q_in),
       xi(xi_in),
-      k(exp(1.201998516)),
-      c50_acquisition(-0.567888054),
-      c50_symptoms(-0.619448181),
-      c50_transmission(0.077153705),
+      k(exp(0.808094354)),
+      c50_acquisition(-0.706086611),
+      c50_symptoms(-0.689398665),
+      c50_transmission(0.149281552),
       sd_log10_neut_titres(0.4647092),
-      log10_mean_neut_infection(0.0),
-      log10_mean_neut_AZ_dose_1(-0.642536778),
-      log10_mean_neut_AZ_dose_2(-0.193159173),
-      log10_mean_neut_Pfizer_dose_1(-0.331614187),
-      log10_mean_neut_Pfizer_dose_2(0.225736770),
-      log10_mean_neut_Pfizer_dose_3(1.128683850)
+      log10_mean_neut_infection(0.0 + -0.878809706),
+      log10_mean_neut_AZ_dose_1(-0.827447198 + -0.878809706),
+      log10_mean_neut_AZ_dose_2(-0.240471669 + -0.878809706),
+      log10_mean_neut_Pfizer_dose_1(-0.41670505 + -0.878809706),
+      log10_mean_neut_Pfizer_dose_2(0.2813861 + -0.878809706),
+      log10_mean_neut_Pfizer_dose_3(0.881186746 + -0.878809706)
        {
 
     double scale_e = 4.817559;
@@ -478,7 +493,7 @@ void disease_model::assignTransmissibility(Individual& person, double& t, bool& 
   double ve_onward_via_symptoms = 1.0 - ((1.0 + clinical_fraction_vacc)/(1.0 + clinical_fraction_unvacc));
 
   person.covid.transmissibility = (1.0 - 0.5*(asymptomatic))*(1.0 - getProtectionOnwards(person,t))/(1.0-ve_onward_via_symptoms)*beta_C[person.age_bracket];
-  
+
 }
 
 // (1 - ve_onward) / (1 - ve_onward_via_symptom))
