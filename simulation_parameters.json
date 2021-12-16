@@ -1,9 +1,9 @@
 {
   "folder_suffix": "_500Start",
-  "output_directory": "NSW_outputs/",
+  "output_directory": "/scratch/cm37/health/NSW_outputs/",
   "t_end": 900.0,
   "seed_exposure":280.0,
-  "initial_infections": 500,
+  "initial_infections": 2000,
   "TP": 6.32,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
