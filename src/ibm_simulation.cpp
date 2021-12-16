@@ -472,8 +472,17 @@ double disease_model::getProbabilitySymptomatic(const Individual& person, double
 }
 
 void disease_model::assignTransmissibility(Individual& person, double& t, bool& asymptomatic) {
-  person.covid.transmissibility = (1.0 - 0.5*(asymptomatic))*(1.0 - getProtectionOnwards(person,t))*beta_C[person.age_bracket];
+  double clinical_fraction_unvacc = q[person.age_bracket];
+  double clinical_fraction_vacc = getProbabilitySymptomatic(person,t);
+
+  double ve_onward_via_symptoms = 1.0 - ((1.0 + clinical_fraction_vacc)/(1.0 + clinical_fraction_unvacc));
+
+  person.covid.transmissibility = (1.0 - 0.5*(asymptomatic))*(1.0 - getProtectionOnwards(person,t))/(1.0-ve_onward_via_symptoms)*beta_C[person.age_bracket];
+  
 }
+
+// (1 - ve_onward) / (1 - ve_onward_via_symptom))
+// 1 - ((1 + clinical_fraction_vacc) / (1 + clinical_fraction_unvacc))
 
 double disease_model::calculateNeuts(const Individual& person, double& t){
   return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10.0); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
