@@ -1,10 +1,10 @@
 {
-  "folder_suffix": "_500Start",
+  "folder_suffix": "_2000Omicron",
   "output_directory": "/scratch/cm37/health/NSW_outputs/",
-  "t_end": 900.0,
+  "t_end": 600.0,
   "seed_exposure":280.0,
   "initial_infections": 2000,
-  "TP": 6.32,
+  "TP": 5.374937593,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
   "prob_symptoms": [
