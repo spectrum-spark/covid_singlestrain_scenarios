@@ -36,28 +36,6 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
   // Could do a bunch of checks on the beta q xi and contact matrix for sizes.
 };
 
-// // Constructor for disease model, scalar beta's
-// disease_model::disease_model(double beta_C_in, std::vector<std::vector<double>> contact_matrix_in,std::vector<double> b,std::vector<double> w)
-//     : beta_C(beta_C_in),
-//       k(3.0977), // logistic slope exp(1.130661), from Slack
-//       c50_acquisition(-0.691),
-//       c50_symptoms(-0.697),
-//       c50_transmission(0.118) {
-
-//     double scale_e = 4.817559;
-//     double scale_S = 1.013935;
-//     double scale_r = 1.000000;
-//     double mu = 1.5;
-
-//     contact_matrix = contact_matrix_in;
-//     gen_tau_E = std::gamma_distribution<double>(scale_e,2.5/scale_e); //1.7911264 0.8504219 0.5444788
-//     gen_tau_R = std::gamma_distribution<double>(scale_r,mu/scale_r); //6.069358 2.189083 1.691274, 3.817559 1.013935 1.000000
-
-//     gen_tau_S = std::gamma_distribution<double>(scale_S,(5.1-2.5)/scale_S);
-//     gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(),b.end(),w.begin()); // When are they isolated.
-
-// };
-
 //  Covid model Age stratified Individual contacts. (ASCM - age stratified
 //  contact model)
 double disease_model::covid_ascm(std::vector<Individual> &residents, std::vector<std::vector<int>> &age_ref, double t0, double t1, double dt, std::vector<size_t> &E, std::vector<size_t> &I, std::vector<size_t> &newly_symptomatic)
