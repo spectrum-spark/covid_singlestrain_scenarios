@@ -38,14 +38,12 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
       old_log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
       time_last_boost(0.0),
-      // decay_rate(0.007274524),
+      decay_rate(ve_params["neut_decay"]),
       time_isolated(std::nan("7")),
       isCovidNaive(true),
       isVaccinated(false),
       vaccinations(vaccination_in)
-{
-  decay_rate = ve_params["neut_decay"];
-}
+{}
 
 std::ostream &operator<<(std::ostream &os, const Individual &person)
 {
