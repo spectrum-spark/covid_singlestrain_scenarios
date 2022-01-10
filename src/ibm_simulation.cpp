@@ -8,7 +8,7 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
     : beta_C(beta_C_in),
       q(q_in),
       xi(xi_in),
-      sd_log10_neut_titres("sd_log10_neut_titres"),
+      sd_log10_neut_titres(ve_params["sd_log10_neut_titres"]),
       k(exp(static_cast<double>(ve_params["log_k"]))),
       c50_acquisition(static_cast<double>(ve_params["c50_acquisition"])),
       c50_symptoms(ve_params["c50_symptoms"]),
