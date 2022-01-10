@@ -2,13 +2,19 @@
 # You should customize this list as applicable to your project.
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
-
+massive_outputs
+slurm*.out 
+scenario*Deltacorrection.csv
+NSW_outputs
+new_outputs
+newoutputs
 protection_outputs/
 doxygen_output
 Run
 RunBooster
 RunNoBooster
-
+PopulationDistribution_Boosted.csv
+PopulationDistribution.csv
 vaccine_scenarios/*
 # Node artifact files
 node_modules/
@@ -32,7 +38,6 @@ dist/
 
 # JetBrains IDE
 .idea/
-.vscode/
 
 # Unit test reports
 TEST*.xml
