@@ -1,9 +1,10 @@
 {
-  "folder_suffix": "_protection",
-  "output_directory": "outputs/",
-  "t_end": 700,
-  "initial_infections": 30,
-  "TP": 6.32,
+  "folder_suffix": "_2000Omicron",
+  "output_directory": "/scratch/cm37/health/NSW_outputs/",
+  "t_end": 600.0,
+  "seed_exposure":280.0,
+  "initial_infections": 2000,
+  "TP": 5.374937593,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
   "prob_symptoms": [

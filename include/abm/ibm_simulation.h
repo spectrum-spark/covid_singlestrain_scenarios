@@ -19,10 +19,32 @@
  * @brief 
  * 
  */
+class DiseaseOutput {
+  private: 
+  VaccineType vaccine;
+  double age;
+  double time_symptom_onset;
+  double time_isolated;
+  double log10neuts_at_exposure;
+  int secondary_infections;
+  bool   symptomatic;
+
+  public:
+  DiseaseOutput(const Individual & person);
+  friend std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid);
+};
+
+/**
+ * @brief 
+ * 
+ */
 class disease_model{
   private:
 
-    // Neutralising antibody components - make private as they wont change. 
+    
+    // Output files. 
+    std::vector<DiseaseOutput> output; // Output file. Dynamically add.
+    // Neutralising antibody components - make private as they wont change.
     double k; 
     double c50_acquisition;
     double c50_symptoms;
@@ -35,7 +57,7 @@ class disease_model{
     double log10_mean_neut_Pfizer_dose_2;
     double log10_mean_neut_Pfizer_dose_3;
 
-    // std::vector<DiseaseOutput> output; // Output file. Dynamically add. 
+    
 
   public:
   /**
@@ -74,9 +96,6 @@ class disease_model{
   std::gamma_distribution<double> gen_tau_S; /**< Time from infected to symptoms. */
   std::gamma_distribution<double> gen_tau_R; /**< Time from infected to recovered. */
   std::piecewise_constant_distribution<double> gen_tau_isolation; /**< Time before symptoms the Individual is isolated.*/
-  
-
-
   
   /**
    * @brief COVID-19 Age Stratified Contact Model. 
@@ -195,5 +214,12 @@ class disease_model{
   // Vaccination. 
   void boostNeutsVaccination(Individual& person, double& t, VaccineType& vaccine);
 
+  // friend std::ostream& operator<<(std::ostream& os, const std::vector<DiseaseOutput>& covid); /**< Overloaded ostream for output */
+  friend std::ostream& operator<<(std::ostream& os, const disease_model& covid);
+
 }; 
+
+std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid);
+std::ostream& operator<<(std::ostream& os, const std::vector<DiseaseOutput>& covid);
+std::ostream& operator<<(std::ostream& os, const disease_model& covid);
 #endif

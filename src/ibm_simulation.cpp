@@ -3,6 +3,50 @@
 #include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
 
+DiseaseOutput::DiseaseOutput(const Individual& person)
+    : age(person.age),
+      time_symptom_onset(person.covid.time_of_symptom_onset),
+      log10neuts_at_exposure(person.covid.log10_neuts_at_exposure),
+      symptomatic(!person.covid.asymptomatic),
+      secondary_infections(person.secondary_infections),
+      vaccine(person.covid.vaccine_at_exposure),
+      time_isolated(person.time_isolated) {}
+
+std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid){
+  os << covid.age <<", " << covid.vaccine << ", " << covid.symptomatic << ", " << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << ", " <<covid.secondary_infections <<", " << covid.time_isolated;
+  return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const std::vector<DiseaseOutput>& covid){ 
+  
+  for(int i = 0; i < covid.size();++i){
+    os << covid[i] << std::endl;
+  }
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const disease_model& covid){
+  os << "age, vaccine, symptomatic, time_symptoms, log10_neuts, secondary_infections, time_isolated \n";
+  os << covid.output;
+  return os;
+}
+
+// beta_C(beta_C_in),
+      // q(q_in),
+      // xi(xi_in),
+      // k(exp(1.201998516)),
+      // c50_acquisition(-0.567888054),
+      // c50_symptoms(-0.619448181),
+      // c50_transmission(0.077153705),
+      // sd_log10_neut_titres(0.4647092),
+      // log10_mean_neut_infection(0.0),
+      // log10_mean_neut_AZ_dose_1(-0.642536778),
+      // log10_mean_neut_AZ_dose_2(-0.193159173),
+      // log10_mean_neut_Pfizer_dose_1(-0.331614187),
+      // log10_mean_neut_Pfizer_dose_2(0.225736770),
+      // log10_mean_neut_Pfizer_dose_3(1.128683850)
+
 // Constructor for disease model, vector betas
 disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> q_in, std::vector<double> xi_in, std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b, std::vector<double> w, nlohmann::json& ve_params)
     : beta_C(beta_C_in),
@@ -33,6 +77,7 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
   gen_tau_S = std::gamma_distribution<double>(scale_S, (5.1 - 2.5) / scale_S);
   gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(), b.end(), w.begin()); // When are they isolated.
 
+  output.reserve(10000);
   // Could do a bunch of checks on the beta q xi and contact matrix for sizes.
 };
 
@@ -270,11 +315,11 @@ void disease_model::infect_individual(Individual &resident)
   resident.covid.infection_status = 'I';
 }
 
-void disease_model::recover_individual(Individual &resident)
-{
-  susceptible_individual(resident);
-  //Write output of the infection here ? Where shall it get written.
-  // output.push_back(DiseaseOutput(resident));
+
+void disease_model::recover_individual(Individual& resident){ 
+    susceptible_individual(resident);
+    //Write output of the infection here ? Where shall it get written. 
+    output.push_back(DiseaseOutput(resident));
 }
 
 void disease_model::susceptible_individual(Individual &resident)
@@ -309,8 +354,33 @@ void disease_model::expose_individual(Individual &resident, double &t)
   boostNeutsInfection(resident, t); // What do the neuts go to (also assigns old Neutralising antibody levels)
 
   // Set statistics for tracking - required for log10 neuts.
-  // Write log10 neuts for MOC.
-  resident.covid.log10_neuts_at_exposure = resident.old_log10_neutralising_antibodies;
+  // Write log10 neuts for MOC. 
+  resident.covid.log10_neuts_at_exposure = resident.old_log10_neutralising_antibodies; 
+
+
+  // Find their vaccination status. 
+  Individual::VaccineHistory& vaccines = resident.vaccinations;
+
+  VaccineType vaccination;
+  if (vaccines.size() != 0) {
+    // Check the time against their vaccination status?
+    if (t < vaccines[0].first) {
+      vaccination = VaccineType::Unvaccinated;
+    } else {
+      for (auto it = vaccines.rbegin(); it != vaccines.rend(); ++it) {
+        if (t >= it->first) {
+          vaccination = it->second;
+          break;
+        }
+      }
+    }
+  } else {
+    vaccination = VaccineType::Unvaccinated;
+  }
+
+  resident.covid.vaccine_at_exposure = vaccination;
+  resident.secondary_infections = 0;
+
 }
 
 // This code is used to check the R0.
@@ -423,14 +493,21 @@ double disease_model::getProbabilitySymptomatic(const Individual &person, double
   // This should be an odds ratio.
 }
 
-void disease_model::assignTransmissibility(Individual &person, double &t, bool &asymptomatic)
-{
-  person.covid.transmissibility = (1.0 - 0.5 * (asymptomatic)) * (1.0 - getProtectionOnwards(person, t)) * beta_C[person.age_bracket];
+void disease_model::assignTransmissibility(Individual& person, double& t, bool& asymptomatic) {
+  double clinical_fraction_unvacc = q[person.age_bracket];
+  double clinical_fraction_vacc = getProbabilitySymptomatic(person,t);
+
+  double ve_onward_via_symptoms = 1.0 - ((1.0 + clinical_fraction_vacc)/(1.0 + clinical_fraction_unvacc));
+
+  person.covid.transmissibility = (1.0 - 0.5*(asymptomatic))*(1.0 - getProtectionOnwards(person,t))/(1.0-ve_onward_via_symptoms)*beta_C[person.age_bracket];
+
 }
 
-double disease_model::calculateNeuts(const Individual &person, double &t)
-{
-  return person.log10_neutralising_antibodies - person.decay_rate * (t - person.time_last_boost) / log(10.0); // We are working in log neuts so if exponential is in base e then k is log10(e)*k.
+// (1 - ve_onward) / (1 - ve_onward_via_symptom))
+// 1 - ((1 + clinical_fraction_vacc) / (1 + clinical_fraction_unvacc))
+
+double disease_model::calculateNeuts(const Individual& person, double& t){
+  return person.log10_neutralising_antibodies - person.decay_rate*(t-person.time_last_boost)/log(10.0); // We are working in log neuts so if exponential is in base e then k is log10(e)*k. 
 }
 
 // used multiple times.
@@ -457,10 +534,15 @@ static void assignNewNeutValue(const double &log10_neuts, const double &sd_log10
   person.time_last_boost = t;
 }
 
-void disease_model::boostNeutsInfection(Individual &person, double &t)
-{
-  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here.
-  assignNewNeutValue(log10_mean_neut_infection, sd_log10_neut_titres, person, t);
+void disease_model::boostNeutsInfection(Individual& person, double& t){
+  person.old_log10_neutralising_antibodies = calculateNeuts(person, t); // Assign the old neuts here. 
+  double log10_neuts; 
+  if(person.isVaccinated){
+    log10_neuts = log10_mean_neut_Pfizer_dose_3;
+  } else {
+    log10_neuts = log10_mean_neut_infection;
+  }
+  assignNewNeutValue(log10_neuts,sd_log10_neut_titres,person,t);
 }
 
 void disease_model::boostNeutsVaccination(Individual &person, double &t, VaccineType &vaccine)
@@ -495,8 +577,8 @@ void disease_model::boostNeutsVaccination(Individual &person, double &t, Vaccine
   default:
     throw std::logic_error("Unrecognised vaccation in boostNeutsVaccination. \n");
   }
-
-  assignNewNeutValue(log10_boost, sd_log10_neut_titres, person, t);
+  // std::cout << log10_boost << ", " << sd_log10_neut_titres << std::endl;
+  assignNewNeutValue(log10_boost,sd_log10_neut_titres,person,t);
 }
 
 // used multiple times.
