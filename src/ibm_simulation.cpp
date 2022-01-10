@@ -10,7 +10,7 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
       xi(xi_in),
       sd_log10_neut_titres(ve_params["sd_log10_neut_titres"]),
       k(exp(static_cast<double>(ve_params["log_k"]))),
-      c50_acquisition(static_cast<double>(ve_params["c50_acquisition"])),
+      c50_acquisition((ve_params["c50_acquisition"])),
       c50_symptoms(ve_params["c50_symptoms"]),
       c50_transmission(ve_params["c50_transmission"]),
       log10_mean_neut_infection(ve_params["log10_mean_neut_infection"]),
