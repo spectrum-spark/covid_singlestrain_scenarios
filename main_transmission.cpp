@@ -169,7 +169,7 @@ std::cout << "TTIQ days, partial, optimal \n";
 
   // Create residents.  
   std::vector<double> age_brackets = sim_params_json["age_brackets"];
-  std::vector<Individual> residents = read_individuals(vaccination_scenario_foldername + "/" + vaccination_scenario_name + ".csv",generate_age, age_brackets);
+  std::vector<Individual> residents = read_individuals(vaccination_scenario_foldername + "/" + vaccination_scenario_name + ".csv",generate_age, age_brackets, neuts_json);
   std::cout << "We made " << residents.size() << " Individuals\n";
   
 
@@ -288,7 +288,7 @@ std::cout << "TTIQ days, partial, optimal \n";
   }
 
   // Calculate TP and load disease model. 
-  disease_model covid(beta, q, xi, contact_matrix, b, w);
+  disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json);
 
   // Vaccinate people! 
   std::vector<VaccinationSchedule> first_doses;

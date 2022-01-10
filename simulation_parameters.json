@@ -1,10 +1,10 @@
 {
-  "folder_suffix": "_2000Omicron",
+  "folder_suffix": "_MINITEST_LOGAN",
   "output_directory": "/scratch/cm37/health/NSW_outputs/",
   "t_end": 600.0,
   "seed_exposure":280.0,
-  "initial_infections": 2000,
-  "TP": 5.374937593,
+  "initial_infections": 20,
+  "TP": 2.374937593,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
   "prob_symptoms": [
