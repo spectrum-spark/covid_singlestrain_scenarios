@@ -8,9 +8,18 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
     : beta_C(beta_C_in),
       q(q_in),
       xi(xi_in),
-      sd_log10_neut_titres(0.4647092)
+      sd_log10_neut_titres("sd_log10_neut_titres"),
+      k(exp(static_cast<double>(ve_params["log_k"]))),
+      c50_acquisition(static_cast<double>(ve_params["c50_acquisition"])),
+      c50_symptoms(ve_params["c50_symptoms"]),
+      c50_transmission(ve_params["c50_transmission"]),
+      log10_mean_neut_infection(ve_params["log10_mean_neut_infection"]),
+      log10_mean_neut_AZ_dose_1(ve_params["log10_mean_neut_AZ_dose_1"]),
+      log10_mean_neut_AZ_dose_2(ve_params["log10_mean_neut_AZ_dose_2"]),
+      log10_mean_neut_Pfizer_dose_1(ve_params["log10_mean_neut_Pfizer_dose_1"]),
+      log10_mean_neut_Pfizer_dose_2(ve_params["log10_mean_neut_Pfizer_dose_2"]),
+      log10_mean_neut_Pfizer_dose_3(ve_params["log10_mean_neut_Pfizer_dose_3"])
 {
-
   double scale_e = 4.817559;
   double scale_S = 1.013935;
   double scale_r = 1.000000;
@@ -18,26 +27,13 @@ disease_model::disease_model(std::vector<double> beta_C_in, std::vector<double> 
 
   contact_matrix = contact_matrix_in; // Could move into initialiser list.
 
-  // Assign VE parameters from JSON
-  k = exp(static_cast<double>(ve_params["log_k"]));
-  c50_acquisition = ve_params["c50_acquisition"];
-  c50_symptoms = ve_params["c50_symptoms"];
-  c50_transmission = ve_params["c50_transmission"];
-  //sd_log10_neut_titres = ve_params["sd_log10_neut_titres"];
-  log10_mean_neut_infection = ve_params["log10_mean_neut_infection"];
-  log10_mean_neut_AZ_dose_1 = ve_params["log10_mean_neut_AZ_dose_1"];
-  log10_mean_neut_AZ_dose_2 = ve_params["log10_mean_neut_AZ_dose_2"];
-  log10_mean_neut_Pfizer_dose_1 = ve_params["log10_mean_neut_Pfizer_dose_1"];
-  log10_mean_neut_Pfizer_dose_2 = ve_params["log10_mean_neut_Pfizer_dose_2"];
-  log10_mean_neut_Pfizer_dose_3 = ve_params["log10_mean_neut_Pfizer_dose_3"];
-
   gen_tau_E = std::gamma_distribution<double>(scale_e, 2.5 / scale_e); //1.7911264 0.8504219 0.5444788
   gen_tau_R = std::gamma_distribution<double>(scale_r, mu / scale_r);  //6.069358 2.189083 1.691274, 3.817559 1.013935 1.000000
 
   gen_tau_S = std::gamma_distribution<double>(scale_S, (5.1 - 2.5) / scale_S);
   gen_tau_isolation = std::piecewise_constant_distribution<double>(b.begin(), b.end(), w.begin()); // When are they isolated.
 
-  // Should do a bunch of checks on the beta q xi and contact matrix for sizes.
+  // Could do a bunch of checks on the beta q xi and contact matrix for sizes.
 };
 
 // // Constructor for disease model, scalar beta's
