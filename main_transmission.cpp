@@ -263,8 +263,7 @@ std::cout << "TTIQ days, partial, optimal \n";
     };
     sum_expression += internal_sum*xi_k;
   };
-
-  // This is fun. 
+ 
   double TP = sim_params_json["TP"];
   double beta_scale = TP/(sum_expression*((5.1-2.5) + 1.5)); // This is hardcoded, be careful if anything changes. 
   std::vector<double> beta = alpha;
@@ -393,8 +392,7 @@ std::cout << "TTIQ days, partial, optimal \n";
 
     std::vector<size_t> newly_symptomatic; newly_symptomatic.reserve(1000);
 
-    // Simulate the disease model here. 
-    
+    // Simulate the disease model here.
     t = covid.covid_ascm(residents,age_matrix,t,t+vaccination_dt,covid_dt,E_ref,I_ref,newly_symptomatic);
     
   }
@@ -406,11 +404,6 @@ std::cout << "TTIQ days, partial, optimal \n";
     output_file << covid;  // So sneaky. 
     output_file.close();
   }
-  
-
-  
-
-  
 
   return 0; 
 }
