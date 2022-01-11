@@ -695,3 +695,28 @@ double disease_model::getProtectionOnwards(const Individual &person,
   double n = calculateNeuts(person, t);
   return prob_avoid_outcome(n, k, c50_transmission);
 }
+
+void disease_model::print_params(){
+
+    std::cout << "VE parameters \n" << "k" << "\n" << k << "\n" <<
+    "c50_acquisition" << "\n" << 
+    c50_acquisition << "\n" <<
+    "c50_symptoms" << "\n" <<
+    c50_symptoms << "\n" <<
+    "c50_transmission" << "\n" <<
+    c50_transmission << "\n" <<
+    "sd_log10_neut_titres"<< "\n" <<
+    sd_log10_neut_titres<< "\n" <<
+    "log10_mean_neut_infection"<< "\n" <<
+    log10_mean_neut_infection<< "\n" <<
+    "log10_mean_neut_AZ_dose_1"<< "\n" <<
+    log10_mean_neut_AZ_dose_1<< "\n" <<
+    "log10_mean_neut_AZ_dose_2"<< "\n" <<
+    log10_mean_neut_AZ_dose_2<< "\n" <<
+    "log10_mean_neut_Pfizer_dose_1"<< "\n" <<
+    log10_mean_neut_Pfizer_dose_1<< "\n" <<
+    "log10_mean_neut_Pfizer_dose_2"<< "\n" <<
+    log10_mean_neut_Pfizer_dose_2<< "\n" <<
+    "log10_mean_neut_Pfizer_dose_3"<< "\n" <<
+    log10_mean_neut_Pfizer_dose_3<< "\n";    
+}

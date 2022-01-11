@@ -2,8 +2,11 @@
 # You should customize this list as applicable to your project.
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+
+
 .vscode
 .vscode/*
+
 massive_outputs
 slurm*.out 
 scenario*Deltacorrection.csv
@@ -13,6 +16,7 @@ newoutputs
 protection_outputs/
 doxygen_output
 Run
+RunRestrictions
 RunBooster
 RunNoBooster
 PopulationDistribution_Boosted.csv

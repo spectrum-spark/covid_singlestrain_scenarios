@@ -161,9 +161,6 @@ std::cout << "TTIQ days, partial, optimal \n";
         throw std::logic_error("Dimension mismatch in ttiq distributions! \n");
     }
 
-
-  
-
   // Will be used to construct individuals. 
   std::vector<std::uniform_real_distribution<double>> generate_age = read_age_generation(vaccination_scenario_foldername + "/dim_age_band.csv",100.0);
 
@@ -265,11 +262,24 @@ std::cout << "TTIQ days, partial, optimal \n";
   };
  
   double TP = sim_params_json["TP"];
+  double TP_restrictions = sim_params_json["TP_restrictions"]; 
+  
   double beta_scale = TP/(sum_expression*((5.1-2.5) + 1.5)); // This is hardcoded, be careful if anything changes. 
+  double beta_restriction_scale = TP_restrictions/(sum_expression*((5.1-2.5) + 1.5)); 
+
   std::vector<double> beta = alpha;
   std::cout << "beta " << std::endl;
-  for(auto& x:beta){// Scale so that it is the appropriate size. 
+
+  for(auto & x:beta){// Scale so that it is the appropriate size. 
     x = beta_scale*x;
+    std::cout << x << std::endl;
+  }
+  std::cout << std::endl;
+
+  std::vector<double> beta_restrictions = alpha;
+  std::cout << "beta restrictions " << std::endl;
+  for(auto & x:beta_restrictions){// Scale so that it is the appropriate size. 
+    x = beta_restriction_scale*x;
     std::cout << x << std::endl;
   }
   std::cout << std::endl;
@@ -289,8 +299,10 @@ std::cout << "TTIQ days, partial, optimal \n";
 
   // Calculate TP and load disease model. 
   disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json);
-  disease_model covid_medium(beta, q, xi, contact_matrix, b, w, neuts_json);
+  disease_model covid_restrictions(beta_restrictions, q, xi, contact_matrix, b, w, neuts_json);
+  double start_restrictions = sim_params_json["start_restrictions"];
 
+  
   // Vaccinate people! 
   std::vector<VaccinationSchedule> first_doses;
   std::vector<VaccinationSchedule> second_doses;
@@ -318,11 +330,10 @@ std::cout << "TTIQ days, partial, optimal \n";
     std::vector<size_t> I_ref; I_ref.reserve(10000); // Magic number of reserved.
 
   while(t < t_end) {
-
     std::cout << "Time is " << t << " and exposed = " << E_ref.size() << " with " << I_ref.size() << " infections \n";
 
     std::cout << first_doses.size() << " " << second_doses.size() << " " << booster_doses.size() << "\n";
-    
+
     // Loop  through all first_doses (efficiency is not great oh well)
     auto first_it = std::remove_if(first_doses.begin(), first_doses.end(),[&](auto& x)->bool{
       // Function for first doses. 
@@ -373,8 +384,7 @@ std::cout << "TTIQ days, partial, optimal \n";
       }
     });
     booster_doses.erase(booster_it,booster_doses.end());
-
-
+    
     // Should this be a function 
     if(t >= seed_exposure && !(catch_exposure)) {
       catch_exposure = true; // Assign true so this will not trigger. 
@@ -394,13 +404,13 @@ std::cout << "TTIQ days, partial, optimal \n";
       }
     }
 
-
-
     std::vector<size_t> newly_symptomatic; newly_symptomatic.reserve(1000);
-
     // Simulate the disease model here.
-    t = covid.covid_ascm(residents,age_matrix,t,t+vaccination_dt,covid_dt,E_ref,I_ref,newly_symptomatic);
-    
+    if(t < start_restrictions){
+        t = covid.covid_ascm(residents, age_matrix, t, t+vaccination_dt, covid_dt, E_ref, I_ref, newly_symptomatic);
+    }else{
+        t = covid_restrictions.covid_ascm(residents, age_matrix, t, t+vaccination_dt, covid_dt, E_ref, I_ref, newly_symptomatic);
+    }
   }
 
   std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
@@ -408,9 +418,8 @@ std::cout << "TTIQ days, partial, optimal \n";
   std::ofstream output_file(output_filename);
   if(output_file.is_open()){  
     output_file << covid << std::endl;  // So sneaky. - Write output. 
-    output_file << covid_medium; // Infections from medium covid times. 
+    output_file << covid_restrictions; // Infections from medium covid times. 
     output_file.close();
   }
-
   return 0; 
 }

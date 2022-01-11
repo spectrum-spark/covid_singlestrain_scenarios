@@ -60,6 +60,13 @@ class disease_model{
     
 
   public:
+  
+  /**
+   * @brief Print all parameters in covid. 
+   * 
+   */
+  void print_params();
+  
   /**
    * @brief Construct a new disease model object
    * 
