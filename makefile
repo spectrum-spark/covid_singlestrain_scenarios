@@ -13,6 +13,7 @@ all: $(OBJECTS)
 	$(CXX) $(CPPFLAGS) -o RunBooster main_plotProtection.cpp $(OBJECTS) 
 	$(CXX) $(CPPFLAGS) -DDISABLE_BOOSTER -o RunNoBooster main_plotProtection.cpp $(OBJECTS)
 	$(CXX) $(CPPFLAGS)  -o Run main_transmission.cpp $(OBJECTS) 
+	$(CXX) $(CPPFLAGS) -o RunLowMedium main_low_medium.cpp $(OBJECTS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
