@@ -417,7 +417,9 @@ std::cout << "TTIQ days, partial, optimal \n";
   // Write output to file.
   std::ofstream output_file(output_filename);
   if(output_file.is_open()){  
-    output_file << covid << std::endl;  // So sneaky. - Write output. 
+    output_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+    "secondary_infections, time_isolated \n";
+    output_file << covid;  // So sneaky - will put a new line at the end.
     output_file << covid_restrictions; // Infections from medium covid times. 
     output_file.close();
   }

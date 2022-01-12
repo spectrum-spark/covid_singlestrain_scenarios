@@ -400,7 +400,9 @@ std::cout << "TTIQ days, partial, optimal \n";
   std::string output_filename = directory  + "/sim_number_" + std::to_string(sim_number) + ".csv";
   // Write output to file.
   std::ofstream output_file(output_filename);
-  if(output_file.is_open()){  
+  if(output_file.is_open()){ 
+    output_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+    "secondary_infections, time_isolated \n"; 
     output_file << covid;  // So sneaky. 
     output_file.close();
   }

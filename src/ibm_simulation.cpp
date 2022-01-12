@@ -30,8 +30,6 @@ std::ostream &operator<<(std::ostream &os,
 }
 
 std::ostream &operator<<(std::ostream &os, const disease_model &covid) {
-  os << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
-        "secondary_infections, time_isolated \n";
   os << covid.output;
   return os;
 }

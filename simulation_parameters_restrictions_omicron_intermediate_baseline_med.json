@@ -1,12 +1,11 @@
 {
-  "folder_suffix": "_RestrictionScenarios",
+  "folder_suffix": "_RestrictionScenarios_BaselineMed",
   "output_directory": "/scratch/cm37/health/NSW_outputs/",
   "t_end": 600.0,
   "seed_exposure":280.0,
   "initial_infections": 2000,
   "start_restrictions":334.0,
   "TP":5.374937593, 
-  "TP_low": 4.039707843,
   "TP_restrictions": 3.265784867,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
