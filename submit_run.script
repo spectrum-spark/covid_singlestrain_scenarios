@@ -6,4 +6,4 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --array=1-100
 
-./Run VE_parameters.json simulation_parameters.json $SLURM_ARRAY_TASK_ID  vaccine_scenarios scenario14
+./RunRestrictions Omicron_Intermediate_VE_parameters.json simulation_parameters_restrictions_omicron_intermediate.json $SLURM_ARRAY_TASK_ID  vaccine_scenarios scenario25
