@@ -1,12 +1,12 @@
 {
-  "folder_suffix": "_restrictions",
+  "folder_suffix": "_RestrictionScenarios",
   "output_directory": "/scratch/cm37/health/NSW_outputs/",
   "t_end": 600.0,
   "seed_exposure":280.0,
   "initial_infections": 2000,
-  "start_restrictions":100.0,
-  "TP": 2.374937593,
-  "TP_restrictions":1.0,
+  "start_restrictions":334.0,
+  "TP": 4.039707843,
+  "TP_restrictions": 3.265784867,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
   "prob_symptoms": [

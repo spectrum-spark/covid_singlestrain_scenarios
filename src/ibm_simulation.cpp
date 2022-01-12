@@ -597,7 +597,7 @@ double disease_model::calculateNeuts(const Individual &person, double &t) {
   return person.log10_neutralising_antibodies -
          person.decay_rate * (t - person.time_last_boost) /
              log(10.0);  // We are working in log neuts so if exponential is in
-                         // base e then k is log10(e)*k.
+                         // base e then k is log10(e)*k. Decay rate can be put in disease model as it does not depend upon the individual in our current implementation. This is something to look at. 
 }
 
 // used multiple times.
