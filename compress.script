@@ -5,4 +5,4 @@
 #SBATCH --mem-per-cpu=6G
 #SBATCH --cpus-per-task=1
 
-Rscript compress_outputs.R /scratch/cm37/health/NSW_outputs/scenario1_500Start
+Rscript compress_outputs.R /scratch/cm37/health/NSW_outputs/scenario26_RestrictionScenarios

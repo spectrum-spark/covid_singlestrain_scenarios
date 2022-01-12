@@ -1,6 +1,6 @@
 CXX = g++
 INCLUDE = include
-NLOHMANN = ../../
+NLOHMANN = ../../json/single_include
 CPPFLAGS = -std=c++2a -DDUMP_INPUT -I$(INCLUDE) -I$(NLOHMANN)
 CFLAGS = 
 OBJ = build
