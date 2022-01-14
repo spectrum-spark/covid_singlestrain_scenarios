@@ -1,5 +1,5 @@
 {
-  "folder_suffix": "_RestrictionScenarios_LowMed",
+  "folder_suffix": "_low_lp15_jan24",
   "output_directory": "/scratch/cm37/health/NSW_outputs/",
   "t_end": 600.0,
   "seed_exposure":280.0,

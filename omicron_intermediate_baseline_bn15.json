@@ -1,5 +1,5 @@
 {
-  "folder_suffix": "_RestrictionScenarios_BaselineMed",
+  "folder_suffix": "_baseline_bn15",
   "output_directory": "/scratch/cm37/health/NSW_outputs/",
   "t_end": 600.0,
   "seed_exposure":280.0,
