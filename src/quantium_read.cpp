@@ -149,6 +149,8 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
       dose = VaccineType::Moderna1;
     } else {
       std::cout << vaccine << " " << time_dose_1<< " " <<time_dose_1_string << std::endl;
+
+      std::cout << individual_group.str() << std::endl;
       throw std::logic_error("Unrecognised vaccine \n");
     }
     // Time_doses.push_back(time_dose_1);
