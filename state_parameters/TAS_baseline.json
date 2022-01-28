@@ -1,9 +1,9 @@
 {
   "folder_suffix": "_baseline_jan28_calib",
   "output_directory": "/scratch/cm37/state_outputs/TAS/",
-  "t_end": 600.0,
+  "t_end": 350.0,
   "seed_exposure":301.0,
-  "initial_infections": 2000,
+  "initial_infections": 1000,
   "start_restrictions":350.0,
   "TP":7.29787, 
   "TP_restrictions": 1.0,
