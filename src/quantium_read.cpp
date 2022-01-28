@@ -191,7 +191,7 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     time_booster = time_booster*(7.0);
     // Time_doses.push_back(time_booster);
     VaccineType dose;
-    if(booster_vaccine == 4){
+    if(booster_vaccine == 1| booster_vaccine == 2 |booster_vaccine == 3 | booster_vaccine == 4 | booster_vaccine == 5){
       dose = VaccineType::Booster;
     } else {
       // std::cout << time_booster_string << std::endl; 
