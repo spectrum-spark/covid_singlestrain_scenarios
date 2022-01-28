@@ -103,8 +103,7 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
   size_t num_people;
 
 
-      std::cout << individual_group.str() << std::endl;
-
+  
   // Assign values
   std::getline(individual_group,string_value,',');
   if(string_value.empty()){
