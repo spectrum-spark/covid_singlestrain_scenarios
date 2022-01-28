@@ -265,7 +265,7 @@ std::cout << "TTIQ days, partial, optimal \n";
   double TP_restrictions = sim_params_json["TP_restrictions"]; 
   
   double beta_scale = TP/(sum_expression*((5.1-2.5) + 1.5)); // This is hardcoded, be careful if anything changes. 
-  double beta_restriction_scale = TP_restrictions/(sum_expression*((5.1-2.5) + 1.5)); 
+  double beta_restriction_scale = (TP*TP_restrictions)/(sum_expression*((5.1-2.5) + 1.5)); 
 
   std::vector<double> beta = alpha;
   std::cout << "beta " << std::endl;
