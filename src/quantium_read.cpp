@@ -102,6 +102,9 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
   double time_booster; 
   size_t num_people;
 
+
+      std::cout << individual_group.str() << std::endl;
+
   // Assign values
   std::getline(individual_group,string_value,',');
   if(string_value.empty()){
@@ -148,9 +151,7 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     } else if(vaccine==3) {
       dose = VaccineType::Moderna1;
     } else {
-      std::cout << vaccine << " " << time_dose_1<< " " <<time_dose_1_string << std::endl;
 
-      std::cout << individual_group.str() << std::endl;
       throw std::logic_error("Unrecognised vaccine \n");
     }
     // Time_doses.push_back(time_dose_1);
@@ -193,7 +194,7 @@ static void create_individuals(std::stringstream& individual_group, std::vector<
     if(booster_vaccine == 4){
       dose = VaccineType::Booster;
     } else {
-      std::cout << time_booster_string << std::endl; 
+      // std::cout << time_booster_string << std::endl; 
       throw std::logic_error("Unrecognised vaccine \n");
     }
 
