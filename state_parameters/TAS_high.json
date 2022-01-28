@@ -1,5 +1,5 @@
 {
-  "folder_suffix": "_baseline_bp15_jan28",
+  "folder_suffix": "_baseline_bp15_jan28_calib",
   "output_directory": "/scratch/cm37/state_outputs/TAS/",
   "t_end": 600.0,
   "seed_exposure":280.0,
