@@ -2,7 +2,7 @@
   "folder_suffix": "_baseline_jan28_calib",
   "output_directory": "/scratch/cm37/state_outputs/QLD/",
   "t_end": 600.0,
-  "seed_exposure":280.0,
+  "seed_exposure":301.0,
   "initial_infections": 2000,
   "start_restrictions":350.0,
   "TP":7.29787, 
