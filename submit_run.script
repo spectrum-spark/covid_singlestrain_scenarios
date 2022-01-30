@@ -6,4 +6,4 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --array=1-20
 
-./RunRestrictions state_parameters/omicron_update_VE.json state_parameters/QLD_baseline.json $SLURM_ARRAY_TASK_ID  QLD_scenarios scenario82
+./RunRestrictions state_parameters/omicron_update_VE.json state_parameters/NT_baseline.json $SLURM_ARRAY_TASK_ID  NT_scenarios scenario82
