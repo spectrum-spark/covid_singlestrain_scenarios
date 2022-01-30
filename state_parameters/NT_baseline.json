@@ -2,7 +2,7 @@
   "folder_suffix": "_baseline_jan28_calib",
   "output_directory": "/scratch/cm37/state_outputs/NT/",
   "t_end": 350.0,
-  "seed_exposure":315.0,
+  "seed_exposure":308.0,
   "initial_infections": 300,
   "start_restrictions":350.0,
   "TP":7.29787, 
