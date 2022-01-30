@@ -4,6 +4,6 @@
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=6G
 #SBATCH --cpus-per-task=1
-#SBATCH --array=1-20
+#SBATCH --array=1-100
 
-./RunRestrictions state_parameters/omicron_update_VE.json state_parameters/NT_baseline.json $SLURM_ARRAY_TASK_ID  NT_scenarios scenario82
+./RunRestrictions state_parameters/omicron_update_VE.json state_parameters/TAS_low.json $SLURM_ARRAY_TASK_ID  TAS_scenarios scenario82
