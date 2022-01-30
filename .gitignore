@@ -6,7 +6,7 @@
 
 .vscode
 .vscode/*
-
+state_outputs
 massive_outputs
 slurm*.out 
 scenario*Deltacorrection.csv

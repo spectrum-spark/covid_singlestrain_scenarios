@@ -3,7 +3,7 @@
   "output_directory": "/scratch/cm37/state_outputs/TAS/",
   "t_end": 600.0,
   "seed_exposure":301.0,
-  "initial_infections": 2000,
+  "initial_infections": 100,
   "start_restrictions":350.0,
   "TP":7.29787, 
   "TP_restrictions": 0.85,
