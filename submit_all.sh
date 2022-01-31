@@ -1,6 +1,6 @@
 #!/bin/bash
-
-for STATE in QLD ACT VIC NT SA NSW
+module load gcc/10.2.0
+for STATE in ACT VIC NT SA NSW
 do 
 for LEVEL in baseline low high
 do
