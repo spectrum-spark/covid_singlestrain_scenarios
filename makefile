@@ -14,6 +14,7 @@ all: $(OBJECTS)
 	$(CXX) $(CPPFLAGS) -DDISABLE_BOOSTER -o RunNoBooster main_plotProtection.cpp $(OBJECTS)
 	$(CXX) $(CPPFLAGS)  -o Run main_transmission.cpp $(OBJECTS) 
 	$(CXX) $(CPPFLAGS) -o RunRestrictions main_restrictions.cpp $(OBJECTS)
+		$(CXX) $(CPPFLAGS) -o RunChristmas main_restrictions_christmas.cpp $(OBJECTS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
