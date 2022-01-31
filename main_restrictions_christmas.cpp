@@ -469,10 +469,12 @@ int main(int argc, char* argv[]) {
     std::vector<size_t> newly_symptomatic;
     newly_symptomatic.reserve(1000);
     // Simulate the disease model here.
-    if (t < start_restrictions) {
+
+
+    if (t < start_christmas) {
       t = covid.covid_ascm(residents, age_matrix, t, t + vaccination_dt,
                            covid_dt, E_ref, I_ref, newly_symptomatic);
-    } else if (t < start_christmas) {
+    } else if (t < start_restrictions) {
       t = covid_christmas.covid_ascm(residents, age_matrix, t,
                                      t + vaccination_dt, covid_dt, E_ref, I_ref,
                                      newly_symptomatic);
