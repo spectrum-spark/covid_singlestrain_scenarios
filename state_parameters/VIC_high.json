@@ -1,8 +1,8 @@
 {
-  "folder_suffix": "_baseline_bp15_jan28_calib",
+  "folder_suffix": "_baseline_bp15_jan28",
   "output_directory": "/scratch/cm37/state_outputs/VIC/",
   "t_end": 600.0,
-  "seed_exposure":301.0,
+  "seed_exposure":294.0,
   "initial_infections": 2000,
   "start_restrictions":350.0,
   "TP":5.48495, 
