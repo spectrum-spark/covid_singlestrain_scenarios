@@ -20,4 +20,4 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
 
 clean: 
-	rm build/* Run RunRestrictions RunBooster RunNoBooster 
+	rm build/* Run RunRestrictions RunBooster RunNoBooster RunChristmas
