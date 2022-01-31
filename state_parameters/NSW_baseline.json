@@ -2,7 +2,7 @@
   "folder_suffix": "_baseline_jan28_calib",
   "output_directory": "/scratch/cm37/state_outputs/NSW/",
   "t_end": 330.0,
-  "seed_exposure":294.0,
+  "seed_exposure":287.0,
   "initial_infections": 1500,
   "start_restrictions":350.0,
   "TP":5.48495, 
