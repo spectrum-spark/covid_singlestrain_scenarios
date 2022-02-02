@@ -494,7 +494,8 @@ int main(int argc, char* argv[]) {
                    "secondary_infections, time_isolated \n";
     output_file << covid;  // So sneaky - will put a new line at the end.
     output_file << covid_restrictions;  // Infections from medium covid times.
-    output_file.close();
+    output_file << covid_christmas;
+	output_file.close();
   }
   return 0;
 }

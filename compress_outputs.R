@@ -3,8 +3,14 @@ args = commandArgs(trailingOnly=TRUE)
 folder = args[1]
 
 setwd(folder)
+# print(folder)
+
 filenames <- list.files(pattern = "sim_number*")
 
+test<- unlist(strsplit(folder,'/'))
+prefix <- tail(test,n=2)
+savefilename <- paste0(prefix[1],"_",prefix[2],".csv",sep="")
+print(savefilename)
 library(dplyr)
 library(readr)
 
@@ -20,4 +26,4 @@ for(file in filenames){
 
 }
 
-write_csv(summary,"CompressedSymptomOnset.csv")
+write_csv(summary,savefilename)

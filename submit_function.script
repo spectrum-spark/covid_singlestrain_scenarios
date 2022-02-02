@@ -6,4 +6,4 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --array=1-50
 module load gcc/10.2.0
-./RunChristmas state_parameters/omicron_update_VE.json state_parameters/${STATE_INPUT}_${LEVEL_INPUT}.json $SLURM_ARRAY_TASK_ID  ${STATE_INPUT}_scenarios scenario82
+./RunChristmas state_parameters/omicron_update_VE.json state_parameters/${STATE_INPUT}_${LEVEL_INPUT}.json $SLURM_ARRAY_TASK_ID  ${STATE_INPUT}_scenarios scenario109

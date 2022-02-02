@@ -1,9 +1,9 @@
 {
   "folder_suffix": "_baseline_jan28_Christmas05",
-  "output_directory": "/scratch/cm37/state_outputs/ACT/",
+  "output_directory": "/scratch/cm37/treasury_outputs/ACT/",
   "start_christmas":308,
   "TP_christmas":0.5,
-  "t_end": 600.0,
+  "t_end": 530.0,
   "seed_exposure":294.0,
   "initial_infections": 80,
   "start_restrictions":350.0,
