@@ -606,10 +606,6 @@ static void assignNewNeutValue(const double &log10_neuts,
   std::normal_distribution<double> sample_neuts(log10_neuts, sd_log10_neuts);
   double new_neuts = sample_neuts(generator);
 
-  // If we really want, we can add a check for time here.
-  // if(person.time_last_boost + 14.0 >= t) {
-  //   // They were boosted so recent! Theyre still on the way up!
-  // }
 
   if (new_neuts >= person.old_log10_neutralising_antibodies) {
     person.log10_neutralising_antibodies = new_neuts;
@@ -622,14 +618,61 @@ static void assignNewNeutValue(const double &log10_neuts,
 }
 
 void disease_model::boostNeutsInfection(Individual &person, double &t) {
+
   person.old_log10_neutralising_antibodies =
       calculateNeuts(person, t);  // Assign the old neuts here.
-  double log10_neuts;
-  if (person.isVaccinated) {
-    log10_neuts = log10_mean_neut_Pfizer_dose_3;
+  
+  // Find their vaccination status.
+  const Individual::VaccineHistory &vaccines = resident.vaccinations;
+
+  VaccineType vaccination;
+  if (vaccines.size() != 0) {
+    // Check the time against their vaccination status?
+    if (t < vaccines[0].first) {
+      vaccination = VaccineType::Unvaccinated;
+    } else {
+      for (auto it = vaccines.rbegin(); it != vaccines.rend(); ++it) {
+        if (t >= it->first) {
+          vaccination = it->second;
+          break;
+        }
+      }
+    }
   } else {
-    log10_neuts = log10_mean_neut_infection;
+    vaccination = VaccineType::Unvaccinated;
   }
+
+  double log10_neuts; 
+
+  switch (vaccination) {
+    case VaccineType::AZ1:
+      log10_neuts = log10_mean_neut_AZ_dose_1 + log10_mean_additional_neut;
+      break;
+    case VaccineType::AZ2:
+      log10_neuts = log10_mean_neut_AZ_dose_2+ log10_mean_additional_neut;
+      break;
+    case VaccineType::Pfizer1:
+      log10_neuts = log10_mean_neut_Pfizer_dose_1 + log10_mean_additional_neut;
+      break;
+    case VaccineType::Pfizer2:
+      log10_neuts = log10_mean_neut_Pfizer_dose_2 + log10_mean_additional_neut;
+      break;
+    case VaccineType::Moderna1:
+      log10_neuts = log10_mean_neut_Pfizer_dose_1 + log10_mean_additional_neut;
+      break;
+    case VaccineType::Moderna2:
+      log10_neuts = log10_mean_neut_Pfizer_dose_2 + log10_mean_additional_neut;
+      break;
+    case VaccineType::Booster:
+      log10_neuts = log10_mean_neut_Pfizer_dose_3 + log10_mean_additional_neut;
+      break;
+    case VaccineType::Unvaccinated:
+      log10_neuts = log10_mean_neut_infection;
+    default:
+      throw std::logic_error(
+          "Unrecognised vaccation in boostNeutsInfection. \n");
+  }
+  
   assignNewNeutValue(log10_neuts, sd_log10_neut_titres, person, t);
 }
 
@@ -666,7 +709,6 @@ void disease_model::boostNeutsVaccination(Individual &person, double &t,
       throw std::logic_error(
           "Unrecognised vaccation in boostNeutsVaccination. \n");
   }
-  // std::cout << log10_boost << ", " << sd_log10_neut_titres << std::endl;
   assignNewNeutValue(log10_boost, sd_log10_neut_titres, person, t);
 }
 
