@@ -34,21 +34,6 @@ std::ostream &operator<<(std::ostream &os, const disease_model &covid) {
   return os;
 }
 
-// beta_C(beta_C_in),
-// q(q_in),
-// xi(xi_in),
-// k(exp(1.201998516)),
-// c50_acquisition(-0.567888054),
-// c50_symptoms(-0.619448181),
-// c50_transmission(0.077153705),
-// sd_log10_neut_titres(0.4647092),
-// log10_mean_neut_infection(0.0),
-// log10_mean_neut_AZ_dose_1(-0.642536778),
-// log10_mean_neut_AZ_dose_2(-0.193159173),
-// log10_mean_neut_Pfizer_dose_1(-0.331614187),
-// log10_mean_neut_Pfizer_dose_2(0.225736770),
-// log10_mean_neut_Pfizer_dose_3(1.128683850)
-
 // Constructor for disease model, vector betas
 disease_model::disease_model(std::vector<double> beta_C_in,
                              std::vector<double> q_in,
@@ -70,7 +55,9 @@ disease_model::disease_model(std::vector<double> beta_C_in,
       log10_mean_neut_Pfizer_dose_1(ve_params["log10_mean_neut_Pfizer_dose_1"]),
       log10_mean_neut_Pfizer_dose_2(ve_params["log10_mean_neut_Pfizer_dose_2"]),
       log10_mean_neut_Pfizer_dose_3(
-          ve_params["log10_mean_neut_Pfizer_dose_3"]) {
+          ve_params["log10_mean_neut_Pfizer_dose_3"]),
+      log10_mean_additional_neut(ve_params["log10_mean_additional_neut"]) {
+
   double scale_e = 4.817559;
   double scale_S = 1.013935;
   double scale_r = 1.000000;
@@ -187,11 +174,12 @@ void disease_model::infection_ascm(double t, Individual &infected_individual,
   bool isolated =
       (t >=
        infected_individual
-           .time_isolated);  // Are they isolated at this current time. I dont
-                             // have to put in  check for the maximum time,
-                             // because they will only be isolated for the time
-                             // they are infectious and I dont check if they are
-                             // isolated at the point of infection.
+           .time_isolated); 
+  // Are they isolated at this current time. I dont
+  // have to put in  check for the maximum time,
+  // because they will only be isolated for the time
+  // they are infectious and I dont check if they are
+  // isolated at the point of infection.
 
   if (std::isnan(infected_individual.time_isolated)) {
     throw std::logic_error("Probability of infection is Nan.");
@@ -412,16 +400,6 @@ void disease_model::expose_individual(Individual &resident, double &t) {
                                    // throughout the infecton period) If theyre
                                    // asymptomatic iy must be smaller!
 
-  // Set Neut levels!  You have been exposed to covid your neutralising
-  // antibodies will now do a thing.
-  boostNeutsInfection(resident, t);  // What do the neuts go to (also assigns
-                                     // old Neutralising antibody levels)
-
-  // Set statistics for tracking - required for log10 neuts.
-  // Write log10 neuts for MOC.
-  resident.covid.log10_neuts_at_exposure =
-      resident.old_log10_neutralising_antibodies;
-
   // Find their vaccination status.
   Individual::VaccineHistory &vaccines = resident.vaccinations;
 
@@ -443,6 +421,18 @@ void disease_model::expose_individual(Individual &resident, double &t) {
   }
 
   resident.covid.vaccine_at_exposure = vaccination;
+
+  // Set Neut levels!  You have been exposed to covid your neutralising
+  // antibodies will now do a thing.
+  boostNeutsInfection(resident, t);  // What do the neuts go to (also assigns
+                                     // old Neutralising antibody levels)
+
+  // Set statistics for tracking - required for log10 neuts.
+  // Write log10 neuts for MOC.
+  resident.covid.log10_neuts_at_exposure =
+      resident.old_log10_neutralising_antibodies;
+
+
   resident.secondary_infections = 0;
 }
 
@@ -622,25 +612,7 @@ void disease_model::boostNeutsInfection(Individual &person, double &t) {
   person.old_log10_neutralising_antibodies =
       calculateNeuts(person, t);  // Assign the old neuts here.
   
-  // Find their vaccination status.
-  const Individual::VaccineHistory &vaccines = resident.vaccinations;
-
-  VaccineType vaccination;
-  if (vaccines.size() != 0) {
-    // Check the time against their vaccination status?
-    if (t < vaccines[0].first) {
-      vaccination = VaccineType::Unvaccinated;
-    } else {
-      for (auto it = vaccines.rbegin(); it != vaccines.rend(); ++it) {
-        if (t >= it->first) {
-          vaccination = it->second;
-          break;
-        }
-      }
-    }
-  } else {
-    vaccination = VaccineType::Unvaccinated;
-  }
+  const VaccineType &vaccination = person.covid.vaccine_at_exposure;
 
   double log10_neuts; 
 
@@ -672,7 +644,6 @@ void disease_model::boostNeutsInfection(Individual &person, double &t) {
       throw std::logic_error(
           "Unrecognised vaccation in boostNeutsInfection. \n");
   }
-  
   assignNewNeutValue(log10_neuts, sd_log10_neut_titres, person, t);
 }
 

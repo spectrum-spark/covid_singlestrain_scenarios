@@ -11,7 +11,7 @@
   "log10_mean_neut_Pfizer_dose_2": -0.630021802,
   "log10_mean_neut_Pfizer_dose_3": -0.336224683,
   "log10_mean_neut_infection": 0.0,
-  "log10_mean_additional_neut":0.0,
+  "log10_mean_additional_neut":1.158362492,
   "log_k": 1.707366579,
   "neut_decay": 0.008502135
 }

@@ -40,8 +40,6 @@ class DiseaseOutput {
  */
 class disease_model{
   private:
-
-    
     // Output files. 
     std::vector<DiseaseOutput> output; // Output file. Dynamically add.
     // Neutralising antibody components - make private as they wont change.
@@ -56,8 +54,7 @@ class disease_model{
     double log10_mean_neut_Pfizer_dose_1;
     double log10_mean_neut_Pfizer_dose_2;
     double log10_mean_neut_Pfizer_dose_3;
-
-    
+    double log10_mean_additional_neut;
 
   public:
   

@@ -3,7 +3,7 @@
 "start_christmas":308,
   "TP_christmas":1.0,
   "output_directory": "/scratch/cm37/treasury_outputs/NT/",
-  "t_end": 530.0,
+  "t_end":420.0,
   "seed_exposure":308.0,
   "initial_infections": 150,
   "start_restrictions":350.0,
