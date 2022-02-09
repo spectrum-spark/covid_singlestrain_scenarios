@@ -1,11 +1,16 @@
 #!/bin/bash
-for STATE in ACT VIC NT SA NSW QLD TAS
-# for STATE in TAS
+# for STATE in ACT VIC NT SA NSW QLD TAS
+for STATE in NSW
 do 
-for LEVEL in baseline low high
-# for LEVEL in high low
+for ASC in 33 50
 do
-  echo "${STATE}_${LEVEL}"
-  sbatch --job-name=${STATE}_${LEVEL} --export=STATE_INPUT=${STATE},LEVEL_INPUT=${LEVEL} submit_function.script 
+for RED in 66 
+do 
+for LEVEL in baseline low moderate
+do
+  echo "${STATE}_${ASC}A_${RED}R_${LEVEL}"
+  sbatch --job-name=${STATE}_${ASC}A_${RED}R_${LEVEL} --export=STATE_INPUT=${STATE},LEVEL_INPUT=${ASC}A_${RED}R_${LEVEL} submit_function.script 
+done
+done
 done
 done

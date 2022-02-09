@@ -42,7 +42,8 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       time_isolated(std::nan("7")),
       isCovidNaive(true),
       isVaccinated(false),
-      vaccinations(vaccination_in)
+      vaccinations(vaccination_in),
+      number_infections(0)
 {}
 
 std::ostream &operator<<(std::ostream &os, const Individual &person)

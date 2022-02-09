@@ -27,6 +27,7 @@ class DiseaseOutput {
   double time_isolated;
   double log10neuts_at_exposure;
   int secondary_infections;
+  int number_infections;
   bool   symptomatic;
 
   public:

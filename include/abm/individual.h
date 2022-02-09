@@ -112,7 +112,8 @@ class Individual{
   bool isVaccinated; /**< Has the individual recieved two doses of vaccine. */
 
   int   age_bracket; /**< Age bracket of the individual */
-  int   secondary_infections; /**< The number of individuals that they have infected. */ 
+  int   secondary_infections; /**< The number of individuals that they have infected. */
+  int number_infections;  /**< The number of infections they have received. */
   
   double age; /**< Age of the individual.*/
   double log10_neutralising_antibodies; /**< Level of neutralising antibodies.*/ 

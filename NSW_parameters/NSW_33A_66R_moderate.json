@@ -1,5 +1,5 @@
 {
-  "folder_suffix": "_high_jan28_66final_3x",
+  "folder_suffix": "_33A_66R_moderate",
   "start_christmas": 308,
   "TP_christmas": 0.66,
   "output_directory": "/scratch/cm37/treasury_outputs/NSW/",
@@ -8,7 +8,7 @@
   "initial_infections": 1000,
   "start_restrictions": 350.0,
   "TP": 5.48495,
-  "TP_restrictions": 1.0,
+  "TP_restrictions": 0.83333333333,
   "ttiq": "partial",
   "contact_matrix": "transpose_matrix.csv",
   "prob_symptoms": [

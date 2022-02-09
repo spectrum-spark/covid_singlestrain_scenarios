@@ -12,12 +12,13 @@ DiseaseOutput::DiseaseOutput(const Individual &person)
       symptomatic(!person.covid.asymptomatic),
       secondary_infections(person.secondary_infections),
       vaccine(person.covid.vaccine_at_exposure),
-      time_isolated(person.time_isolated) {}
+      time_isolated(person.time_isolated),
+      number_infections(person.number_infections) {}
 
 std::ostream &operator<<(std::ostream &os, const DiseaseOutput &covid) {
   os << covid.age << ", " << covid.vaccine << ", " << covid.symptomatic << ", "
      << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << ", "
-     << covid.secondary_infections << ", " << covid.time_isolated;
+     << covid.secondary_infections << ", " << covid.time_isolated << ", " << covid.number_infections;
   return os;
 }
 
@@ -54,8 +55,7 @@ disease_model::disease_model(std::vector<double> beta_C_in,
       log10_mean_neut_AZ_dose_2(ve_params["log10_mean_neut_AZ_dose_2"]),
       log10_mean_neut_Pfizer_dose_1(ve_params["log10_mean_neut_Pfizer_dose_1"]),
       log10_mean_neut_Pfizer_dose_2(ve_params["log10_mean_neut_Pfizer_dose_2"]),
-      log10_mean_neut_Pfizer_dose_3(
-          ve_params["log10_mean_neut_Pfizer_dose_3"]),
+      log10_mean_neut_Pfizer_dose_3(ve_params["log10_mean_neut_Pfizer_dose_3"]),
       log10_mean_additional_neut(ve_params["log10_mean_additional_neut"]) {
 
   double scale_e = 4.817559;
@@ -260,6 +260,7 @@ void disease_model::infection_ascm(double t, Individual &infected_individual,
           expose_individual(contact, t);
           ++infected_individual.secondary_infections;
           contact.covid.cluster_number = cluster_number;
+          
         }
       }
     }
@@ -434,6 +435,7 @@ void disease_model::expose_individual(Individual &resident, double &t) {
 
 
   resident.secondary_infections = 0;
+  ++resident.number_infections; // Increase the times theyve been infected. 
 }
 
 // This code is used to check the R0.
@@ -640,10 +642,12 @@ void disease_model::boostNeutsInfection(Individual &person, double &t) {
       break;
     case VaccineType::Unvaccinated:
       log10_neuts = log10_mean_neut_infection;
+      break;
     default:
       throw std::logic_error(
           "Unrecognised vaccation in boostNeutsInfection. \n");
   }
+  
   assignNewNeutValue(log10_neuts, sd_log10_neut_titres, person, t);
 }
 

@@ -4,4 +4,4 @@
 #SBATCH --mem-per-cpu=6G
 #SBATCH --cpus-per-task=1
 module load R/4.0.5
-Rscript compress_outputs.R /scratch/cm37/treasury_outputs/${STATE_INPUT}/scenario109_baseline_${SCENARIO_INPUT}
+Rscript compress_outputs.R /scratch/cm37/treasury_outputs/${STATE_INPUT}/scenario109_${SCENARIO_INPUT}
