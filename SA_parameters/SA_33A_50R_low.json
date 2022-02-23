@@ -1,9 +1,9 @@
 {
-  "folder_suffix": "_33A_50R_low",
+  "folder_suffix": "_long_33A_50R_low",
   "start_christmas": 308,
   "TP_christmas": 0.5,
   "output_directory": "/scratch/cm37/treasury_outputs/SA/",
-  "t_end": 420.0,
+  "t_end": 600.0,
   "seed_exposure": 280.0,
   "initial_infections": 200,
   "start_restrictions": 350.0,

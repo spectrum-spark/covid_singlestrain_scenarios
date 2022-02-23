@@ -478,10 +478,13 @@ int main(int argc, char* argv[]) {
       t = covid_christmas.covid_ascm(residents, age_matrix, t,
                                      t + vaccination_dt, covid_dt, E_ref, I_ref,
                                      newly_symptomatic);
-    } else {
+    } else if(t < 410.0){
       t = covid_restrictions.covid_ascm(residents, age_matrix, t,
                                         t + vaccination_dt, covid_dt, E_ref,
                                         I_ref, newly_symptomatic);
+    }else {
+      t = covid.covid_ascm(residents, age_matrix, t, t + vaccination_dt,
+                           covid_dt, E_ref, I_ref, newly_symptomatic);
     }
   }
 

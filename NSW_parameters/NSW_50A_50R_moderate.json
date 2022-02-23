@@ -1,9 +1,9 @@
 {
-  "folder_suffix": "_50A_50R_moderate",
+  "folder_suffix": "_long_50A_50R_moderate",
   "start_christmas": 308,
   "TP_christmas": 0.50,
   "output_directory": "/scratch/cm37/treasury_outputs/NSW/",
-  "t_end": 420.0,
+  "t_end": 600.0,
   "seed_exposure": 287.0,
   "initial_infections": 2000,
   "start_restrictions": 350.0,

@@ -8,7 +8,7 @@
 # do 
 # for LEVEL in baseline low moderate
 # do
-for STATE in SA
+for STATE in SA NSW
 do 
 for ASC in 33 50  
 do
@@ -19,7 +19,7 @@ do
   echo "${STATE}_${ASC}A_${RED}R_${LEVEL}"
   jid1=$(sbatch --parsable --array=1-20 --job-name=${STATE}_${ASC}A_${RED}R_${LEVEL} --export=STATE_INPUT=${STATE},LEVEL_INPUT=${ASC}A_${RED}R_${LEVEL} submit_function.script)
 
-  sbatch --dependency=afterany:$jid1 --job-name=${STATE}_${SCENARIO} --export=STATE_INPUT=${STATE},SCENARIO_INPUT=${ASC}A_${RED}R_${LEVEL} compress_function.script 
+  sbatch --dependency=afterany:$jid1 --job-name=${STATE}_${SCENARIO} --export=STATE_INPUT=${STATE},SCENARIO_INPUT=long_${ASC}A_${RED}R_${LEVEL} compress_function.script 
 done
 done
 done
