@@ -21,6 +21,7 @@
 #include "abm/abmrandom.h"
 #include "abm/ibm_simulation.h"
 #include "abm/quantium_read.h"
+#include "abm/scenario_read.h"
 #include "nlohmann/json.hpp"
 
 void assemble_age_matrix(const std::vector<Individual> &residents,
@@ -233,13 +234,15 @@ int main(int argc, char *argv[])
         read_age_generation(vaccination_infection_scenario_foldername + "/dim_age_band.csv",
                             100.0);
 
-    // Create residents. UPTO
+    // Create residents. 
 
     std::vector<double> age_brackets = sim_params_json["age_brackets"];
+
+    // generates for each individual, vaccination dates and infection dates according to input values about total number of vaccinations and infections
     std::vector<Individual> residents =
-        read_individuals(vaccination_infection_scenario_foldername + "/" +
+        read_individuals_assignment(vaccination_infection_scenario_foldername + "/" +
                              vaccination_infection_scenario_name + ".csv",
-                         generate_age, age_brackets, neuts_json); // to do: write a new function
+                         generate_age, age_brackets, neuts_json);
     std::cout << "We made " << residents.size() << " Individuals\n";
 
     // Assign neutralising antibodies to all residents.
@@ -249,9 +252,6 @@ int main(int argc, char *argv[])
     bool catch_exposure = false;
     double vaccination_dt = 7.0;
     double covid_dt = pow(2.0, -2.0);
-
-    // generate, for each individual, vaccination dates and infection dates according to input values about total number of vaccinations and infections
-    // TODO/UPTO
 
     // construct mostly empty disease model object and then use its to apply the effect of vaccination and infection and thus modify the neuts:
 
@@ -402,8 +402,9 @@ int main(int argc, char *argv[])
     disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json);
 
     // initial neuts prior vaccination and infection
-
     // I can loop per person instead of by time step, because the people don't affect each other.
+
+
 
     // update neuts occording to vaccination dates and infection dates and decay appropriately using boostNeutsVaccination for each vaccination
     // and assigning covid.vaccine_at_exposure + boostNeutsInfection for each infection
@@ -522,6 +523,8 @@ int main(int argc, char *argv[])
     //   }
     //   assignNewNeutValue(log10_boost, sd_log10_neut_titres, person, t);
     // }
+
+    // and then print out all the neuts values and vaccination history and infection history per person
 
     std::string output_filename =
         directory + "/sim_number_" + std::to_string(sim_number) + ".csv";

@@ -143,11 +143,6 @@ static void create_individuals_assigned(std::stringstream &individual_group, std
 
         residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params,infection));
 
-
-
-
-
-
     }
 }
 
