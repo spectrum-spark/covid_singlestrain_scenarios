@@ -46,6 +46,23 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       number_infections(0)
 {}
 
+Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std::vector<std::pair<double, VaccineType>> &vaccination_in, nlohmann::json &ve_params, int &num_infections, double &time_of_past_infection)
+    : covid('S'),
+      age(age_in),
+      age_bracket(age_sort(age_in, age_brackets_in)),
+      secondary_infections(0),
+      log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
+      old_log10_neutralising_antibodies(std::numeric_limits<double>::lowest()),
+      time_last_boost(0.0),
+      decay_rate(ve_params["neut_decay"]),
+      time_isolated(std::nan("7")),
+      isCovidNaive(true),
+      isVaccinated(false),
+      vaccinations(vaccination_in),
+      number_infections(num_infections),
+      time_past_infection(time_of_past_infection)
+{}
+
 std::ostream &operator<<(std::ostream &os, const Individual &person)
 {
   os << person.age << ", " << person.age_bracket << ", " << person.covid.infection_status << ", " << person.log10_neutralising_antibodies << ", " << person.old_log10_neutralising_antibodies << ", " << person.time_last_boost;

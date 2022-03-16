@@ -107,6 +107,8 @@ class Individual{
    * @param age_bracket 
    */
   Individual(double& age, std::vector<double>& age_brackets, std::vector<std::pair<double,VaccineType>>& Vaccinations, nlohmann::json& ve_params); 
+
+  Individual(double& age, std::vector<double>& age_brackets, std::vector<std::pair<double,VaccineType>>& Vaccinations, nlohmann::json& ve_params, int &num_infections, double &time_of_past_infection); 
   
   bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. Currently unused. */ 
   bool isVaccinated; /**< Has the individual recieved two doses of vaccine. */
@@ -114,6 +116,8 @@ class Individual{
   int   age_bracket; /**< Age bracket of the individual */
   int   secondary_infections; /**< The number of individuals that they have infected. */
   int number_infections;  /**< The number of infections they have received. */
+
+  double time_past_infection;  /**< Time of past infection if any */
   
   double age; /**< Age of the individual.*/
   double log10_neutralising_antibodies; /**< Level of neutralising antibodies.*/ 
