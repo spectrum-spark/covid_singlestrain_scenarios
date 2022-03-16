@@ -46,7 +46,7 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       number_infections(0)
 {}
 
-Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std::vector<std::pair<double, VaccineType>> &vaccination_in, nlohmann::json &ve_params, int &num_infections, double &time_of_past_infection)
+Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std::vector<std::pair<double, VaccineType>> &vaccination_in, nlohmann::json &ve_params, size_t &num_infections, double &time_of_past_infection)
     : covid('S'),
       age(age_in),
       age_bracket(age_sort(age_in, age_brackets_in)),

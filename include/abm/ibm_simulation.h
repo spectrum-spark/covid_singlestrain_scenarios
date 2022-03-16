@@ -219,6 +219,8 @@ class disease_model{
   // Vaccination. 
   void boostNeutsVaccination(Individual& person, double& t, VaccineType& vaccine);
 
+  void boostNeutsVaccination_no_switch(Individual& person, double& t, VaccineType& vaccine);
+
   // friend std::ostream& operator<<(std::ostream& os, const std::vector<DiseaseOutput>& covid); /**< Overloaded ostream for output */
   friend std::ostream& operator<<(std::ostream& os, const disease_model& covid);
 

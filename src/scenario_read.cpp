@@ -88,9 +88,8 @@ static void create_individuals_assigned(std::stringstream &individual_group, std
     {
         string_value_stream = std::stringstream(string_value);
         string_value_stream >> infection;
+        
     }
-
-
 
     
     // Loop through and create the individuals.
@@ -112,14 +111,13 @@ static void create_individuals_assigned(std::stringstream &individual_group, std
         std::vector<std::pair<double, VaccineType>> Time_and_Vaccine;
         if (max_vaccine_number>0){
             //first dose assigned on the first day, effectively 
-            double time_dose_1 = 0.0
+            double time_dose_1 = 0.0;
             VaccineType dose = VaccineType::AZ1;
             // dose = VaccineType::Pfizer1;
             // dose = VaccineType::Moderna1;
             Time_and_Vaccine.push_back(std::make_pair(time_dose_1, dose));
 
-            for (int vax_num = 2; vax_num<=max_vaccine_number;vax_num++ ){
-                VaccineType dose = VaccineType::AZ2;
+                VaccineType dose2 = VaccineType::AZ2;
                 //dose = VaccineType::Pfizer2;
                 //dose = VaccineType::Moderna2;
                 double time_dose = -(90.0/101.0)*age + 90.0;
@@ -127,21 +125,22 @@ static void create_individuals_assigned(std::stringstream &individual_group, std
                 // t = -(90/101)*age + 90 , so that older people get their 2nd doses first.
                 // and people aged 0 get their 2nd doses at ~3 months
 
-                Time_and_Vaccine.push_back(std::make_pair(time_dose, dose));
+                Time_and_Vaccine.push_back(std::make_pair(time_dose, dose2));
 
-            }
+            
         }
         
         //if this person got infected
+        double time_infected;
         if(infection>0){
-            double time_infected = distribution(generator);
-            std::cout << "time infected: " << time_infected  << std::endl;
+            time_infected = distribution(generator);
+            // std::cout << "time infected: " << time_infected  << std::endl;
         } 
         else{
-            double time_infected = -1.0; // aka never
+            time_infected = -1.0; // aka never
         }
 
-        residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params,infection));
+        residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params,infection,time_infected));
 
     }
 }

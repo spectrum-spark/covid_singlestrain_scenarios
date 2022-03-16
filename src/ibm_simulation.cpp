@@ -618,6 +618,8 @@ void disease_model::boostNeutsInfection(Individual &person, double &t) {
 
   double log10_neuts; 
 
+  //std::cout << "boostNeutsInfection \n";
+
   switch (vaccination) {
     case VaccineType::AZ1:
       log10_neuts = log10_mean_neut_AZ_dose_1 + log10_mean_additional_neut;
@@ -645,7 +647,7 @@ void disease_model::boostNeutsInfection(Individual &person, double &t) {
       break;
     default:
       throw std::logic_error(
-          "Unrecognised vaccation in boostNeutsInfection. \n");
+          "Unrecognised vaccination in boostNeutsInfection. \n");
   }
   
   assignNewNeutValue(log10_neuts, sd_log10_neut_titres, person, t);
@@ -682,7 +684,54 @@ void disease_model::boostNeutsVaccination(Individual &person, double &t,
       break;
     default:
       throw std::logic_error(
-          "Unrecognised vaccation in boostNeutsVaccination. \n");
+          "Unrecognised vaccination in boostNeutsVaccination. \n");
+  }
+  assignNewNeutValue(log10_boost, sd_log10_neut_titres, person, t);
+}
+
+void disease_model::boostNeutsVaccination_no_switch(Individual &person, double &t, VaccineType &vaccine)
+{
+  person.old_log10_neutralising_antibodies = calculateNeuts(person, t);
+  // We can do fold increase in neuts here depending upon the individuals
+  // previous exposure ( + log10(N) would be an N fold increase)
+  double log10_boost;
+
+  //std::cout << "boostNeutsVaccination_no_switch \n";
+  //std:: cout << vaccine << "\n";
+
+  if (vaccine == VaccineType::AZ1)
+  {
+    log10_boost = log10_mean_neut_AZ_dose_1;
+  }
+  else if (vaccine == VaccineType::AZ2)
+  {
+    log10_boost = log10_mean_neut_AZ_dose_2;
+  }
+  else if (vaccine == VaccineType::Pfizer1)
+  {
+    log10_boost = log10_mean_neut_Pfizer_dose_1;
+  }
+  else if (vaccine == VaccineType::Pfizer2)
+  {
+    log10_boost = log10_mean_neut_Pfizer_dose_2;
+  }
+  else if (vaccine == VaccineType::Moderna1)
+  {
+    log10_boost = log10_mean_neut_Pfizer_dose_1;
+  }
+  else if (vaccine == VaccineType::Moderna2)
+  {
+    log10_boost = log10_mean_neut_Pfizer_dose_2;
+  }
+  else if (vaccine == VaccineType::Booster)
+  {
+    log10_boost = log10_mean_neut_Pfizer_dose_3;
+  }
+  else
+  {
+    std::cout << vaccine << "\n";
+    throw std::logic_error(
+        "Unrecognised vaccination in boostNeutsVaccination_no_switch. \n");
   }
   assignNewNeutValue(log10_boost, sd_log10_neut_titres, person, t);
 }

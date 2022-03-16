@@ -234,15 +234,15 @@ int main(int argc, char *argv[])
         read_age_generation(vaccination_infection_scenario_foldername + "/dim_age_band.csv",
                             100.0);
 
-    // Create residents. 
+    // Create residents.
 
     std::vector<double> age_brackets = sim_params_json["age_brackets"];
 
     // generates for each individual, vaccination dates and infection dates according to input values about total number of vaccinations and infections
     std::vector<Individual> residents =
         read_individuals_assignment(vaccination_infection_scenario_foldername + "/" +
-                             vaccination_infection_scenario_name + ".csv",
-                         generate_age, age_brackets, neuts_json);
+                                        vaccination_infection_scenario_name + ".csv",
+                                    generate_age, age_brackets, neuts_json);
     std::cout << "We made " << residents.size() << " Individuals\n";
 
     // Assign neutralising antibodies to all residents.
@@ -401,130 +401,87 @@ int main(int argc, char *argv[])
     // Calculate TP and load disease model.
     disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json);
 
-    // initial neuts prior vaccination and infection
-    // I can loop per person instead of by time step, because the people don't affect each other.
+    // loop per person instead of by time step, because the people don't affect each other.
+    // update neuts according to vaccination dates and infection dates
+    // using boostNeutsVaccination for each vaccination
+    // and boostNeutsInfection for each infection
+    // decay is built into these functions already
 
+    for (int i = 0; i < residents.size(); ++i)
+    {
+        Individual &person = residents[i];
+        Individual::VaccineHistory &vaccinations = residents[i].vaccinations;
+        size_t infected_or_not = residents[i].number_infections;
+        double time_of_past_infection = residents[i].time_past_infection;
 
+        if (vaccinations.size() == 0)
+        {
+            // i.e. unvaccinated
+            if (infected_or_not)
+            { // i.e., unvaccinated and infected
+                VaccineType vaccination = VaccineType::Unvaccinated;
+                residents[i].covid.vaccine_at_exposure = vaccination;
+                covid.boostNeutsInfection(residents[i], time_of_past_infection);
+            }
+        }
+        else
+        {
+            // vaccinated
+            //  first dose
+            double time_dose = vaccinations[0].first;
+            VaccineType v =vaccinations[0].second;
+            // std::cout << vaccinations[0].first << "," << vaccinations[0].second << "\n";
+            covid.boostNeutsVaccination_no_switch(residents[i], time_dose, vaccinations[0].second);
 
-    // update neuts occording to vaccination dates and infection dates and decay appropriately using boostNeutsVaccination for each vaccination
-    // and assigning covid.vaccine_at_exposure + boostNeutsInfection for each infection
+            // if they have a first dose, they definitely have a second dose
+            double time_dose_2 = vaccinations[1].first;
+            VaccineType v2 = vaccinations[1].second;
 
-    // double disease_model::calculateNeuts(const Individual &person, double &t) {
-    //   return person.log10_neutralising_antibodies -
-    //          person.decay_rate * (t - person.time_last_boost) /
-    //              log(10.0);  // We are working in log neuts so if exponential is in
-    //                          // base e then k is log10(e)*k. Decay rate can be put in disease model as it does not depend upon the individual in our current implementation. This is something to look at.
-    // }
+            // if they also get infected
+            if (infected_or_not)
+            {
+                if (time_of_past_infection < time_dose_2)
+                {
+                    // unlikely but just in case, then infection needs to happen first before the second dose
+                    residents[i].covid.vaccine_at_exposure = v;
 
-    // Set Neut levels!  You have been exposed to covid your neutralising
-    // antibodies will now do a thing.
-    //   boostNeutsInfection(resident, t);  // What do the neuts go to (also assigns
-    //                                      // old Neutralising antibody levels)
-
-    //   // Set statistics for tracking - required for log10 neuts.
-    //   // Write log10 neuts for MOC.
-    //   resident.covid.log10_neuts_at_exposure =
-    //       resident.old_log10_neutralising_antibodies;
-
-    //   resident.secondary_infections = 0;
-    //   ++resident.number_infections; // Increase the times theyve been infected.
-
-    // static void assignNewNeutValue(const double &log10_neuts,
-    //                                const double &sd_log10_neuts, Individual &person,
-    //                                double &t) {
-    //   // Might include ucrrent neuts as inputs.
-    //   std::normal_distribution<double> sample_neuts(log10_neuts, sd_log10_neuts);
-    //   double new_neuts = sample_neuts(generator);
-
-    //   if (new_neuts >= person.old_log10_neutralising_antibodies) {
-    //     person.log10_neutralising_antibodies = new_neuts;
-    //   } else {
-    //     person.log10_neutralising_antibodies =
-    //         person.old_log10_neutralising_antibodies;
-    //   }
-
-    //   person.time_last_boost = t;
-    // }
-
-    // void disease_model::boostNeutsInfection(Individual &person, double &t) {
-
-    //   person.old_log10_neutralising_antibodies =
-    //       calculateNeuts(person, t);  // Assign the old neuts here.
-
-    //   const VaccineType &vaccination = person.covid.vaccine_at_exposure;
-
-    //   double log10_neuts;
-
-    //   switch (vaccination) {
-    //     case VaccineType::AZ1:
-    //       log10_neuts = log10_mean_neut_AZ_dose_1 + log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::AZ2:
-    //       log10_neuts = log10_mean_neut_AZ_dose_2+ log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::Pfizer1:
-    //       log10_neuts = log10_mean_neut_Pfizer_dose_1 + log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::Pfizer2:
-    //       log10_neuts = log10_mean_neut_Pfizer_dose_2 + log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::Moderna1:
-    //       log10_neuts = log10_mean_neut_Pfizer_dose_1 + log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::Moderna2:
-    //       log10_neuts = log10_mean_neut_Pfizer_dose_2 + log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::Booster:
-    //       log10_neuts = log10_mean_neut_Pfizer_dose_3 + log10_mean_additional_neut;
-    //       break;
-    //     case VaccineType::Unvaccinated:
-    //       log10_neuts = log10_mean_neut_infection;
-    //       break;
-    //     default:
-    //       throw std::logic_error(
-    //           "Unrecognised vaccation in boostNeutsInfection. \n");
-    //   }
-
-    //   assignNewNeutValue(log10_neuts, sd_log10_neut_titres, person, t);
-    // }
-
-    // void disease_model::boostNeutsVaccination(Individual &person, double &t,
-    //                                           VaccineType &vaccine) {
-    //   person.old_log10_neutralising_antibodies = calculateNeuts(person, t);
-    //   // We can do fold increase in neuts here depending upon the individuals
-    //   // previous exposure ( + log10(N) would be an N fold increase)
-    //   double log10_boost;
-
-    //   switch (vaccine) {
-    //     case VaccineType::AZ1:
-    //       log10_boost = log10_mean_neut_AZ_dose_1;
-    //       break;
-    //     case VaccineType::AZ2:
-    //       log10_boost = log10_mean_neut_AZ_dose_2;
-    //       break;
-    //     case VaccineType::Pfizer1:
-    //       log10_boost = log10_mean_neut_Pfizer_dose_1;
-    //       break;
-    //     case VaccineType::Pfizer2:
-    //       log10_boost = log10_mean_neut_Pfizer_dose_2;
-    //       break;
-    //     case VaccineType::Moderna1:
-    //       log10_boost = log10_mean_neut_Pfizer_dose_1;
-    //       break;
-    //     case VaccineType::Moderna2:
-    //       log10_boost = log10_mean_neut_Pfizer_dose_2;
-    //       break;
-    //     case VaccineType::Booster:
-    //       log10_boost = log10_mean_neut_Pfizer_dose_3;
-    //       break;
-    //     default:
-    //       throw std::logic_error(
-    //           "Unrecognised vaccation in boostNeutsVaccination. \n");
-    //   }
-    //   assignNewNeutValue(log10_boost, sd_log10_neut_titres, person, t);
-    // }
+                    covid.boostNeutsInfection(residents[i], time_of_past_infection);
+                    covid.boostNeutsVaccination_no_switch(residents[i], time_dose_2, v2);
+                    residents[i].isVaccinated = true;
+                }
+                else
+                {
+                    covid.boostNeutsVaccination_no_switch(residents[i], time_dose_2, v2);
+                    residents[i].isVaccinated = true;
+                    residents[i].covid.vaccine_at_exposure = v2;
+                    covid.boostNeutsInfection(residents[i], time_of_past_infection);
+                }
+            }
+            else // not infected
+            {
+                covid.boostNeutsVaccination_no_switch(residents[i], time_dose_2, v2);
+                residents[i].isVaccinated = true;
+            }
+        }
+    }
 
     // and then print out all the neuts values and vaccination history and infection history per person
+    std::string neuts_output_filename =
+        directory + "/sim_number_" + std::to_string(sim_number) + "_initial_residents.csv";
+    std::ofstream neuts_output_file(neuts_output_filename);
+    if (neuts_output_file.is_open())
+    {
+        neuts_output_file << "age,log10_neuts \n";
+        for (int i = 0; i < residents.size(); ++i)
+        {
+            double neuts_at_end_time = covid.calculateNeuts(residents[i],t_end);
+            neuts_output_file << residents[i].age << "," << neuts_at_end_time <<"\n";
+        }
+
+        neuts_output_file.close();
+    }
+
+    ////////////////////////////////////////////////
 
     std::string output_filename =
         directory + "/sim_number_" + std::to_string(sim_number) + ".csv";
@@ -535,8 +492,6 @@ int main(int argc, char *argv[])
         output_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
                        "secondary_infections, time_isolated, infection_number \n";
         output_file << covid; // So sneaky - will put a new line at the end.
-        output_file << covid_christmas;
-        output_file << covid_restrictions; // Infections from medium covid times.
 
         output_file.close();
     }
