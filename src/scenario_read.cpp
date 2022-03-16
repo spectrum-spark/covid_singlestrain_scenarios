@@ -91,105 +91,63 @@ static void create_individuals_assigned(std::stringstream &individual_group, std
     }
 
 
-    // // std::vector<double> Time_doses;
-    // std::vector<std::pair<double, VaccineType>> Time_and_Vaccine;
-    // std::string time_dose_1_string;
-    // std::getline(individual_group, time_dose_1_string, ',');
-
-    // if (!time_dose_1_string.empty())
-    // {
-
-    //     // Get the value.
-    //     string_value_stream = std::stringstream(time_dose_1_string);
-    //     string_value_stream >> time_dose_1;
-    //     time_dose_1 = time_dose_1 * (7.0);
-    //     VaccineType dose;
-    //     if (vaccine == 2)
-    //     {
-    //         dose = VaccineType::AZ1;
-    //     }
-    //     else if (vaccine == 1 | vaccine == 5)
-    //     {
-    //         dose = VaccineType::Pfizer1;
-    //     }
-    //     else if (vaccine == 3)
-    //     {
-    //         dose = VaccineType::Moderna1;
-    //     }
-    //     else
-    //     {
-
-    //         throw std::logic_error("Unrecognised vaccine \n");
-    //     }
-    //     // Time_doses.push_back(time_dose_1);
-    //     // Time_and_Vaccine.push_back(std::make_pair(time_dose_1,vaccine));
-    //     Time_and_Vaccine.push_back(std::make_pair(time_dose_1, dose));
-    // }
-
-    // // Assign values.
-    // std::string time_dose_2_string;
-    // std::getline(individual_group, time_dose_2_string, ',');
-    // if (!time_dose_2_string.empty())
-    // {
-    //     assert(Time_and_Vaccine.size() == 1); // If you are getting second dose, you have to have had first.
-    //     string_value_stream = std::stringstream(time_dose_2_string);
-    //     string_value_stream >> time_dose_2;
-    //     time_dose_2 = time_dose_2 * (7.0);
-    //     VaccineType dose;
-    //     if (vaccine == 2)
-    //     {
-    //         dose = VaccineType::AZ2;
-    //     }
-    //     else if (vaccine == 1 | vaccine == 5)
-    //     {
-    //         dose = VaccineType::Pfizer2;
-    //     }
-    //     else if (vaccine == 3)
-    //     {
-    //         dose = VaccineType::Moderna2;
-    //     }
-    //     else
-    //     {
-    //         throw std::logic_error("Unrecognised vaccine \n");
-    //     }
-    //     Time_and_Vaccine.push_back(std::make_pair(time_dose_2, dose));
-    // }
-
-    // // Assign values.
-    // std::string time_booster_string;
-    // std::getline(individual_group, time_booster_string, ',');
-    // if (!time_booster_string.empty())
-    // {
-    //     assert(Time_and_Vaccine.size() == 2);
-    //     string_value_stream = std::stringstream(time_booster_string);
-    //     string_value_stream >> time_booster;
-    //     time_booster = time_booster * (7.0);
-    //     // Time_doses.push_back(time_booster);
-    //     VaccineType dose;
-    //     if (booster_vaccine == 1 | booster_vaccine == 2 | booster_vaccine == 3 | booster_vaccine == 4 | booster_vaccine == 5)
-    //     {
-    //         dose = VaccineType::Booster;
-    //     }
-    //     else
-    //     {
-    //         // std::cout << time_booster_string << std::endl;
-    //         throw std::logic_error("Unrecognised vaccine \n");
-    //     }
-
-    //     Time_and_Vaccine.push_back(std::make_pair(time_booster, dose));
-    // }
 
     
     // Loop through and create the individuals.
     // Assign people the time of vaccine in a vector for the constructor.
+
+    double mean = (181.0+122.0)/2.0;
+    double norm_sd = (181.0-122.0)/4.0;
+    std::normal_distribution<double> distribution(mean,norm_sd);
 
     for (size_t i = 0; i < num_people; ++i)
     {
         // Create an individual!
         double age = generate_age[age_band_id - 1](generator);
         // std::cout << i << ", " << age << std::endl;
-        // todo: generate times of vaccination and infection for each person
-        residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params));
+        // generate times of vaccination and infection for each person
+
+
+    
+        std::vector<std::pair<double, VaccineType>> Time_and_Vaccine;
+        if (max_vaccine_number>0){
+            //first dose assigned on the first day, effectively 
+            double time_dose_1 = 0.0
+            VaccineType dose = VaccineType::AZ1;
+            // dose = VaccineType::Pfizer1;
+            // dose = VaccineType::Moderna1;
+            Time_and_Vaccine.push_back(std::make_pair(time_dose_1, dose));
+
+            for (int vax_num = 2; vax_num<=max_vaccine_number;vax_num++ ){
+                VaccineType dose = VaccineType::AZ2;
+                //dose = VaccineType::Pfizer2;
+                //dose = VaccineType::Moderna2;
+                double time_dose = -(90.0/101.0)*age + 90.0;
+                // basic function to assign time is:
+                // t = -(90/101)*age + 90 , so that older people get their 2nd doses first.
+                // and people aged 0 get their 2nd doses at ~3 months
+
+                Time_and_Vaccine.push_back(std::make_pair(time_dose, dose));
+
+            }
+        }
+        
+        //if this person got infected
+        if(infection>0){
+            double time_infected = distribution(generator);
+            std::cout << "time infected: " << time_infected  << std::endl;
+        } 
+        else{
+            double time_infected = -1.0; // aka never
+        }
+
+        residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params,infection));
+
+
+
+
+
+
     }
 }
 
