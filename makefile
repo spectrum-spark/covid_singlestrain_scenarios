@@ -11,9 +11,10 @@ OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
 
 all: $(OBJECTS)
 	$(CXX) $(CPPFLAGS) -o RunGenerateInitial main_generate_initial_conditions.cpp $(OBJECTS) 
+	$(CXX) $(CPPFLAGS) -o RunWinterWave main_winterwave.cpp $(OBJECTS) 
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
 
 clean: 
-	rm build/* RunGenerateInitial
+	rm build/* RunGenerateInitial RunWinterWave

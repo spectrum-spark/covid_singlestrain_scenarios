@@ -296,6 +296,17 @@ static void create_individuals_given_data(std::stringstream &individual_group, s
         // and people aged 0 get their 2nd doses at ~3 months
 
         Time_and_Vaccine.push_back(std::make_pair(time_dose, dose2));
+
+        VaccineType dose3 = VaccineType::Booster;
+        double time_dose3 = 212+ (-(90/101)*age + 90) ;
+        
+        // basic function to assign time is:
+        // so that older people get their 3rd doses first.
+        // and people aged 0 get their 2nd doses at ~3 months
+        // where 212 is so you start on April 1st 
+
+         Time_and_Vaccine.push_back(std::make_pair(time_dose3, dose3));
+
     }
 
     // if this person got infected

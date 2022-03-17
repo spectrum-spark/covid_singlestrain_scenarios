@@ -222,9 +222,9 @@ int main(int argc, char *argv[])
     // Create residents.
     // generates each individual, populating them with neuts, vaccination dates and infection dates etc. according to input scenario data
     std::vector<Individual> residents =
-        read_individuals_data(vaccination_infection_scenario_foldername + "/" +
-                                        vaccination_infection_scenario_name + ".csv",
-                                    generate_age, age_brackets, neuts_json);
+        read_individuals_data(neuts_vaccination_infection_scenario_foldername + "/" +
+                                  neuts_vaccination_infection_scenario_name + ".csv",
+                              age_brackets, neuts_json);
     std::cout << "We made " << residents.size() << " Individuals\n";
 
     double t = 0.0;
@@ -234,19 +234,137 @@ int main(int argc, char *argv[])
     double vaccination_dt = 7.0;
     double covid_dt = pow(2.0, -2.0);
 
+    // Contact matrix filename.
+    std::string contact_matrix_filename = sim_params_json["contact_matrix"];
+    size_t num_brackets = age_brackets.size(); // Number of brackets.
 
+    // Contact matrix - read in.
+    std::vector<std::vector<double>> contact_matrix(num_brackets, std::vector<double>(num_brackets, 0.0));
+    std::ifstream matrix_read(contact_matrix_filename);
+    if (matrix_read.is_open())
+    {
+        std::string line;
+        double value;
+        for (int i = 0; i < num_brackets; i++)
+        {
+            std::getline(matrix_read, line); // Read the line.
+            std::stringstream stream_line(line);
+            std::string row_val;
+            for (int j = 0; j < num_brackets; j++)
+            {
+                std::getline(stream_line, row_val, ','); // Row val is the corresponding double we are after.
+                std::stringstream stream_row(row_val);
+                stream_row >> value;
+                contact_matrix[i][j] = value;
+            }
+        }
+        matrix_read.close();
+    }
+    else
+    {
+        throw std::logic_error("The contact matrix file " + contact_matrix_filename + " was not found.");
+    }
 
+    std::cout << std::endl;
 
+#ifdef DUMP_INPUT
+    std::cout << "Contact matrix " << std::endl;
+    for (int i = 0; i < contact_matrix.size(); i++)
+    {
+        for (int j = 0; j < contact_matrix[i].size(); j++)
+        {
+            std::cout << contact_matrix[i][j] << ", ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+#endif
 
+    // Disease parameters.
+    std::vector<double> alpha = sim_params_json["relative_infectiousness"];
+    std::vector<double> q = sim_params_json["prob_symptoms"];
+    std::vector<double> xi = sim_params_json["susceptibility"];
 
+    // Check the sizes of beta q and xi against eachother and the contact matrix.
+    if (alpha.size() != contact_matrix.size())
+    {
+        throw std::logic_error("Difference in size between beta and contact_matrix. \n");
+    }
+    if (q.size() != contact_matrix.size())
+    {
+        throw std::logic_error("Difference in size between q and contact_matrix. \n");
+    }
+    if (xi.size() != contact_matrix.size())
+    {
+        throw std::logic_error("Difference in size between xi and contact_matrix. \n");
+    }
 
+    // Count residents in each age bracket - set up vaccination?
+    std::vector<int> age_bracket_count(num_brackets, 0);
+    for (auto &x : residents)
+    {
+        ++age_bracket_count[x.age_bracket];
+    }
 
+    std::vector<double> population_pi(num_brackets, 0.0);
+    std::cout << "Population proportion" << std::endl;
+    for (int i = 0; i < num_brackets; ++i)
+    {
+        population_pi[i] = static_cast<double>(age_bracket_count[i]) / residents.size();
+        std::cout << population_pi[i] << std::endl;
+    }
+    std::cout << std::endl;
 
+    // Calculate beta from TP.
+    double tau_S = 1.0; // Symptomatic.
+    double tau_A = 0.5; // Asymptomatic.
+    double sum_expression = 0.0;
+    for (int k = 0; k < (int)num_brackets; k++)
+    {
+        double xi_k = xi[k];
+        double internal_sum = 0.0;
+        for (int i = 0; i < (int)num_brackets; i++)
+        {
+            double lambda_ik = contact_matrix[i][k];
+            internal_sum += alpha[i] * lambda_ik * ((tau_S - tau_A) * q[i] + tau_A) * population_pi[i];
+        };
+        sum_expression += internal_sum * xi_k;
+    };
 
+    double TP = sim_params_json["TP"];
+    double beta_scale = TP / (sum_expression * ((5.1 - 2.5) + 1.5)); // This is hardcoded, be careful if anything changes.
+    std::vector<double> beta = alpha;
+    std::cout << "beta " << std::endl;
+    for (auto &x : beta)
+    { // Scale so that it is the appropriate size.
+        x = beta_scale * x;
+        std::cout << x << std::endl;
+    }
+    std::cout << std::endl;
 
+    // TTIQ response.
+    std::vector<double> b(ttiq_days.begin(), ttiq_days.end());
+    std::vector<double> w;
+    std::string ttiq_type = sim_params_json["ttiq"];
 
+    if (ttiq_type == "partial")
+    {
+        w = std::vector<double>(partial.begin(), partial.end());
+    }
+    else if (ttiq_type == "optimal")
+    {
+        w = std::vector<double>(optimal.begin(), optimal.end());
+    }
+    else
+    {
+        throw std::logic_error("Unrecognised TTIQ_type, please choose either partial or optimal (CASE SENSITIVE)\n");
+    }
 
+    // Calculate TP and load disease model.
+    disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json);
 
+    // Vaccinate people!
+    std::vector<VaccinationSchedule> booster_doses;
 
     auto end = std::chrono::steady_clock::now();
     std::cout << "Elapsed time in seconds: "

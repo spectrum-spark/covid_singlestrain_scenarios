@@ -17,4 +17,7 @@
 
 std::vector<Individual> read_individuals_assignment(std::string vaccination_infection_filename, std::vector<std::uniform_real_distribution<double>> &generate_age, std::vector<double> &age_brackets, nlohmann::json &ve_params);
 
+std::vector<Individual> read_individuals_data(std::string neuts_vaccination_infection_filename, std::vector<double> &age_brackets, nlohmann::json &ve_params);
+
+
 #endif
