@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
 
     // vaccination infection scenario should have:
     // age_band, num_people, max_vaccine_number, infection yes/no
-    // gives age band, number of people in this particular group, 0, 1 or 2 vaccines--if 2 vaccines, the 1st dose is given at the very beginning, and the 2nd dose is given later (all boosters will be given in the 'main/actual' simulaiton, and whether or not this group gets infected during this 'pre' simulation)
+    // gives age band, number of people in this particular group, 0, 1 or 2 vaccines--if 2 vaccines, the 1st dose is given at the very beginning, and the 2nd dose is given later (all boosters will be given in the 'main/actual' simulation, and whether or not this group gets infected during this 'pre' simulation)
 
     // Will be used to construct individuals.
     std::vector<std::uniform_real_distribution<double>> generate_age =
@@ -434,7 +434,7 @@ int main(int argc, char *argv[])
             // vaccinated
             //  first dose
             double time_dose = vaccinations[0].first;
-            VaccineType v =vaccinations[0].second;
+            VaccineType v = vaccinations[0].second;
             // std::cout << vaccinations[0].first << "," << vaccinations[0].second << "\n";
             covid.boostNeutsVaccination_no_switch(residents[i], time_dose, vaccinations[0].second);
 
@@ -476,22 +476,23 @@ int main(int argc, char *argv[])
     std::ofstream neuts_output_file(neuts_output_filename);
     if (neuts_output_file.is_open())
     {
-        neuts_output_file << "age,log10_neuts,max_vaccine, time_if_vaccinated,infected,time_if_infected \n";
+        neuts_output_file << "age,age_bracket,log10_neuts,max_vaccine, time_if_vaccinated,infected,time_if_infected \n";
         for (int i = 0; i < residents.size(); ++i)
         {
             Individual::VaccineHistory &vaccinations = residents[i].vaccinations;
             int max_vacc = vaccinations.size();
             double time_dose_2;
-            if(max_vacc>0){
+            if (max_vacc > 0)
+            {
                 time_dose_2 = vaccinations[1].first;
             }
-            else{
-                time_dose_2=1000000000000000;
+            else
+            {
+                time_dose_2 = 1000000000000000;
             }
-            
 
-            double neuts_at_end_time = covid.calculateNeuts(residents[i],t_end);
-            neuts_output_file << residents[i].age << "," << neuts_at_end_time << ","<< max_vacc <<","<< time_dose_2 << ","<< residents[i].number_infections <<"," << residents[i].time_past_infection  <<"\n";
+            double neuts_at_end_time = covid.calculateNeuts(residents[i], t_end);
+            neuts_output_file << residents[i].age << "," << residents[i].age_bracket << "," << neuts_at_end_time << "," << max_vacc << "," << time_dose_2 << "," << residents[i].number_infections << "," << residents[i].time_past_infection << "\n";
         }
 
         neuts_output_file.close();
@@ -514,8 +515,8 @@ int main(int argc, char *argv[])
 
     auto end = std::chrono::steady_clock::now();
     std::cout << "Elapsed time in seconds: "
-        << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
-        << " sec";
+              << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
+              << " sec";
 
     return 0;
 }

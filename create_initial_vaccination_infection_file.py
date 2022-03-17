@@ -7,6 +7,11 @@ population_type = "younger"
 total_attack_rate = 0.2
 total_vaccination_rate = 0.2
 
+
+folder = "winter_wave_scenarios"
+filename = "vax_infect_scenario1.csv"
+file = os.path.join(os.path.dirname(__file__), folder , filename)
+
 # population demographics 
 
 if population_type =="younger":
@@ -97,13 +102,7 @@ print(sum(unvaxxed_infected_pop_by_age_band)+sum(vaxxed_infected_pop_by_age_band
 
 header =['age_band','num_people','max_vax','infection']
 
-folder = "winter_wave_scenarios"
 
-
-
-
-filename = "vax_infect_scenario1.csv"
-file = os.path.join(os.path.dirname(__file__), folder , filename)
 
 num_people = {0:{},1:{}}
 num_people[0][0] = unvaxxed_uninfected_pop_by_age_band
