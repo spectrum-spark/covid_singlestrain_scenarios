@@ -24,6 +24,8 @@
 #include "abm/scenario_read.h"
 #include "nlohmann/json.hpp"
 
+#include <chrono>
+
 void assemble_age_matrix(const std::vector<Individual> &residents,
                          std::vector<std::vector<int>> &age_matrix)
 {
@@ -87,6 +89,9 @@ public:
 
 int main(int argc, char *argv[])
 {
+
+    auto start = std::chrono::steady_clock::now();
+
     // Read in parameters.
     if (argc == 1)
     {
@@ -471,11 +476,22 @@ int main(int argc, char *argv[])
     std::ofstream neuts_output_file(neuts_output_filename);
     if (neuts_output_file.is_open())
     {
-        neuts_output_file << "age,log10_neuts \n";
+        neuts_output_file << "age,log10_neuts,max_vaccine, time_if_vaccinated,infected,time_if_infected \n";
         for (int i = 0; i < residents.size(); ++i)
         {
+            Individual::VaccineHistory &vaccinations = residents[i].vaccinations;
+            int max_vacc = vaccinations.size();
+            double time_dose_2;
+            if(max_vacc>0){
+                time_dose_2 = vaccinations[1].first;
+            }
+            else{
+                time_dose_2=1000000000000000;
+            }
+            
+
             double neuts_at_end_time = covid.calculateNeuts(residents[i],t_end);
-            neuts_output_file << residents[i].age << "," << neuts_at_end_time <<"\n";
+            neuts_output_file << residents[i].age << "," << neuts_at_end_time << ","<< max_vacc <<","<< time_dose_2 << ","<< residents[i].number_infections <<"," << residents[i].time_past_infection  <<"\n";
         }
 
         neuts_output_file.close();
@@ -483,18 +499,23 @@ int main(int argc, char *argv[])
 
     ////////////////////////////////////////////////
 
-    std::string output_filename =
-        directory + "/sim_number_" + std::to_string(sim_number) + ".csv";
-    // Write output to file.
-    std::ofstream output_file(output_filename);
-    if (output_file.is_open())
-    {
-        output_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
-                       "secondary_infections, time_isolated, infection_number \n";
-        output_file << covid; // So sneaky - will put a new line at the end.
+    // std::string output_filename =
+    //     directory + "/sim_number_" + std::to_string(sim_number) + ".csv";
+    // // Write output to file.
+    // std::ofstream output_file(output_filename);
+    // if (output_file.is_open())
+    // {
+    //     output_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+    //                    "secondary_infections, time_isolated, infection_number \n";
+    //     output_file << covid; // So sneaky - will put a new line at the end.
 
-        output_file.close();
-    }
+    //     output_file.close();
+    // }
+
+    auto end = std::chrono::steady_clock::now();
+    std::cout << "Elapsed time in seconds: "
+        << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
+        << " sec";
 
     return 0;
 }
