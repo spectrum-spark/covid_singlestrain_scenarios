@@ -682,18 +682,18 @@ int main(int argc, char *argv[])
 	
 
     
-    // std::string output_filename_prewinter =
-    //     directory + "/sim_number_" + std::to_string(sim_number) + "_prewinter.csv";
-    // // Write output to file.
-    // std::ofstream output_file_prewinter(output_filename_prewinter);
-    // if (output_file_prewinter.is_open())
-    // {
-    //     output_file_prewinter << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
-    //                              "secondary_infections, time_isolated, infection_number \n";
-    //     output_file_prewinter << covid_prewinter;
+    std::string output_filename_prewinter =
+        directory + "/sim_number_" + std::to_string(sim_number) + "_prewinter.csv";
+    // Write output to file.
+    std::ofstream output_file_prewinter(output_filename_prewinter);
+    if (output_file_prewinter.is_open())
+    {
+        output_file_prewinter << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+                                 "secondary_infections, time_isolated, infection_number \n";
+        output_file_prewinter << covid_prewinter;
 
-    //     output_file_prewinter.close();
-    // }
+        output_file_prewinter.close();
+    }
 
     // output_file_prewinter.close();
 
