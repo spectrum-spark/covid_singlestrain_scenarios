@@ -2,7 +2,6 @@
 # You should customize this list as applicable to your project.
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
-*_scenarios
 *.out
 .vscode
 .vscode/*
@@ -11,6 +10,11 @@ massive_outputs
 slurm*.out 
 scenario*Deltacorrection.csv
 NSW_outputs
+NSW_parameters
+SA_parameters
+TAS_parameters
+winter_wave_scenarios
+outputs
 new_outputs
 newoutputs
 protection_outputs/
