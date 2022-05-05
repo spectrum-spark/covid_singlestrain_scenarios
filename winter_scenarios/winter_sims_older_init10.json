@@ -1,6 +1,6 @@
 {
     "folder_suffix": "_winter_sims_older_init10",
-    "output_directory": "C:\\Users\\thaophuongl\\winter_outputs\\",
+    "output_directory": "/scratch/cm37/tpl/winter_outputs/",
     "t_end": 646.0,
     "seed_exposure": 363.0,
     "initial_infections": 10,

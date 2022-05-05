@@ -575,7 +575,7 @@ int main(int argc, char *argv[])
     std::string output_filename = directory + "/sim_number_" + std::to_string(sim_number) + ".csv";
     // Write output to file.
 
-    bool printsuccessful = true;
+    // bool printsuccessful = true;
     // int attempts = 0;
 
     // while(!printsuccessful){
@@ -618,66 +618,66 @@ int main(int argc, char *argv[])
     // std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
     // }
 
-    std::ifstream inputFile(output_filename);
-    if ( inputFile.peek() == std::ifstream::traits_type::eof() )
-    {
-        std::cout << "Empty file!" << std::endl;
-        printsuccessful = false;
+    // std::ifstream inputFile(output_filename);
+    // if ( inputFile.peek() == std::ifstream::traits_type::eof() )
+    // {
+    //     std::cout << "Empty file!" << std::endl;
+    //     printsuccessful = false;
 
-    }
-    inputFile.close();
+    // }
+    // inputFile.close();
 
-    // alternatively, if it's not successful, resubmit this bash script
+    // // alternatively, if it's not successful, resubmit this bash script
 
-    if (!printsuccessful)
-    {
-        std::cout << "Attempting to print again..." << std::endl;
-        std::string output_filename2 = directory + "/sim_number_" + std::to_string(sim_number) + "_v2.csv";
-        std::ofstream output_file2(output_filename2);
-        if (output_file2.is_open())
-        {
-            output_file2 << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
-                           "secondary_infections, time_isolated, infection_number \n";
+    // if (!printsuccessful)
+    // {
+    //     std::cout << "Attempting to print again..." << std::endl;
+    //     std::string output_filename2 = directory + "/sim_number_" + std::to_string(sim_number) + "_v2.csv";
+    //     std::ofstream output_file2(output_filename2);
+    //     if (output_file2.is_open())
+    //     {
+    //         output_file2 << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+    //                        "secondary_infections, time_isolated, infection_number \n";
 
-            output_file2 << covid;
-            output_file2.close();
-            printsuccessful = true;
-        }
+    //         output_file2 << covid;
+    //         output_file2.close();
+    //         // printsuccessful = true;
+    //     }
     
 
-        // now check again if it has worked or not...
-        std::ifstream inputFile(output_filename2);
-        if ( inputFile.peek() == std::ifstream::traits_type::eof() )
-        {
-            std::cout << "Empty file!" << std::endl;
-            printsuccessful = false;
+    //     // // now check again if it has worked or not...
+    //     // std::ifstream inputFile(output_filename2);
+    //     // if ( inputFile.peek() == std::ifstream::traits_type::eof() )
+    //     // {
+    //     //     std::cout << "Empty file!" << std::endl;
+    //     //     printsuccessful = false;
 
-            std::cout << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
-                           "secondary_infections, time_isolated, infection_number \n";
+    //     //     std::cout << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+    //     //                    "secondary_infections, time_isolated, infection_number \n";
 
-            std::cout<< covid;
+    //     //     std::cout<< covid;
 
-        }
-        inputFile.close();
+    //     // }
+    //     // inputFile.close();
 
-    }
+    // }
 
     // if still not working, try a completely different method of outputting? 
-    if(!printsuccessful){
-        std::fstream my_file;
-	my_file.open(output_filename, std::ios::out);
-	if (!my_file) {
-		std::cout << "File not created!";
-	}
-	else {
-		std::cout << "File created successfully!";
-		my_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
-                           "secondary_infections, time_isolated, infection_number \n";
+    // if(!printsuccessful){
+    //     std::fstream my_file;
+	// my_file.open(output_filename, std::ios::out);
+	// if (!my_file) {
+	// 	std::cout << "File not created!";
+	// }
+	// else {
+	// 	std::cout << "File created successfully!";
+	// 	my_file << "age, vaccine, symptomatic, time_symptoms, log10_neuts, "
+    //                        "secondary_infections, time_isolated, infection_number \n";
 
-        my_file << covid;
-		my_file.close();
-	}
-    }
+    //     my_file << covid;
+	// 	my_file.close();
+	// }
+    // }
     
 	
 
