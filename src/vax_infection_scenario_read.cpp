@@ -3,14 +3,13 @@
 #include <sstream>
 #include <cassert>
 #include "abm/abmrandom.h"
-#include "abm/vax_infection_scenario_read.h" //TODO: write the .h file for this
-// and then link it in the main_generate_initial_conditions file
+#include "abm/vax_infection_scenario_read.h" 
 
 // vaccination infection scenario should have:
-// age_band, num_people, max_vaccine_number, infection yes/no, dose in third round (number 0, 1, or even 2?)
+// age_band, num_people, max_vaccine_number, time dose 1, time dose 2, time dose 3, infection yes/no, time of infection
 // gives age band, number of people in this particular group, 0, 1 or 2 vaccines--if 2 vaccines, the 1st dose is given at the very beginning, and the 2nd dose is given later (all boosters will be given in the 'main/actual' simulaiton, and whether or not this group gets infected during this 'pre' simulation)
 
-// TODO: add in things based on the dose in the third round! booster for those who had vaccinated before, and primary for those who haven't
+
 
 // assumption: that all primary doses (1 and 2) are AZ
 static void create_individuals_from_input(std::stringstream &individual_group, std::vector<Individual> &residents, std::vector<std::uniform_real_distribution<double>> &generate_age, std::vector<double> &age_brackets, nlohmann::json &ve_params)
@@ -22,17 +21,13 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
     std::stringstream string_value_stream;
 
     size_t age_band_id;
-    size_t num_people;
+    size_t num_people; // probably just one
     size_t max_vaccine_number;
     double time_dose_1;
     double time_dose_2;
     double time_booster;
     size_t infection;
-    size_t infection_day;
-
-    // size_t vaccine = 0;
-    // size_t booster_vaccine = 0;
-    
+    double infection_day;
 
     // Assign values: age band
     std::getline(individual_group, string_value, ',');
@@ -77,6 +72,47 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
         string_value_stream >> max_vaccine_number;
     }
 
+
+  // Assign values: first dose day
+    std::getline(individual_group, string_value, ',');
+    if (string_value.empty())
+    {
+        // What do we do for empty stuff.
+        time_dose_1 = -1.0; //shouldn't actually be empty though, should have filler values
+    }
+    else
+    {
+        string_value_stream = std::stringstream(string_value);
+        string_value_stream >> time_dose_1;
+    }
+
+ // Assign values: second dose day
+    std::getline(individual_group, string_value, ',');
+    if (string_value.empty())
+    {
+        // What do we do for empty stuff.
+        time_dose_2 = -1.0; //shouldn't actually be empty though, should have filler values
+    }
+    else
+    {
+        string_value_stream = std::stringstream(string_value);
+        string_value_stream >> time_dose_2;
+    }
+
+ // Assign values: third (booster) dose day
+    std::getline(individual_group, string_value, ',');
+    if (string_value.empty())
+    {
+        // What do we do for empty stuff.
+        time_booster = -1.0; //shouldn't actually be empty though, should have filler values
+    }
+    else
+    {
+        string_value_stream = std::stringstream(string_value);
+        string_value_stream >> time_booster;
+    }
+
+
     // Assign values: infection
     std::getline(individual_group, string_value, ',');
     if (string_value.empty())
@@ -90,25 +126,25 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
         string_value_stream >> infection;
     }
 
-    // Assign values: dose_3
+
+    // Assign values: infection day
     std::getline(individual_group, string_value, ',');
     if (string_value.empty())
     {
         // What do we do for empty stuff.
-        dose_3 = 0;
+        infection_day = -1.0;
     }
     else
     {
         string_value_stream = std::stringstream(string_value);
-        string_value_stream >> dose_3;
+        string_value_stream >> infection_day;
     }
+
+
+
 
     // Loop through and create the individuals.
     // Assign people the time of vaccine in a vector for the constructor.
-
-    double mean = (181.0 + 122.0) / 2.0;
-    double norm_sd = (181.0 - 122.0) / 4.0;
-    std::normal_distribution<double> distribution(mean, norm_sd);
 
     for (size_t i = 0; i < num_people; ++i)
     {
@@ -120,57 +156,27 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
         std::vector<std::pair<double, VaccineType>> Time_and_Vaccine;
         if (max_vaccine_number > 0)
         {
-            // first dose assigned on the first day, effectively
-            double time_dose_1 = 0.0;
+            // first dose
             VaccineType dose = VaccineType::AZ1;
             // dose = VaccineType::Pfizer1;
             // dose = VaccineType::Moderna1;
             Time_and_Vaccine.push_back(std::make_pair(time_dose_1, dose));
-
-            VaccineType dose2 = VaccineType::AZ2;
+        }
+        if (max_vaccine_number>1){
+ VaccineType dose2 = VaccineType::AZ2;
             // dose = VaccineType::Pfizer2;
             // dose = VaccineType::Moderna2;
-            double time_dose = -(90.0 / 101.0) * age + 90.0;
-            // basic function to assign time is:
-            // t = -(90/101)*age + 90 , so that older people get their 2nd doses first.
-            // and people aged 0 get their 2nd doses at ~3 months
+            Time_and_Vaccine.push_back(std::make_pair(time_dose_2, dose2));
+        }
+        
+        if (max_vaccine_number>2){
 
-            Time_and_Vaccine.push_back(std::make_pair(time_dose, dose2));
+            VaccineType dose3 = VaccineType::Booster;
+            Time_and_Vaccine.push_back(std::make_pair(time_booster, dose3));
         }
 
-        // if this person got infected
-        double time_infected;
-        if (infection > 0)
-        {
-            time_infected = distribution(generator);
-            // std::cout << "time infected: " << time_infected  << std::endl;
-        }
-        else
-        {
-            time_infected = -1.0; // aka never
-        }
-
-        if (dose_3 > 0)
-        {
-            if (max_vaccine_number < 1)
-            { // I.E. no dose beforehand
-                VaccineType dose3 = VaccineType::AZ1;
-                double time_dose3 = 212 - (90.0 / 101.0) * age + 90.0;
-                // basic function to assign time is:
-                // t = -(90/101)*age + 90 , so that older people get their 2nd doses first.
-                // and people aged 0 get their 2nd doses at ~3 months
-
-                Time_and_Vaccine.push_back(std::make_pair(time_dose3, dose3));
-            }
-            else
-            { // else, just the booster dose now
-                VaccineType dose3 = VaccineType::Booster;
-                double time_dose3 = 212 - (90.0 / 101.0) * age + 90.0;
-                Time_and_Vaccine.push_back(std::make_pair(time_dose3, dose3));
-            }
-        }
-
-        residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params, infection, time_infected));
+        
+        residents.push_back(Individual(age, age_brackets, Time_and_Vaccine, ve_params, infection, infection_day));
     }
 }
 

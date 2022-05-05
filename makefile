@@ -12,11 +12,15 @@ OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
 all: $(OBJECTS)
 	# $(CXX) $(CPPFLAGS) -o RunGenerateInitial main_generate_initial_conditions.cpp $(OBJECTS) 
 	# $(CXX) $(CPPFLAGS) -o RunWinterWave main_winterwave.cpp $(OBJECTS) 
-	$(CXX) $(CPPFLAGS) -o RunInitialandWinterWave main_initial-and-main_winterwave.cpp $(OBJECTS) 
+	# $(CXX) $(CPPFLAGS) -o RunInitialandWinterWave main_initial-and-main_winterwave.cpp $(OBJECTS) 
+	# $(CXX) $(CPPFLAGS) -o RunEmbryoSim main_embryo_sim.cpp $(OBJECTS) 
+	$(CXX) $(CPPFLAGS) -o RunWinter main_winter.cpp $(OBJECTS) 
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
 
 clean: 
 	# rm build/* RunGenerateInitial RunWinterWave
-	rm build/* RunInitialWinterWave
+	# rm build/* RunInitialWinterWave
+	# rm build/* RunEmbryoSim
+	rm build/* RunWinter

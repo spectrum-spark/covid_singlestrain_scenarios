@@ -31,7 +31,9 @@ std::ostream &operator<<(std::ostream &os,
 }
 
 std::ostream &operator<<(std::ostream &os, const disease_model &covid) {
+  std::cout << "We got here " << covid.output.size() << std::endl;
   os << covid.output;
+  std::cout << "Did we get here" <<std::endl;
   return os;
 }
 
@@ -337,6 +339,9 @@ double disease_model::covid_one_step_ascm(
   I.insert(I.end(), newly_infected.begin(),
            newly_infected.end());  // Adds the removed end of E to the end of I.
 
+
+
+
   // We cannot insert the remove_if values to the end of I as the value after
   // remove_if is unspecified.
   E.erase(infected_it,
@@ -530,7 +535,7 @@ double disease_model::covid_one_step_ascm_R0(
         // Error check.
         if (person.covid.infection_status != 'E') {
           throw std::logic_error(
-              "Individual in I vector does not match infection status.");
+              "Individual in E vector does not match infection status.");
         }
 
         bool infected = distribution_exposed_update(
