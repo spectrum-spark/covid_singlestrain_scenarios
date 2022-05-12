@@ -216,6 +216,8 @@ int main(int argc, char *argv[])
         throw std::logic_error("Dimension mismatch in ttiq distributions! \n");
     }
 
+    
+
     // Will be used to construct individuals--generating the ages given the age band
     std::vector<std::uniform_real_distribution<double>> generate_age =
         read_age_generation(vaccination_infection_scenario_foldername + "/dim_age_band.csv",
@@ -224,7 +226,7 @@ int main(int argc, char *argv[])
     // Create residents.
 
     std::vector<double> age_brackets = sim_params_json["age_brackets"];
-
+    
     // reads in, for each individual, their vaccination dates and (potential pre-winter) infection dates according to input values
     std::vector<Individual> residents =
         read_individuals_from_input(vaccination_infection_scenario_foldername + "/" +
@@ -589,6 +591,47 @@ int main(int argc, char *argv[])
     {
         std::cout << "Unable to open output file for some reason????";
     }
+
+    // Writing each individual's data out to file
+    std::string individuals_output_filename = directory + "/sim_number_" + std::to_string(sim_number) + "_individuals.csv";
+    std::ofstream individuals_output_file(individuals_output_filename);
+    
+    if (individuals_output_file.is_open())
+    {
+        individuals_output_file << "age, age bracket, dose times, infection times \n";
+
+        for (int i = 0; i < residents.size(); ++i)
+        {
+            Individual &person = residents[i];
+            Individual::VaccineHistory& vaccinations = person.vaccinations;
+
+            individuals_output_file << person.age << ", " << person.age_bracket << ",";
+            for (int v=0; v< vaccinations.size(); ++v){
+                if(v>0){
+                    individuals_output_file <<";"; // using ; to be different from the csv comma
+                }
+                individuals_output_file <<vaccinations[v].first ;
+            }
+
+            individuals_output_file << "," ; 
+
+            for (int inft =0; inft < person.infection_dates.size();++inft){
+                if(inft>0){
+                    individuals_output_file <<";";
+                }
+                individuals_output_file <<person.infection_dates[inft];
+            }
+            individuals_output_file << "\n" ;
+            
+        }
+
+        individuals_output_file.close();
+    }
+    else
+    {
+        std::cout << "Unable to open the individuals' output file for some reason????";
+    }
+
     
     // std::string output_filename_prewinter =
     //     directory + "/sim_number_" + std::to_string(sim_number) + "_prewinter.csv";

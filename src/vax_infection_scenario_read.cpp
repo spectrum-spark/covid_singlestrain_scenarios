@@ -17,6 +17,7 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
     // See what the string looks like. Push it back into the residents.
 
     // Im not psyched about this function, I havent checked that vaccine_booster is empty and that booster time is empty, its just assumed that it works. It's fine for now, but I wouldnt want anyone to run this function without their own quality checks on the input data like I have done.
+
     std::string string_value;
     std::stringstream string_value_stream;
 
@@ -192,6 +193,7 @@ std::vector<Individual> read_individuals_from_input(std::string vaccination_infe
 
     if (vaccination_infection_read.is_open())
     {
+        
 
         std::string line;
         std::getline(vaccination_infection_read, line); // Get the title line (dont do anything)
