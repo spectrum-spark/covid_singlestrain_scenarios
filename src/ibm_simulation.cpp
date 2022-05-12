@@ -157,6 +157,7 @@ bool disease_model::distribution_exposed_update(
   bool infected = (t > person.covid.time_of_infection);
   if (infected) {
     infect_individual(person);
+    
     newly_infected.push_back(
         ind_number);  // Must pass in Individual number here.
   }
@@ -388,6 +389,7 @@ void disease_model::expose_individual(Individual &resident, double &t) {
   resident.time_isolated =
       resident.covid.time_of_symptom_onset +
       gen_tau_isolation(generator);  // This is hardcoded for now.
+  resident.infection_dates.push_back(resident.covid.time_of_infection);
 
   // Determine if the Individual will be asymptomatic and the severity of the
   // disease.
