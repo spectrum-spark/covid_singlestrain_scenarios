@@ -120,6 +120,7 @@ class Individual{
   int number_infections;  /**< The number of infections they have received. */
 
   double time_past_infection;  /**< Time of past infection if any */
+  std::vector<double> infection_dates; /**< vector storing times infections if any */
   
   double age; /**< Age of the individual.*/
   double log10_neutralising_antibodies; /**< Level of neutralising antibodies.*/ 
