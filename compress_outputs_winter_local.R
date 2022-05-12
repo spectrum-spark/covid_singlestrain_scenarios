@@ -6,7 +6,7 @@
 library(dplyr)
 library(readr)
 
-root_folder= "C:\\Users\\thaophuongl\\winter_outputs\\"
+root_folder= "C:\\Users\\thaophuongl\\winter_outputs_t646\\"
 
 for(population_type in c("younger","older")){
   param_list_younger = seq(1,12,1)
@@ -69,5 +69,5 @@ for(population_type in c("younger","older")){
   
   
 }
-
+ 
 

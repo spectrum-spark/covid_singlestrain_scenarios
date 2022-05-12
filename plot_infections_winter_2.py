@@ -26,15 +26,17 @@ def list_conversion(dictionary, xvalues):
     return new_list
 
 folder = os.path.join(os.path.dirname(__file__),"..","winter_outputs")
+folder = os.path.join(os.path.dirname(__file__),"..","winter_outputs_t646")
+
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","presim_param_files")
 
-# date_values = [363,393,424,454,485,516,546,577,607,638]
-# date_names = ["April","May","June","July","Aug","Sept","Oct","Nov","Dec"]
-date_values = [363,393,424,454,485,516,546]
-date_names = ["April","May","June","July","Aug","Sept","Oct"]
+date_values = [363,393,424,454,485,516,546,577,607,638]
+date_names = ["April","May","June","July","Aug","Sept","Oct","Nov","Dec","Jan"]
+# date_values = [363,393,424,454,485,516,546]
+# date_names = ["April","May","June","July","Aug","Sept","Oct"]
 
-# days = list(range(350,646+1))
-days = list(range(350,545))
+days = list(range(350,646+1))
+# days = list(range(350,545))
 xlim_values= [350,546]
 max_infections=1300
 num_infected_per_age_group = 6000
