@@ -598,7 +598,7 @@ int main(int argc, char *argv[])
     
     if (individuals_output_file.is_open())
     {
-        individuals_output_file << "age, age bracket, dose times, infection times \n";
+        individuals_output_file << "age, age bracket, dose times, infection times, symptom onset times \n";
 
         for (int i = 0; i < residents.size(); ++i)
         {
@@ -621,6 +621,17 @@ int main(int argc, char *argv[])
                 }
                 individuals_output_file <<person.infection_dates[inft];
             }
+
+            individuals_output_file << "," ; 
+
+            for (int inft =0; inft < person.symptom_onset_dates.size();++inft){
+                if(inft>0){
+                    individuals_output_file <<";";
+                }
+                individuals_output_file <<person.symptom_onset_dates[inft];
+            }
+
+
             individuals_output_file << "\n" ;
             
         }

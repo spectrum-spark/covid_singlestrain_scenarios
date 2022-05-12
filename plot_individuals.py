@@ -43,12 +43,12 @@ for population_type in ["younger","older"]:
     for paramNum in population_list:
         subfolder = "abm_simulation_people_params_"+str(paramNum)+"_output_winter_sims_"+population_type+"_init10"
 
-        sim_number_list = [1004]
+        sim_number_list = [1000]
         for sim_number in sim_number_list:
             list_of_all_people = []
             individuals_filename = "sim_number_"+str(sim_number)+"_individuals.csv"
             individuals_file = os.path.join(folder,subfolder ,individuals_filename )
-            # indv_pd_obj = pd.read_csv(individuals_file) # names = ["age", "age bracket", "dose times", "infection times"]
+            # indv_pd_obj = pd.read_csv(individuals_file) # names = ["age", "age bracket", "dose times", "infection times","symptom onset times"]
             # print(indv_pd_obj)
             with open(individuals_file, newline='') as csvfile:
                 ind_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
@@ -61,13 +61,16 @@ for population_type in ["younger","older"]:
                         line_count += 1
                     else:
                         # print(row)
-                        age,age_bracket,dose_times,infection_times = row 
-                        new_row = [float(age),int(age_bracket),convert_to_array(dose_times),convert_to_array(infection_times)]
-                        # print(new_row)
+                        age,age_bracket,dose_times,infection_times,symptom_onset_times = row 
+                        new_row = [float(age),int(age_bracket),convert_to_array(dose_times),convert_to_array(infection_times),convert_to_array(symptom_onset_times)]
+                        if new_row[-1]!=[]:
+                            print(new_row)
                         list_of_all_people.append(new_row)
                         line_count += 1
+                        
 
-            print(list_of_all_people)
+            # print(list_of_all_people)
+            exit(1)
 
 
 

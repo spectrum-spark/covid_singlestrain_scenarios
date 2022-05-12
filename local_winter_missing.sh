@@ -2,7 +2,7 @@
 
 START=$(date "+%s")
 
-for (( i=1004; i<=1004; i++ ))
+for (( i=1000; i<=1000; i++ ))
 do
 for (( diffparams=1; diffparams<=1; diffparams++ ))
 do

@@ -390,6 +390,7 @@ void disease_model::expose_individual(Individual &resident, double &t) {
       resident.covid.time_of_symptom_onset +
       gen_tau_isolation(generator);  // This is hardcoded for now.
   resident.infection_dates.push_back(resident.covid.time_of_infection);
+  resident.symptom_onset_dates.push_back(resident.covid.time_of_symptom_onset);
 
   // Determine if the Individual will be asymptomatic and the severity of the
   // disease.
