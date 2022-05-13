@@ -1,6 +1,6 @@
 {
     "folder_suffix": "_SOCRATES_TP2.05",
-    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations\\",
+    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_outputs\\",
     "t_end": 646.0,
     "seed_exposure": 274.0,
     "initial_infections": 10,

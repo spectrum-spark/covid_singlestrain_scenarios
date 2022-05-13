@@ -25,8 +25,8 @@ print(TP_list)
 for population_type in ["younger","older"]:
     number = 1
     for TP in TP_list:
-        param_set = {"folder_suffix": "_SOCRATES_TP"+str(TP),
-                    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations\\",
+        param_set = {"folder_suffix": "_SOCRATES_TP"+str(TP) ,
+                    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_outputs\\",
                     "t_end": 646.0,
                     "seed_exposure": 274.0,
                     "initial_infections": 10,

@@ -15,6 +15,7 @@ all: $(OBJECTS)
 	# $(CXX) $(CPPFLAGS) -o RunInitialandWinterWave main_initial-and-main_winterwave.cpp $(OBJECTS) 
 	# $(CXX) $(CPPFLAGS) -o RunEmbryoSim main_embryo_sim.cpp $(OBJECTS) 
 	$(CXX) $(CPPFLAGS) -o RunWinter main_winter.cpp $(OBJECTS) 
+	$(CXX) $(CPPFLAGS) -o RunContinuous main_continuous_simulation.cpp $(OBJECTS) 
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
@@ -23,4 +24,4 @@ clean:
 	# rm build/* RunGenerateInitial RunWinterWave
 	# rm build/* RunInitialWinterWave
 	# rm build/* RunEmbryoSim
-	rm build/* RunWinter
+	rm build/* RunWinter RunContinuous
