@@ -1,10 +1,12 @@
 {
-    "folder_suffix": "_SOCRATES_TP2.9",
-    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_outputs\\",
+    "folder_suffix": "_SOCRATES_TP2.05",
+    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_outputs\\",
     "t_end": 646.0,
     "seed_exposure": 274.0,
     "initial_infections": 100,
-    "TP": 2.9,
+    "second_seed_exposure": 363.0,
+    "second_initial_infections": 100,
+    "TP": 2.05,
     "ttiq": "partial",
     "contact_matrix": "contact_matrix_SOCRATES_older.csv",
     "prob_symptoms": [

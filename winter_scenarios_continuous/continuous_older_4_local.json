@@ -3,7 +3,7 @@
     "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_outputs\\",
     "t_end": 646.0,
     "seed_exposure": 274.0,
-    "initial_infections": 10,
+    "initial_infections": 100,
     "TP": 2.4749999999999996,
     "ttiq": "partial",
     "contact_matrix": "contact_matrix_SOCRATES_older.csv",
