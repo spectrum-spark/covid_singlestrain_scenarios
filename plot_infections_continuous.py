@@ -25,11 +25,16 @@ def list_conversion(dictionary, xvalues):
             new_list.append(0)
     return new_list
 
-folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_outputs")
+# folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_outputs")
+TP_list = ["1.2","1.625","2.05","2.4749999999999996","2.9"]
+# folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_outputs")
+folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_2_outputs")
+TP_list = ["2.0","2.25","2.5","2.75","3.0"]
+
 
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
 
-max_days = 646
+max_days = 650 #550 #646
 date_values = list(range(0,max_days+1,10))
 date_names = [str(x) for x in date_values]
 
@@ -52,7 +57,7 @@ age_bands = ["0-4","5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '
 
 for population_type in ["younger","older"]:
     population_list = list(range(1,6+1))
-    TP_list = ["1.2","1.625","2.05","2.4749999999999996","2.9"]
+    
 
     for paramNum in population_list:
         for TP in TP_list:

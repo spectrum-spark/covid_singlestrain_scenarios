@@ -7,10 +7,15 @@ library(dplyr)
 library(readr)
 
 root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_outputs\\"
+root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_outputs\\"
+root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_2_outputs\\"
+
+
 
 for(population_type in c("younger","older")){
   population_list = seq(1,6,1)
-  TP_list = c("1.2","1.625","2.05","2.4749999999999996","2.9")
+  # TP_list = c("1.2","1.625","2.05","2.4749999999999996","2.9")
+  TP_list = c("2.0","2.25","2.5","2.75","3.0")
   
   for(paramNum in population_list){
     for(TP in TP_list){
