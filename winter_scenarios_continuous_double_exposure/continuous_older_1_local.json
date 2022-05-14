@@ -1,10 +1,10 @@
 {
     "folder_suffix": "_SOCRATES_TP1.2",
     "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_outputs\\",
-    "t_end": 646.0,
-    "seed_exposure": 274.0,
+    "t_end": 650.0,
+    "seed_exposure": 250.0,
     "initial_infections": 100,
-    "second_seed_exposure": 363.0,
+    "second_seed_exposure": 370.0,
     "second_initial_infections": 100,
     "TP": 1.2,
     "ttiq": "partial",
