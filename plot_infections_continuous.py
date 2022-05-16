@@ -28,8 +28,11 @@ def list_conversion(dictionary, xvalues):
 # folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_outputs")
 TP_list = ["1.2","1.625","2.05","2.4749999999999996","2.9"]
 # folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_outputs")
-folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_2_outputs")
-TP_list = ["2.0","2.25","2.5","2.75","3.0"]
+# folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_2_outputs")
+# TP_list = ["2.0","2.25","2.5","2.75","3.0"]
+
+folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_3_outputs")
+TP_list = ["1.75","2.0","2.25","2.5","2.75"]
 
 
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
@@ -46,7 +49,7 @@ date_names = [str(x) for x in date_values]
 days = list(range(0,max_days+1))
 # days = list(range(350,545))
 xlim_values= [0,max_days]
-max_infections=1300
+max_infections=2500
 num_infected_per_age_group = 6000
 
 age_categories = ['[0,5)','[5,12)', '[12,16)', '[16,20)', '[20,25)', '[25,30)', '[30,35)',
@@ -127,7 +130,7 @@ for population_type in ["younger","older"]:
                 infections_over_time = df_dict[simnum]
                 infections_over_time_list = list_conversion_nans(infections_over_time, days)
                 ax.plot(days,infections_over_time_list)
-            # ax.set_ylim([0,max_infections])
+            ax.set_ylim([0,max_infections])
             # ax.set_xlim(xlim_values)
 
             ax.set_xlabel('days')
