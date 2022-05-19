@@ -17,6 +17,7 @@ all: $(OBJECTS)
 	$(CXX) $(CPPFLAGS) -o RunWinter main_winter.cpp $(OBJECTS) 
 	$(CXX) $(CPPFLAGS) -o RunContinuous main_continuous_simulation.cpp $(OBJECTS) 
 	$(CXX) $(CPPFLAGS) -o RunContinuousDoubleExposure main_continuous_simulation_double_exposure.cpp $(OBJECTS) 
+	$(CXX) $(CPPFLAGS) -o RunContinuousFirstAndContExposure main_continuous_simulation_first_then_continuous_exposure.cpp $(OBJECTS) 
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
@@ -25,4 +26,4 @@ clean:
 	# rm build/* RunGenerateInitial RunWinterWave
 	# rm build/* RunInitialWinterWave
 	# rm build/* RunEmbryoSim
-	rm build/* RunWinter RunContinuous RunContinuousDoubleExposure
+	rm build/* RunWinter RunContinuous RunContinuousDoubleExposure RunContinuousFirstAndContExposure

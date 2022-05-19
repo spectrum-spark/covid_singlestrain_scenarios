@@ -564,6 +564,7 @@ def plot_ICU_and_deaths_vs_before_infections(ICU_or_death):
                 # print(new_pd_ICU['daily_admissions'].to_list())
 
                 scale = 50
+                aug_num = 5
                 for simnum in df_dict.keys():
                     infections_over_time = df_dict[simnum]
                     total_infections_before = sum(list_conversion_nans(infections_over_time, days_before))
@@ -572,10 +573,10 @@ def plot_ICU_and_deaths_vs_before_infections(ICU_or_death):
                     total_infections_after = sum(list_conversion_nans(infections_over_time, days_after))
                     infections_per_sim_after.append(total_infections_after)
 
-                    new_pd_ICU = clinical_pd_obj.loc[(clinical_pd_obj['iteration']==simnum) & (clinical_pd_obj['day']>time_split)]
+                    new_pd_ICU = clinical_pd_obj.loc[(clinical_pd_obj['iteration']>=simnum*aug_num) & (clinical_pd_obj['iteration']<(simnum+1)*aug_num)& (clinical_pd_obj['day']>time_split)]
 
-                    daily_deaths = sum(new_pd_ICU['daily_ICU_admissions'].to_list())
-                    daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())
+                    daily_deaths = sum(new_pd_ICU['daily_ICU_admissions'].to_list())/aug_num
+                    daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())/aug_num
 
                     daily_deaths_after.append(daily_deaths)
                     daily_ICU_admissions_after.append(daily_ICU_admissions)
@@ -615,8 +616,197 @@ def plot_ICU_and_deaths_vs_before_infections(ICU_or_death):
             plt.savefig(os.path.join(folder, filename+"_ICU_admissions_vs_past_immunity_" +population_type +".png") , bbox_inches='tight')
             plt.close()
     return   
+
+
+
+def plot_infection_numbers(total_sims=20):
+    for population_type in ["younger","older"]:
             
+        for paramNum in population_list:
+            for TP in TP_list:
+                fig, (ax1,ax2) = plt.subplots(2,1, figsize=(6,6.75))
+
+                # colour = colour_list[colour_counter]
+
+                # filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                # data_file = os.path.join(folder, filename)
+                # pd_obj = pd.read_csv(data_file)
+                # new_pd = pd_obj.groupby(['day','sim'],as_index=False).n.sum()
+                # df = new_pd.pivot(index='day', columns='sim', values='n')
+
+                presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
+
+                with open(presimfilename, "r") as f:
+                    presim_parameters = json.load(f)
+
+
+                total_population = presim_parameters["total_population"]
+                population_type = presim_parameters["population_type"]
+                total_vaccination_rate = presim_parameters["total_vaccination_rate"]
+                booster_fraction = presim_parameters["booster_fraction"]
+                info_text =  population_type +" population, "+ str(100*total_vaccination_rate )+"\% vax rate" +", "+ str(100*booster_fraction)+"\% booster fraction"
+                
+                sim_folder = "abm_continuous_simulation_parameters_" +population_type +"_" +str(paramNum)+"_SOCRATES_TP"+TP
+
+
+                if population_type == "older":
+                    ax1.set_prop_cycle(plt.cycler('color', plt.cm.inferno(np.linspace(0, 1, total_sims))))
+                    ax2.set_prop_cycle(plt.cycler('color', plt.cm.inferno(np.linspace(0, 1, total_sims))))
+                else:
+                    ax1.set_prop_cycle(plt.cycler('color', plt.cm.rainbow(np.linspace(0, 0.5,total_sims))))
+                    ax2.set_prop_cycle(plt.cycler('color', plt.cm.rainbow(np.linspace(0, 0.5,total_sims))))
+                
+
+                for sim_number in range(1,total_sims+1):
+                    infection_number = list(range(1,11))
+                    infections_total = [0]*10 # assuming 10 maximum infections, going from infection = index+1
+                    infections_after = [0]*10
+
+                    filename_individuals = "sim_number_" + str(sim_number)+"_individuals.csv"
+
+                    
+                    
+                    individuals_file = os.path.join(folder,sim_folder,filename_individuals )
+                    with open(individuals_file, newline='') as csvfile:
+                        ind_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+                        line_count = 0
+                        
+                        for row in ind_reader:
+                            # print(line_count+1)
+                            if line_count == 0:
+                                # print(f'Column names are {", ".join(row)}')
+                                line_count += 1
+                            else:
+                                # print(row)
+                                age,age_bracket,dose_times,infection_times,symptom_onset_times = row
+                                symptom_onset_times = convert_to_array(symptom_onset_times)
+
+                                if symptom_onset_times!=[]:
+                                    num_infections_pre_split = 0
+                                    num_infections_post_split = 0
+                                    for time in symptom_onset_times:
+                                        if time<time_split:
+                                            num_infections_pre_split +=1
+                                        else:
+                                            num_infections_post_split+=1
+                                    num_infections_total = num_infections_pre_split + num_infections_post_split
+                                    if num_infections_total!= len(symptom_onset_times):
+                                        print("error in total number of infections per person!")
+                                        exit(1)
+                                    if num_infections_total>0:
+                                        infections_total[num_infections_total-1]+=1
+                                    if num_infections_post_split >0:
+                                        infections_after[num_infections_post_split-1] +=1
+                    ax1.plot(infection_number,infections_total)
+                    ax2.plot(infection_number,infections_after)
+
+                ax1.set_xticks(infection_number)
+                ax2.set_xticks(infection_number)
+                ax1.set_xlabel('Infection numbers')
+                ax2.set_xlabel('Infection numbers')
+                ax1.set_ylabel('Number of people infected x times')
+                ax2.set_ylabel('Number of people infected x times')
+
+                ax1.set_title('Number of people infected multiple times (total) for \n a '+info_text )
+                ax2.set_title('Number of people infected multiple times (after t = 400)')
+                # ax.set_xlim([0,15500])
+                
+                plt.tight_layout()
+                ax1.grid()
+                ax2.grid()
+
+                plt.savefig(os.path.join(folder,sim_folder+"_multiple_infections.png") , bbox_inches='tight')
+                plt.close()
+                
+def plot_peak_height():
+    for population_type in ["younger","older"]:
+        fig, ax = plt.subplots(1,1, figsize=(6,6.75))
+        # first, some plotting to get some fake legends...
+        ax.scatter(-10000,-10000,color='lightskyblue', s=100, marker= 's', alpha=1.0, edgecolors='none')
+        ax.scatter(-10000,-10000,color='dodgerblue', s=100, marker= 's', alpha=1.0, edgecolors='none')
+        ax.scatter(-10000,-10000,color='navy', s=100, marker= 's', alpha=1.0, edgecolors='none')
+        ax.scatter(-10000,-10000,color='grey', s=100, marker= 'o', alpha=1.0, edgecolors='none')
+        ax.scatter(-10000,-10000,color='grey', s=100, marker= 'x', alpha=1.0, edgecolors='none')
+        legend_list = ["20\% vaccination", "50\% vaccination","80\% vaccination","50\% booster-new primary division","80\% booster-new primary division"]
+
+
+        for paramNum in population_list:
+            for TP in TP_list:
+
+                # colour = colour_list[colour_counter]
+
+                filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
+
+                with open(presimfilename, "r") as f:
+                    presim_parameters = json.load(f)
+                total_population = presim_parameters["total_population"]
+                population_type = presim_parameters["population_type"]
+                total_vaccination_rate = presim_parameters["total_vaccination_rate"]
+                booster_fraction = presim_parameters["booster_fraction"]
+
+                if total_vaccination_rate == 0.2:
+                    colour = 'lightskyblue'
+                elif total_vaccination_rate == 0.5:
+                    colour = 'dodgerblue'
+                elif total_vaccination_rate == 0.8:
+                    colour = 'navy'
+                
+                if booster_fraction == 0.5:
+                    marker = "o"
+                elif booster_fraction ==0.8:
+                    marker = "x"
+
+
+                # info_text =  population_type +" population \n"+ str(100*total_vaccination_rate )+"\% vax rate\n" + str(100*booster_fraction)+"\% booster fraction\n" + "with TP = " + TP
+
+                info_text =  str(100*total_vaccination_rate )+"\% vax rate\n" + str(100*booster_fraction)+"\% booster fraction\n" + "with TP = " + TP
+                
+                datafilename = filename + ".csv"
+                data_file = os.path.join(folder, datafilename)
+                pd_obj = pd.read_csv(data_file)
+
+                new_pd = pd_obj.groupby(['day','sim'],as_index=False).n.sum()
+                df = new_pd.pivot(index='day', columns='sim', values='n')
+                df_dict = df.to_dict()
+                infections_per_sim_before = []
+                infections_per_sim_after = []
+
+                scale = 50
+                for simnum in df_dict.keys():
+                    infections_over_time = df_dict[simnum]
+                    peak_infections_before = max(list_conversion_nans(infections_over_time, days_before))
+                    infections_per_sim_before.append(peak_infections_before)
+
+                    peak_infections_after = max(list_conversion_nans(infections_over_time, days_after))
+                    infections_per_sim_after.append(peak_infections_after)
+                
+                # percent_infected_before = [x/total_population*100 for x in infections_per_sim_before]
+                # percent_infected_after = [x/total_population*100 for x in infections_per_sim_after ]
+                ax.scatter(infections_per_sim_before, infections_per_sim_after , color=colour, s=scale, label=info_text, marker= marker, alpha=0.8, edgecolors='none')
+
+
+        ax.set_xlim([0,max(infections_per_sim_before)])
+        ax.set_ylim([0,max(infections_per_sim_after)])
+
+        
+        ax.grid(True)
+        ax.legend(legend_list)
+        ax.set_ylabel('Number of infected people at peak after t = 400')
+        ax.set_xlabel('Number of infected people at peak before t = 400 ("past infection")')
+        ax.set_title('Number of infected people at wave peaks given past immunity \nfor a ' + population_type + ' population',fontsize=14)
+
+        plt.savefig(os.path.join(folder, "abm_continuous_simulation_parameters_peak_infections_past_immunity_" +population_type +".png") , bbox_inches='tight')
+        plt.close()
+        
+
+                
 # plot_before_vs_after_infections()
 # plot_infection_population_breakdown()
-plot_ICU_and_deaths_vs_before_infections('death')
-plot_ICU_and_deaths_vs_before_infections('ICU')
+# plot_ICU_and_deaths_vs_before_infections('death')
+# plot_ICU_and_deaths_vs_before_infections('ICU')
+# plot_infection_numbers()
+
+plot_peak_height()

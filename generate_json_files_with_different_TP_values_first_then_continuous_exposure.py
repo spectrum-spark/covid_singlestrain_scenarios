@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 
-folder = "winter_scenarios_continuous_double_exposure_3"
+folder = "winter_scenarios_continuous_first_then_cont_exposure"
 folder_path = os.path.join(os.path.dirname(__file__),folder)
 # Check whether the specified folder exists or not
 if not os.path.exists(folder_path ):
@@ -25,12 +25,12 @@ for population_type in ["younger","older"]:
     number = 1
     for TP in TP_list:
         param_set = {"folder_suffix": "_SOCRATES_TP"+str(TP) ,
-                    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_3_outputs\\",
+                    "output_directory": "C:\\Users\\thaophuongl\\covid_continuous_simulations_first_then_cont_exposure_outputs\\",
                     "t_end": 700.0,
                     "seed_exposure": 225.0,
                     "initial_infections": 100,
                     "second_seed_exposure":450.0,
-                    "second_initial_infections": 100,
+                    "second_daily_infections": 1,
                     "TP": TP,
                     "ttiq": "partial",
                     "contact_matrix": "contact_matrix_SOCRATES_" + population_type + ".csv"}
