@@ -239,7 +239,8 @@ int main(int argc, char *argv[])
     double t_end = sim_params_json["t_end"];
     double seed_exposure = sim_params_json["seed_exposure"];
     double second_seed_exposure = sim_params_json["second_seed_exposure"];
-    bool catch_exposure = false;
+    double seed_every_x_days = sim_params_json["seed_every_x_days"];
+    double latest_exposure_day = 0;
     
     double vaccination_dt = 1.0; // because we have daily vaccinations instead of weekly assignments
     double covid_dt = pow(2.0, -2.0);
@@ -494,14 +495,13 @@ int main(int argc, char *argv[])
         booster_doses.erase(booster_it, booster_doses.end());
 
         // Should this be a function
-        if (t >= seed_exposure && !(catch_exposure))
+        if (t >= seed_exposure && t >= latest_exposure_day+seed_every_x_days)
         {
-            catch_exposure = true; // Assign true so this will not trigger.
             // Use cluster ref to track the infections phylogenetic tree.
             std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
             
             int initial_infections = 0; // Count initial infections.
-            int total_initial_infected = sim_params_json["initial_infections"];
+            int total_initial_infected = sim_params_json["regular_seed_infections"];
             while (initial_infections < total_initial_infected)
             {
                 int exposed_resident =
@@ -515,31 +515,8 @@ int main(int argc, char *argv[])
                     E_ref.push_back(exposed_resident); // Start tracking them.
                 }
             }
-            cluster_ref= cluster_ref+1
-        }
-
-        if (t >= second_seed_exposure)
-        {
-            
-            // Use cluster ref to track the infections phylogenetic tree.
-            std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
-            
-            int initial_infections = 0; // Count initial infections.
-            int total_initial_infected = sim_params_json["second_daily_infections"];
-            while (initial_infections < total_initial_infected)
-            {
-                int exposed_resident =
-                    gen_res(generator); // Randomly sample from all the population.
-                if (residents[exposed_resident].covid.infection_status != 'E' && residents[exposed_resident].covid.infection_status != 'I')
-                {
-                    covid.seed_exposure(residents[exposed_resident],
-                                        t); // Random resident has become infected
-                    residents[exposed_resident].covid.cluster_number = cluster_ref;
-                    ++initial_infections;
-                    E_ref.push_back(exposed_resident); // Start tracking them.
-                }
-            }
-            cluster_ref= cluster_ref+1
+            cluster_ref = cluster_ref+1;
+            latest_exposure_day = t;
         }
 
         std::vector<size_t> newly_symptomatic;

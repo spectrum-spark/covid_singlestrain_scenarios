@@ -10,6 +10,7 @@ root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_outputs\\"
 root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_outputs\\"
 root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_2_outputs\\"
 root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_3_outputs\\"
+root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_first_then_cont_exposure_outputs\\"
 
 
 for(population_type in c("younger","older")){

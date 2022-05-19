@@ -33,6 +33,8 @@ TP_list = ["1.2","1.625","2.05","2.4749999999999996","2.9"]
 
 folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_3_outputs")
 TP_list = ["1.75","2.0","2.25","2.5","2.75"]
+folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_first_then_cont_exposure_outputs")
+
 
 
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
