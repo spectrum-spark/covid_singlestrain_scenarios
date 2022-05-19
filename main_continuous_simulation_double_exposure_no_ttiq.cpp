@@ -159,8 +159,8 @@ int main(int argc, char *argv[])
     };
 
     // Load the TTIQ distributions.
-    std::ifstream ttiq_read("ttiq_distributions.csv");
-    std::vector<double> ttiq_days, partial, optimal;
+    std::ifstream ttiq_read("no_ttiq_distribution.csv");
+    std::vector<double> ttiq_days, no_ttiq;
     if (ttiq_read.is_open())
     {
         std::string line;
@@ -185,11 +185,7 @@ int main(int argc, char *argv[])
                 }
                 if (col_number == 1)
                 {
-                    partial.push_back(value);
-                }
-                if (col_number == 2)
-                {
-                    optimal.push_back(value);
+                    no_ttiq.push_back(value);
                 }
             }
         }
@@ -204,14 +200,13 @@ int main(int argc, char *argv[])
     std::cout << "TTIQ days, partial, optimal \n";
     for (int i = 0; i < ttiq_days.size(); ++i)
     {
-        std::cout << ttiq_days[i] << ", " << partial[i] << ", " << optimal[i]
+        std::cout << ttiq_days[i] << ", " << no_ttiq[i]
                   << "\n";
     }
 #endif
 
     // Error check.
-    if (ttiq_days.size() != partial.size() ||
-        ttiq_days.size() != optimal.size())
+    if (ttiq_days.size() != no_ttiq.size())
     {
         throw std::logic_error("Dimension mismatch in ttiq distributions! \n");
     }
@@ -240,7 +235,7 @@ int main(int argc, char *argv[])
     double seed_exposure = sim_params_json["seed_exposure"];
     double second_seed_exposure = sim_params_json["second_seed_exposure"];
     bool catch_exposure = false;
-    
+    bool second_catch_exposure = false;
     double vaccination_dt = 1.0; // because we have daily vaccinations instead of weekly assignments
     double covid_dt = pow(2.0, -2.0);
 
@@ -372,18 +367,14 @@ int main(int argc, char *argv[])
     std::vector<double> w;
     std::string ttiq_type = sim_params_json["ttiq"];
 
-    if (ttiq_type == "partial")
+    if (ttiq_type == "no_ttiq")
     {
-        w = std::vector<double>(partial.begin(), partial.end());
-    }
-    else if (ttiq_type == "optimal")
-    {
-        w = std::vector<double>(optimal.begin(), optimal.end());
+        w = std::vector<double>(no_ttiq.begin(), no_ttiq.end());
     }
     else
     {
         throw std::logic_error(
-            "Unrecognised TTIQ_type, please choose either partial or optimal (CASE "
+            "Unrecognised TTIQ_type, must be no_ttiq, try a (CASE "
             "SENSITIVE)\n");
     }
 
@@ -427,7 +418,6 @@ int main(int argc, char *argv[])
     std::vector<size_t> I_ref;
     I_ref.reserve(10000); // Magic number of reserved.
 
-    int cluster_ref = 0;
     while (t < t_end)
     {
         std::cout << "Time is " << t << " and exposed = " << E_ref.size()
@@ -499,7 +489,7 @@ int main(int argc, char *argv[])
             catch_exposure = true; // Assign true so this will not trigger.
             // Use cluster ref to track the infections phylogenetic tree.
             std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
-            
+            int cluster_ref = 0;
             int initial_infections = 0; // Count initial infections.
             int total_initial_infected = sim_params_json["initial_infections"];
             while (initial_infections < total_initial_infected)
@@ -515,17 +505,16 @@ int main(int argc, char *argv[])
                     E_ref.push_back(exposed_resident); // Start tracking them.
                 }
             }
-            cluster_ref= cluster_ref+1;
         }
 
-        if (t >= second_seed_exposure)
+        if (t >= second_seed_exposure && !(second_catch_exposure))
         {
-            
+            second_catch_exposure = true; // Assign true so this will not trigger.
             // Use cluster ref to track the infections phylogenetic tree.
             std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
-            
+            int cluster_ref = 1;
             int initial_infections = 0; // Count initial infections.
-            int total_initial_infected = sim_params_json["second_daily_infections"];
+            int total_initial_infected = sim_params_json["second_initial_infections"];
             while (initial_infections < total_initial_infected)
             {
                 int exposed_resident =
@@ -539,7 +528,6 @@ int main(int argc, char *argv[])
                     E_ref.push_back(exposed_resident); // Start tracking them.
                 }
             }
-            cluster_ref= cluster_ref+1;
         }
 
         std::vector<size_t> newly_symptomatic;

@@ -2,13 +2,13 @@
 
 START=$(date "+%s")
 
-for (( i=1; i<=1; i++ ))
+for (( i=2; i<=2; i++ ))
 do
     for POP in older younger 
     do 
-        for (( diffparams=1; diffparams<=6; diffparams++ ))
+        for diffparams in 1 6
         do
-            for ((TPvers = 1; TPvers<=5;TPvers++))
+            for TPvers in 1 5
             do
                 ./RunContinuousFirstAndContExposure state_parameters/omicron_update_VE_updated.json winter_scenarios_continuous_first_then_cont_exposure/continuous_${POP}_${TPvers}_local.json $i C:\\Users\\thaophuongl\\covid-abm-presim\\continuous_sim_param_files abm_continuous_simulation_parameters_${POP}_${diffparams}
             done

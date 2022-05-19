@@ -25,6 +25,7 @@ def list_conversion(dictionary, xvalues):
             new_list.append(0)
     return new_list
 
+population_list = list(range(1,6+1))
 # folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_outputs")
 TP_list = ["1.2","1.625","2.05","2.4749999999999996","2.9"]
 # folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_outputs")
@@ -35,6 +36,10 @@ folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulatio
 TP_list = ["1.75","2.0","2.25","2.5","2.75"]
 folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_first_then_cont_exposure_outputs")
 
+TP_list = ["1.75","2.75"]
+population_list = [1,6]
+folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_cont_exposure_outputs_daily")
+folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_cont_exposure_outputs_weekly")
 
 
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
@@ -61,7 +66,7 @@ age_bands = ["0-4","5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '
 
 
 for population_type in ["younger","older"]:
-    population_list = list(range(1,6+1))
+
     
 
     for paramNum in population_list:

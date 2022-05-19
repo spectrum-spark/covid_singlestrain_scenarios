@@ -238,9 +238,9 @@ int main(int argc, char *argv[])
     double t = 0.0;
     double t_end = sim_params_json["t_end"];
     double seed_exposure = sim_params_json["seed_exposure"];
-    double second_seed_exposure = sim_params_json["second_seed_exposure"];
     double seed_every_x_days = sim_params_json["seed_every_x_days"];
-    double latest_exposure_day = 0;
+    double latest_exposure_day = 0.0;
+
     
     double vaccination_dt = 1.0; // because we have daily vaccinations instead of weekly assignments
     double covid_dt = pow(2.0, -2.0);
