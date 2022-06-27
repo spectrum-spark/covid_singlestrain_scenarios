@@ -17,10 +17,9 @@
 #include <sstream>
 
 #include "abm/abmrandom.h"
-#include "abm/ibm_simulation.h"
+#include "abm/ibm_simulation_4th_doses.h"
 #include "abm/quantium_read.h"
 #include "abm/vax_infection_scenario_read.h"
-#include "nlohmann/json.hpp"
 #include <math.h>
 
 #include <chrono>
@@ -289,9 +288,12 @@ int main(int argc, char *argv[])
 #endif
 
     // Disease parameters.
-    std::vector<double> alpha = sim_params_json["relative_infectiousness"];
-    std::vector<double> q = sim_params_json["prob_symptoms"];
-    std::vector<double> xi = sim_params_json["susceptibility"];
+  std::vector<double> alpha = getJsonValue<std::vector<double>>(
+      sim_params_json, "relative_infectiousness");
+  std::vector<double> q =
+      getJsonValue<std::vector<double>>(sim_params_json, "prob_symptoms");
+  std::vector<double> xi =
+      getJsonValue<std::vector<double>>(sim_params_json, "susceptibility");
 
     // Check the sizes of beta q and xi against eachother and the contact matrix.
     if (alpha.size() != contact_matrix.size())
@@ -344,7 +346,10 @@ int main(int argc, char *argv[])
         sum_expression += internal_sum * xi_k;
     };
 
-    double TP = sim_params_json["TP"];
+    double TP = getJsonValue<double>(sim_params_json, "baseline_TP")*getJsonValue<double>(neuts_json,"R0_ratio");
+
+    double mobility_restrictions =
+      getJsonValue<double>(sim_params_json, "mobility_restrictions");
 
     double beta_scale =
         TP / (sum_expression *
@@ -379,7 +384,21 @@ int main(int argc, char *argv[])
     }
 
     // Calculate TP and load disease model.
-    disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json);
+double start_restrictions =
+      getJsonValue<double>(sim_params_json, "start_restrictions");
+  double finish_restrictions =
+      getJsonValue<double>(sim_params_json, "finish_restrictions");
+  auto mobility_function = [=](double& t) {
+    if (t < start_restrictions || t > finish_restrictions) {
+      return 1.0;
+    } else {
+      return mobility_restrictions;
+    }
+  };
+
+
+    disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json,
+                      mobility_function);
 
     // Vaccinate people!
     std::vector<VaccinationSchedule> first_doses;

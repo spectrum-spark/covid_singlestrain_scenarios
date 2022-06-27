@@ -11,19 +11,34 @@ library(readr)
 # root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_2_outputs\\"
 # root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_3_outputs\\"
 
-root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_first_then_cont_exposure_outputs\\"
-# root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_cont_exposure_outputs_daily\\"
-# root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_cont_exposure_outputs_weekly\\"
+#root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_first_then_cont_exposure_outputs\\"
+#root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_cont_exposure_outputs_daily\\"
+#root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_cont_exposure_outputs_weekly\\"
+
+# root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_no_ttiq_outputs\\"
+# root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_no_ttiq_400_outputs\\"
 
 
-for(population_type in c("younger","older")){
+# root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_no_ttiq_400-2_outputs\\"
+# TP_list = c("1.1","1.225","1.4","1.575")# ,"1.75")
+
+
+root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_no_ttiq_450-2_outputs\\"
+TP_list = c("1.1","1.2000000000000002","1.3","1.4","1.5")
+TP_list = c("0.8","0.9","1.0","1.6")
+
+# root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_outputs\\"
+# TP_list = c("0.95","1.0","1.05", "1.1","1.15", "1.2000000000000002","1.25", "1.3","1.35", "1.4", "1.45","1.5","1.55","1.6","1.65","1.7","1.75","1.8","1.85","1.9","1.95")
+
+
+for(population_type in c("older","younger")){# 
   population_list = seq(1,6,1)
   # TP_list = c("1.2","1.625","2.05","2.4749999999999996","2.9")
   # TP_list = c("2.0","2.25","2.5","2.75","3.0")
-  TP_list = c("1.75","2.0","2.25","2.5","2.75")
+  # TP_list = c("1.75","2.0","2.25","2.5","2.75")
   
-  TP_list = c("1.75","2.75")
-  population_list = c(1,6)
+  #TP_list = c("1.75","2.75")
+  #population_list = c(1,6)
   
   for(paramNum in population_list){
     for(TP in TP_list){

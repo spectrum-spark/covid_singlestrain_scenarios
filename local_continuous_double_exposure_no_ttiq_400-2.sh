@@ -10,7 +10,7 @@ do
         do
             for ((TPvers = 1; TPvers<=5;TPvers++))
             do
-                ./RunContinuousDoubleExposureNoTTIQ state_parameters/omicron_update_VE_updated.json winter_scenarios_continuous_double_exposure_no_ttiq/continuous_${POP}_${TPvers}_local.json $i C:\\Users\\thaophuongl\\covid-abm-presim\\continuous_sim_param_files abm_continuous_simulation_parameters_${POP}_${diffparams}
+                ./RunContinuousDoubleExposureNoTTIQ state_parameters/omicron_update_VE_updated.json winter_scenarios_continuous_double_exposure_no_ttiq_400-2/continuous_${POP}_${TPvers}_local.json $i C:\\Users\\thaophuongl\\covid-abm-presim\\continuous_sim_param_files abm_continuous_simulation_parameters_${POP}_${diffparams}
             done
         done
     done
