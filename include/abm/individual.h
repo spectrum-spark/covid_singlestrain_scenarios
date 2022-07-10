@@ -115,6 +115,8 @@ class Individual{
   bool isCovidNaive; /**< Has the individual been infected previously? This is required for determining the height of the boost. Currently unused. */ 
   bool isVaccinated; /**< Has the individual recieved two doses of vaccine. */
 
+  bool priorStrain;
+
   int   age_bracket; /**< Age bracket of the individual */
   int   secondary_infections; /**< The number of individuals that they have infected. */
   int number_infections;  /**< The number of infections they have received. */

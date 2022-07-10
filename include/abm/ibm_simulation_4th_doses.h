@@ -31,10 +31,13 @@ class DiseaseOutput {
   int secondary_infections;
   int number_infections;
   bool symptomatic;
+  int cluster_number;
 
  public:
   DiseaseOutput(const Individual& person);
   friend std::ostream& operator<<(std::ostream& os, const DiseaseOutput& covid);
+  const double & getTimeSymptoms() const;
+  int countInfection(const double & t);
 };
 
 /**
@@ -59,6 +62,7 @@ class disease_model {
   double log10_mean_neut_Pfizer_dose_3;
   // double log10_mean_additional_neut;
   double log10_omicron_neut_fold;
+  double priorStrainFold;
 
   std::function<double(double&)> mobility_;
 
@@ -80,13 +84,17 @@ class disease_model {
    * @param w
    * @param ve_params
    */
-  disease_model(
+
+    /**
+     * @brief Construct a new disease model object with the priorStrainFold 
+     */
+    disease_model(
       std::vector<double> beta_C_in, std::vector<double> q,
       std::vector<double> xi,
       std::vector<std::vector<double>> contact_matrix_in, std::vector<double> b,
       std::vector<double> w, nlohmann::json& ve_params,
       std::function<double(double&)> mobility_function =
-          [](double& t) -> double { return 1.0; });
+          [](double& t) -> double { return 1.0; },double priorStrainFold = 1.0);
 
   /**
    * @brief Construct a new disease model object
@@ -278,6 +286,10 @@ class disease_model {
   double getNeutsWithExposure(const Individual& person, const double& t,
                                const VaccineType& vaccine);
 
+
+  // Get some output. 
+  int getTotalFirstInfections(const double & t);
+  
   // friend std::ostream& operator<<(std::ostream& os, const
   // std::vector<DiseaseOutput>& covid); /**< Overloaded ostream for output */
   friend std::ostream& operator<<(std::ostream& os, const disease_model& covid);

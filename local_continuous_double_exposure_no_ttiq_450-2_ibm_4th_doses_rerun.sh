@@ -2,9 +2,9 @@
 
 START=$(date "+%s")
 
-for (( i=1; i<=5; i++ ))
+for (( i=10; i<=10; i++ ))
 do
-    for POP in older younger 
+    for POP in younger older
     do 
         for (( diffparams=1; diffparams<=6; diffparams++ ))
         do

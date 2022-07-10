@@ -80,13 +80,13 @@ def TP_vs_total_avoided_infection(population_type_list = ["younger","older"]):
 
     for population_type in population_type_list :
         if population_type=="younger":
-            legend_points.append(ax.scatter(-10000,-10000,color='lightskyblue', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
-            legend_points.append(ax.scatter(-10000,-10000,color='dodgerblue', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
-            legend_points.append(ax.scatter(-10000,-10000,color='navy', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+            legend_points.append(ax.scatter(-100000,-100000,color='lightskyblue', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+            legend_points.append(ax.scatter(-100000,-100000,color='dodgerblue', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+            legend_points.append(ax.scatter(-100000,-100000,color='navy', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
         if population_type=="older":
-            legend_points.append(ax.scatter(-10000,-10000,color='salmon', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
-            legend_points.append(ax.scatter(-10000,-10000,color='red', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
-            legend_points.append(ax.scatter(-10000,-10000,color='firebrick', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+            legend_points.append(ax.scatter(-100000,-100000,color='salmon', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+            legend_points.append(ax.scatter(-100000,-100000,color='red', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+            legend_points.append(ax.scatter(-100000,-100000,color='firebrick', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
 
         for TP in TP_list:
             
@@ -197,8 +197,8 @@ def TP_vs_total_avoided_infection(population_type_list = ["younger","older"]):
                 # ax.scatter( percent_infected_before, percent_infected_after,color=colour, s=scale, label=info_text, marker= marker, alpha=0.8, edgecolors='none')
 
 
-    ax.set_xlim([0,3])
-    # ax.set_ylim([-10000,100000])
+    ax.set_xlim([0.8,2.1])
+    ax.set_ylim([-10000,120000])
     
     # ax.set_xlim([15,85])
     # ax.set_ylim([-1,60])
@@ -221,7 +221,7 @@ def TP_vs_total_avoided_infection(population_type_list = ["younger","older"]):
 
     if len(population_type_list)==2:
         ax.legend(legend_points[:3], ["20\% vaccination coverage", "50\% vaccination coverage","80\% vaccination coverage"],title="younger population",bbox_to_anchor=(0.47, 1), loc=1)
-        leg = Legend(ax,legend_points[3:], ["20\% vaccination coverage", "50\% vaccination coverage","80\% vaccination coverage"], title="older population",bbox_to_anchor=(0.47, 0.75), loc=1)
+        leg = Legend(ax,legend_points[3:], ["20\% vaccination coverage", "50\% vaccination coverage","80\% vaccination coverage"], title="older population",bbox_to_anchor=(0.47, 0.8), loc=1)
         ax.add_artist(leg)
     else:
         ax.legend(legend_points, ["20\% vaccination coverage", "50\% vaccination coverage","80\% vaccination coverage"],title=population_type_list[0] +" population",bbox_to_anchor=(0.47, 1), loc=1)
@@ -259,3 +259,5 @@ no_vax_SIM_NUMBER = 5
 
 
 TP_vs_total_avoided_infection(population_type_list = ["younger","older"])
+TP_vs_total_avoided_infection(population_type_list = ["younger"])
+TP_vs_total_avoided_infection(population_type_list = ["older"])

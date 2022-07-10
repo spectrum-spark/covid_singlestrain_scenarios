@@ -53,7 +53,9 @@ R0_ratio= 1.1131953802735288
 
 
 TP_list = ["0.85","0.9","0.95","1.0","1.05", "1.1","1.15", "1.2","1.25", "1.3","1.35", "1.4", "1.45","1.5","1.55","1.6","1.65","1.7","1.75","1.8","1.85","1.9","1.95","2.0","2.05"]
-folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs")
+# folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs")
+folder = os.path.join(os.path.dirname(__file__),"..","covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs")
+
 population_list = [1,2,3,4,5,6]
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
 
@@ -502,11 +504,11 @@ def plot_combined_80_booster(population_type_list = ["younger","older"]):
                     elif total_vaccination_rate == 0.8:
                         colour = 'firebrick'
 
-                if len(population_type_list)==2:
-                    if total_vaccination_rate == 0.2:
-                        colour = "darkorchid"
-                    else:
-                        colour = "forestgreen"
+                # if len(population_type_list)==2:
+                #     if total_vaccination_rate == 0.2:
+                #         colour = "darkorchid"
+                #     else:
+                #         colour = "forestgreen"
 
                 for simnum in df_dict.keys():
                     infections_over_time = df_dict[simnum]
@@ -541,5 +543,5 @@ def plot_combined_80_booster(population_type_list = ["younger","older"]):
 # plot_combined()
 # plot_combined_older_80_booster()
 plot_combined_80_booster(population_type_list = ["younger","older"])
-# plot_combined_80_booster(population_type_list = ["younger"])
-# plot_combined_80_booster(population_type_list = ["older"])
+plot_combined_80_booster(population_type_list = ["younger"])
+plot_combined_80_booster(population_type_list = ["older"])

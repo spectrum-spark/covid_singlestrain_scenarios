@@ -65,11 +65,12 @@ R0_ratio= 1.1131953802735288
 # folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_outputs")
 
 TP_list = ["0.85","0.9","0.95","1.0","1.05", "1.1","1.15", "1.2","1.25", "1.3","1.35", "1.4", "1.45","1.5","1.55","1.6","1.65","1.7","1.75","1.8","1.85","1.9","1.95","2.0","2.05"]
-folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs")
+# folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs")
 population_list = list(range(1,6+1))
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
-SIM_NUMBER = 5
+SIM_NUMBER = 10
 
+folder =  os.path.join(os.path.dirname(__file__),"..","covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs")
 
 
 
@@ -2696,24 +2697,26 @@ def plot_infection_population_breakdown_mean(population_type_list,local_param_li
 # plot_before_vs_after_infections_combined_ages_80_booster_only_boxplot( ["younger"],bucket_list)
 # plot_before_vs_after_infections_combined_ages_80_booster_only_boxplot(["older"],bucket_list)
 
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["younger","older"])
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["younger"])
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["older"])
-
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_vertical('death',OG="",population_type_list = ["younger","older"])
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_vertical('death',OG="",population_type_list = ["younger"])
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_vertical('death',OG="",population_type_list = ["older"])
-
-
-# bucket_list ={20:[0,20],40:[20,40],60:[40,60],80:[60,80],100:[80,100]}
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older","younger"],bucket_list)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older"],bucket_list)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["younger"],bucket_list)
-
-# bucket_list ={20:[15,25],50:[45,55],80:[75,85]}
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older","younger"],bucket_list)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older"],bucket_list)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["younger"],bucket_list)
-
 
 # plot_infection_population_breakdown_mean(["younger","older"],local_param_list=[2,6],local_TP_list=["0.85","2.05"])
+
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["younger","older"])
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["younger"])
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["older"])
+
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_vertical('death',OG="",population_type_list = ["younger","older"])
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_vertical('death',OG="",population_type_list = ["younger"])
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_vertical('death',OG="",population_type_list = ["older"])
+
+
+bucket_list ={20:[0,20],40:[20,40],60:[40,60],80:[60,80],100:[80,100]}
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older","younger"],bucket_list)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older"],bucket_list)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["younger"],bucket_list)
+
+bucket_list ={20:[15,25],50:[45,55],80:[75,85]}
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older","younger"],bucket_list)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["older"],bucket_list)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_boxplot('death',"",["younger"],bucket_list)
+
+

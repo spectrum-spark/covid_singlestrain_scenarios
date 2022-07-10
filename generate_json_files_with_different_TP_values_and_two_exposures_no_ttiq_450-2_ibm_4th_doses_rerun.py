@@ -22,7 +22,6 @@ TP_list = [0.85,0.9,0.95, 1.,   1.05, 1.1  ,1.15, 1.2 , 1.25, 1.3, 1.35 ,1.4 , 1
 print(TP_list)
 print(len(TP_list))
 
-
 for population_type in ["younger","older"]:
     number = 1
     for TP in TP_list:

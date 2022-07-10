@@ -43,7 +43,8 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       isCovidNaive(true),
       isVaccinated(false),
       vaccinations(vaccination_in),
-      number_infections(0)
+      number_infections(0),
+      priorStrain(false)
 {}
 
 Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std::vector<std::pair<double, VaccineType>> &vaccination_in, nlohmann::json &ve_params, size_t &num_infections, double &time_of_past_infection)
@@ -60,7 +61,8 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       isVaccinated(false),
       vaccinations(vaccination_in),
       number_infections(num_infections),
-      time_past_infection(time_of_past_infection)
+      time_past_infection(time_of_past_infection),
+      priorStrain(false)
 {}
 
 
@@ -78,7 +80,8 @@ Individual::Individual(double &age_in, std::vector<double> &age_brackets_in, std
       isVaccinated(isvaxxed),
       vaccinations(vaccination_in),
       number_infections(num_infections),
-      time_past_infection(time_of_past_infection)
+      time_past_infection(time_of_past_infection),
+      priorStrain(false)
 {}
 
 

@@ -24,7 +24,8 @@ all: $(OBJECTS)
 	# $(CXX) $(CPPFLAGS) -o RunContinuousFirstAndContExposure main_continuous_simulation_first_then_continuous_exposure.cpp $(OBJECTS) 
 	# $(CXX) $(CPPFLAGS) -o RunContinuousContExposure main_continuous_simulation_continuous_exposure.cpp $(OBJECTS) 
 	# $(CXX) $(CPPFLAGS) -o RunContinuousDoubleExposureNoTTIQ main_continuous_simulation_double_exposure_no_ttiq.cpp $(OBJECTS) 
-	$(CXX) $(CPPFLAGS) -o RunContinuousDoubleExposureNoTTIQibm4thdoses main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses.cpp $(OBJECTS) 
+	# $(CXX) $(CPPFLAGS) -o RunContinuousDoubleExposureNoTTIQibm4thdoses main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses.cpp $(OBJECTS) 
+	$(CXX) $(CPPFLAGS) -o RunNoTTIQibm4thdosesnewstrain main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses_newstrain.cpp $(OBJECTS) 
 
 
 $(OBJ)/%.o: $(SRC)/%.cpp
@@ -36,4 +37,5 @@ clean:
 	# rm build/* RunEmbryoSim
 	# rm build/* RunWinter RunContinuous RunContinuousDoubleExposure RunContinuousFirstAndContExposure RunContinuousContExposure
 	# rm build/* RunContinuousDoubleExposureNoTTIQ 
-	rm build/* RunContinuousDoubleExposureNoTTIQibm4thdoses
+	# rm build/* RunContinuousDoubleExposureNoTTIQibm4thdoses
+	rm build/* RunNoTTIQibm4thdosesnewstrain

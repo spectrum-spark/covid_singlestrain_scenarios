@@ -13,13 +13,19 @@ DiseaseOutput::DiseaseOutput(const Individual &person)
       secondary_infections(person.secondary_infections),
       vaccine(person.covid.vaccine_at_exposure),
       time_isolated(person.time_isolated),
-      number_infections(person.number_infections) {}
+      number_infections(person.number_infections),
+      cluster_number(person.covid.cluster_number) {}
+
+int DiseaseOutput::countInfection(const double &t) {
+  return static_cast<int>((time_symptom_onset <= t) &&
+                          (number_infections == 1));
+}
 
 std::ostream &operator<<(std::ostream &os, const DiseaseOutput &covid) {
   os << covid.age << ", " << covid.vaccine << ", " << covid.symptomatic << ", "
      << covid.time_symptom_onset << ", " << covid.log10neuts_at_exposure << ", "
      << covid.secondary_infections << ", " << covid.time_isolated << ", "
-     << covid.number_infections;
+     << covid.number_infections << ", " << covid.cluster_number;
   return os;
 }
 
@@ -36,14 +42,15 @@ std::ostream &operator<<(std::ostream &os, const disease_model &covid) {
   return os;
 }
 
-// Constructor for disease model, vector betas
+// Constructor for disease model, vector betas, with priorstrainfold
 disease_model::disease_model(std::vector<double> beta_C_in,
                              std::vector<double> q_in,
                              std::vector<double> xi_in,
                              std::vector<std::vector<double>> contact_matrix_in,
                              std::vector<double> b, std::vector<double> w,
                              nlohmann::json &ve_params,
-                             std::function<double(double &)> mobility_function)
+                             std::function<double(double &)> mobility_function,
+                             double priorStrainFold_in)
     : beta_C(beta_C_in),
       q(q_in),
       xi(xi_in),
@@ -71,7 +78,8 @@ disease_model::disease_model(std::vector<double> beta_C_in,
           getJsonValue<double>(ve_params, "log10_omicron_neut_fold")),
       mobility_(mobility_function),
       contact_matrix(contact_matrix_in),
-      contact_matrix_base(contact_matrix_in) {
+      contact_matrix_base(contact_matrix_in),
+      priorStrainFold(priorStrainFold_in) {
   double scale_e = 4.817559;
   double scale_S = 1.013935;
   double scale_r = 1.000000;
@@ -90,6 +98,9 @@ disease_model::disease_model(std::vector<double> beta_C_in,
   output.reserve(10000);
   // Could do a bunch of checks on the beta q xi and contact matrix for sizes.
 };
+
+
+
 
 //  Covid model Age stratified Individual contacts. (ASCM - age stratified
 //  contact model)
@@ -743,6 +754,10 @@ void disease_model::boostNeutsVaccination(Individual &person, double &t,
 
   if (!covidNaive) {
     log10_boost = getNeutsWithExposure(person, t, vaccine);
+
+  } else if (person.priorStrain) {
+    log10_boost = getNeutsWithExposure(person, t, vaccine);
+    log10_boost += priorStrainFold;
   } else {
     log10_boost = getNeutsNaive(person, t, vaccine);
   }
@@ -810,3 +825,23 @@ void disease_model::print_params() {
             << "\n"
             << log10_mean_neut_Pfizer_dose_3 << "\n";
 }
+
+
+int disease_model::getTotalFirstInfections(const double &t) {
+  int out = 0;
+  for (auto &infection : output) {
+    out += infection.countInfection(t);
+  }
+  return out;
+};
+
+// void disease_model::getSummaryStat(){
+//   for(const auto & infection : output){
+//     infection.
+//   }
+
+// }
+
+const double &DiseaseOutput::getTimeSymptoms() const {
+  return time_symptom_onset;
+};
