@@ -8,21 +8,28 @@ Copy the contact matrices into this folder.
 
 ## 2. Main paper results
 
-Run:
+Run the following to compile the C++ executable: 
 
 `make -f makefile.main`
 
 ### A. Simulations with BA1/2 first wave and BA1/2 second wave
 
+Main source file: `main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses.cpp`
 
 
 ### B. Simulations with BA1/2 first wave and BA4/5-like second wave
+
+Main source file: `main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses_newstrain.cpp`
 
 
 ## 3. Supplementary materials
 
 ### A. Simulations with BA1/2 first wave and BA1/2 second wave with a worse vaccine
 
-Run:
+Main source file: `main_continuous_simulation_double_exposure_no_ttiq.cpp`
+
+Run the following to compile the C++ executable: 
 
 `make -f makefile.worsevaccine`
+
+Run the python file `generate_json_files_with_different_TP_vales_and_two_exposures_no_ttiq_450-2.py`, updating the locations of output directories as appropriate. 

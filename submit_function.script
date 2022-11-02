@@ -1,9 +1,0 @@
-#!/bin/bash
-#SBATCH --job-name=OMICRON
-#SBATCH --time=06:00:00
-#SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=6G
-#SBATCH --cpus-per-task=1
-#SBATCH --array=1-20
-module load gcc/10.2.0
-./RunChristmas state_parameters/omicron_update_VE_updated.json ${STATE_INPUT}_parameters/${STATE_INPUT}_${LEVEL_INPUT}.json $SLURM_ARRAY_TASK_ID  ${STATE_INPUT}_scenarios scenario109
