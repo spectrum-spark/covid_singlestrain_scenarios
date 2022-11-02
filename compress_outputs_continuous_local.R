@@ -39,15 +39,15 @@ root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposu
 
 #root_folder= "C:\\Users\\thaophuongl\\covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs\\"
 TP_list = c("0.85","0.9","0.95","1.0","1.05", "1.1","1.15", "1.2","1.25", "1.3","1.35", "1.4", "1.45","1.5","1.55","1.6","1.65","1.7","1.75","1.8","1.85","1.9","1.95","2.0","2.05")
-TP_list = c("1.95")
-
-root_folder= "C:\\Users\\thaophuongl\\covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs\\"
 
 
-for(population_type in c("older")){# ,"younger"
-  population_list = seq(1,6,1)
-  population_list = c(5)
-  #population_list = c(1) # for the no vax version
+#root_folder= "C:\\Users\\thaophuongl\\covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs\\"
+
+
+for(population_type in c("older" ,"younger")){#
+  #population_list = seq(1,6,1)
+  #population_list = c(5)
+  population_list = c(1) # for the no vax version
   # TP_list = c("1.2","1.625","2.05","2.4749999999999996","2.9")
   # TP_list = c("2.0","2.25","2.5","2.75","3.0")
   # TP_list = c("1.75","2.0","2.25","2.5","2.75")

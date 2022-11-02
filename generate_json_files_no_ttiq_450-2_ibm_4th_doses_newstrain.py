@@ -4,6 +4,7 @@ import numpy as np
 
 folder = "no_ttiq_450-2_ibm_4th_doses_newstrain"
 #folder = "no_ttiq_450-2_ibm_4th_doses_newstrain_cluster"
+folder = "no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_cluster"
 folder_path = os.path.join(os.path.dirname(__file__),folder)
 # Check whether the specified folder exists or not
 if not os.path.exists(folder_path ):
@@ -28,8 +29,8 @@ for population_type in ["younger","older"]:
     number = 1
     for TP in TP_list:
         param_set = {"folder_suffix": "_SOCRATES_TP"+str(TP) ,
-                    "output_directory": "C:\\Users\\thaophuongl\\covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs\\",
-                    #"output_directory": "/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs/",
+                    #"output_directory": "C:\\Users\\thaophuongl\\covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs\\",
+                    "output_directory": "/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_outputs/",
                     "t_end": 700.0,
                     "seed_exposure": 225.0,
                     "initial_infections": 100,

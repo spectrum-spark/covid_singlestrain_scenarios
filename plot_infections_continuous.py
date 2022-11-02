@@ -540,8 +540,8 @@ def plot_combined_80_booster(population_type_list = ["younger","older"]):
 
 
 
-# plot_combined()
+plot_combined()
 # plot_combined_older_80_booster()
-plot_combined_80_booster(population_type_list = ["younger","older"])
-plot_combined_80_booster(population_type_list = ["younger"])
-plot_combined_80_booster(population_type_list = ["older"])
+# plot_combined_80_booster(population_type_list = ["younger","older"])
+# plot_combined_80_booster(population_type_list = ["younger"])
+# plot_combined_80_booster(population_type_list = ["older"])

@@ -302,20 +302,167 @@ def plot_before_vs_after_infections_no_vax(population_type_list = ["younger","ol
     plt.close()
         
 
+
+
+
+def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal(ICU_or_death,OG="",population_type_list = ["younger","older"]): # or "OG_"
+    fig, ax = plt.subplots(1,1, figsize=(6,5))
+
+    # first, some plotting to get some fake legends...
+    legend_points = []
+
+    
+
+
+    
+    max_y= 0
+    colour = 'dodgerblue'
+    marker = 'o'
+    legend_list =[]
+
+    for population_type in population_type_list:
+        if population_type == "younger":
+            legend_points.append(ax.scatter(-10000,-10000,color='dodgerblue', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+        if population_type=="older":
+            legend_points.append(ax.scatter(-10000,-10000,color='red', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
+        legend_list.append(population_type+" population")
+
+
+        if population_type == "younger":
+            colour = 'dodgerblue'
+        else:
+            colour = 'red'
+
+        for paramNum in population_list:
+            for TP in TP_list:
+
+                filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
+
+                with open(presimfilename, "r") as f:
+                    presim_parameters = json.load(f)
+                total_population = presim_parameters["total_population"]
+                population_type = presim_parameters["population_type"]
+                # total_vaccination_rate = presim_parameters["total_vaccination_rate"]
+                # booster_fraction = presim_parameters["booster_fraction"]
+
+                
+
+                # info_text =  population_type +" population \n"+ str(100*total_vaccination_rate )+"\% vax rate\n" + str(100*booster_fraction)+"\% booster fraction\n" + "with TP = " + TP
+
+                # if folder != os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_outputs"):
+                #     info_text =  str(100*total_vaccination_rate )+"\% vax rate\n" + str(100*booster_fraction)+"\% booster fraction\n" + "with TP = " + TP
+                # else:
+                #     info_text =  str(100*total_vaccination_rate )+"\% vax rate\n" + str(100*booster_fraction)+"\% booster fraction\n" + "with TP = " + str(round(float(TP)*R0_ratio,3))
+                
+                datafilename = filename + ".csv"
+                data_file = os.path.join(folder, datafilename)
+                pd_obj = pd.read_csv(data_file)
+
+                new_pd = pd_obj.groupby(['day','sim'],as_index=False).n.sum()
+                df = new_pd.pivot(index='day', columns='sim', values='n')
+                df_dict = df.to_dict()
+                infections_per_sim_before = []
+                infections_per_sim_after = []
+
+                daily_deaths_after = []
+                daily_ICU_admissions_after = []
+
+                clinical_filename = "_" + OG + "full_outcomes_dataframe.csv"
+                clinical_file = os.path.join(folder,filename,clinical_filename)
+                clinical_pd_obj = pd.read_csv(clinical_file)
+
+                scale = 40
+                aug_num = 5
+                for simnum in df_dict.keys():
+                    infections_over_time = df_dict[simnum]
+                    total_infections_before = sum(list_conversion_nans(infections_over_time, days_before))
+                    infections_per_sim_before.append(total_infections_before)
+
+                    total_infections_after = sum(list_conversion_nans(infections_over_time, days_after))
+                    infections_per_sim_after.append(total_infections_after)
+
+                    new_pd_ICU = clinical_pd_obj.loc[(clinical_pd_obj['iteration']>=simnum*aug_num) & (clinical_pd_obj['iteration']<(simnum+1)*aug_num)& (clinical_pd_obj['day']>time_split)]
+
+                    daily_deaths = sum(new_pd_ICU['daily_deaths'].to_list())/aug_num
+                    print(daily_deaths )
+                    daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())/aug_num
+
+                    daily_deaths_after.append(daily_deaths)
+                    daily_ICU_admissions_after.append(daily_ICU_admissions)
+                
+                percent_infected_before = [x/total_population*100 for x in infections_per_sim_before]
+                percent_infected_after = [x/total_population*100 for x in infections_per_sim_after ]
+
+                percent_daily_deaths_after = [x/total_population*100 for x in daily_deaths_after]
+                percent_daily_ICU_admissions_after = [x/total_population*100 for x in daily_ICU_admissions_after]
+                
+                if ICU_or_death == 'death':
+                    ax.scatter(percent_infected_before, daily_deaths_after, color=colour, s=scale,  marker= marker, alpha=0.8, edgecolors='none')
+                    max_y = max(max_y,max( daily_deaths_after))
+                elif ICU_or_death =='ICU':
+                    ax.scatter(percent_infected_before, daily_ICU_admissions_after, color=colour, s=scale, marker= marker, alpha=0.8, edgecolors='none')
+                    max_y = max(max_y,max(daily_ICU_admissions_after))
+
+
+    ax.set_xlim([15,85])
+    if ICU_or_death == 'death':
+        ax.set_ylim([0,20])
+    else:
+        ax.set_ylim([0,max_y+10])
+
+    x_ticks = [20,30,40,50,60,70,80]
+    ax.set_xticks(x_ticks)
+    ax.set_xticklabels([str(x)+"\%" for x in x_ticks])
+
+    
+    # ax.grid(True)
+    # ax.legend(legend_list)
+    ax.set_xlabel('past attack rate (before t = 450)')
+    ax.grid(True, which='major',color='gray')
+    ax.set_axisbelow(True)
+
+    ax.legend(legend_points,legend_list,bbox_to_anchor=(0.47, 1), loc=1)
+
+    xticks = [15,20,30,40,50,60,70,80,85]
+    for x0, x1 in zip(xticks[::2], xticks[1::2]):
+        plt.axvspan(x0, x1, color='black', alpha=0.1, zorder=0)
+
+    if len(population_type_list)==2:
+        addition = "combined"
+    else:
+        addition = population_type_list[0]  
+
+    if ICU_or_death == 'death':
+        ax.set_ylabel('near-future deaths (t = 450 to 650)')
+        #ax.set_title('Deaths given past hybrid immunity',fontsize=14)
+
+        plt.savefig(os.path.join(folder, "abm_continuous_simulation_parameters_deaths_vs_past_immunity"+OG+"_ages_80_booster_only_horizontal_"+addition+".png") , bbox_inches='tight')
+        plt.close()
+    elif ICU_or_death =='ICU':
+        ax.set_ylabel('future ICU admissions (number of ICU admissions after t= ' + str(time_split) +")")
+        #ax.set_title('ICU admissions given past immunity',fontsize=14)
+
+        plt.savefig(os.path.join(folder,"abm_continuous_simulation_parameters_ICU_admissions_vs_past_immunity"+OG+"_ages_80_booster_only_horizontal_"+addition+".png") , bbox_inches='tight')
+        plt.close()
+
 TP_list = ["0.85","0.9","0.95","1.0","1.05", "1.1","1.15", "1.2","1.25", "1.3","1.35", "1.4", "1.45","1.5","1.55","1.6","1.65","1.7","1.75","1.8","1.85","1.9","1.95","2.0","2.05"]
 folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_no_vax_outputs")
 population_list = [1]
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files_no_vax")
-SIM_NUMBER = 5
+SIM_NUMBER = 10
 
-plot_infections_over_time_no_vax(population_type_list = ["younger","older"])
-plot_infections_over_time_no_vax(population_type_list = ["younger"])
-plot_infections_over_time_no_vax(population_type_list = ["older"])
+# plot_infections_over_time_no_vax(population_type_list = ["younger","older"])
+# plot_infections_over_time_no_vax(population_type_list = ["younger"])
+# plot_infections_over_time_no_vax(population_type_list = ["older"])
 
-plot_before_vs_after_infections_no_vax(population_type_list = ["younger","older"],hor_or_ver = "horizontal")
-plot_before_vs_after_infections_no_vax(population_type_list = ["younger"],hor_or_ver = "horizontal")
-plot_before_vs_after_infections_no_vax(population_type_list = ["older"],hor_or_ver =  "horizontal")
+# plot_before_vs_after_infections_no_vax(population_type_list = ["younger","older"],hor_or_ver = "horizontal")
+# plot_before_vs_after_infections_no_vax(population_type_list = ["younger"],hor_or_ver = "horizontal")
+# plot_before_vs_after_infections_no_vax(population_type_list = ["older"],hor_or_ver =  "horizontal")
 
-plot_before_vs_after_infections_no_vax(population_type_list = ["younger","older"],hor_or_ver = "vertical")
-plot_before_vs_after_infections_no_vax(population_type_list = ["younger"],hor_or_ver = "vertical")
-plot_before_vs_after_infections_no_vax(population_type_list = ["older"],hor_or_ver = "vertical")
+# plot_before_vs_after_infections_no_vax(population_type_list = ["younger","older"],hor_or_ver = "vertical")
+# plot_before_vs_after_infections_no_vax(population_type_list = ["younger"],hor_or_ver = "vertical")
+# plot_before_vs_after_infections_no_vax(population_type_list = ["older"],hor_or_ver = "vertical")
+
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal('death',OG="",population_type_list = ["younger","older"])
