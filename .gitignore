@@ -11,8 +11,8 @@ slurm*.out
 scenario*Deltacorrection.csv
 NSW_outputs
 NSW_parameters
-SA_parameters
-TAS_parameters
+SA_parameters/
+TAS_parameters/
 winter_wave_scenarios
 outputs
 new_outputs
@@ -26,8 +26,6 @@ RunNoBooster
 PopulationDistribution_Boosted.csv
 PopulationDistribution.csv
 vaccine_scenarios/*
-SA_parameters
-TAS_parameters
 initial_condition_files
 # Node artifact files
 node_modules/
