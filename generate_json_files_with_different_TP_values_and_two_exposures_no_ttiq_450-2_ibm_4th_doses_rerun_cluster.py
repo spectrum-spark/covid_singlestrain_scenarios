@@ -10,8 +10,7 @@ if not os.path.exists(folder_path ):
   os.makedirs(folder_path )
 
 fixed_parameters_file = "fixed_symptoms_etc.json"
-fixed_param_folder = "winter_scenarios_continuous"
-full_fixed_parameters_file = os.path.join(os.path.dirname(__file__),fixed_param_folder,fixed_parameters_file)
+full_fixed_parameters_file = os.path.join(os.path.dirname(__file__),fixed_parameters_file)
 
 with open(full_fixed_parameters_file, "r") as f:
     fixed_parameters = json.load(f)

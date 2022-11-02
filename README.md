@@ -4,6 +4,8 @@
 
 See https://bitbucket.org/thaople/covid-abm-presim/src/master/ which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
 
+Copy the contact matrices into this folder.
+
 ## 2. Simulations with BA1/2 first wave and BA1/2 second wave
 
 ## 3. Simulations with BA1/2 first wave and BA4/5-like second wave
