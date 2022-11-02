@@ -1,0 +1,22 @@
+CXX = g++
+INCLUDE = include
+NLOHMANN = ../../json/single_include
+CPPFLAGS = -std=c++2a -DDUMP_INPUT -I$(INCLUDE) -I$(NLOHMANN)
+CFLAGS = 
+OBJ = build
+SRC = src
+SOURCES := $(wildcard $(SRC)/*.cpp)
+SOURCES := $(filter-out src/ibm_simulation_4th_doses.cpp, $(SOURCES)) 
+
+OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
+OBJECTS := $(filter-out build/ibm_simulation_4th_doses.o, $(OBJECTS))
+
+all: $(OBJECTS)
+	$(CXX) $(CPPFLAGS) -o RunContinuousDoubleExposureNoTTIQ main_continuous_simulation_double_exposure_no_ttiq.cpp $(OBJECTS) 
+
+
+$(OBJ)/%.o: $(SRC)/%.cpp
+	$(CXX) -c $(CPPFLAGS) $< -o $@
+
+clean: 
+	rm build/* RunContinuousDoubleExposureNoTTIQ 

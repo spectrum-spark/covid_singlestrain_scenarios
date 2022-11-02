@@ -6,8 +6,23 @@ See https://bitbucket.org/thaople/covid-abm-presim/src/master/ which generates v
 
 Copy the contact matrices into this folder.
 
-## 2. Simulations with BA1/2 first wave and BA1/2 second wave
+## 2. Main paper results
 
-## 3. Simulations with BA1/2 first wave and BA4/5-like second wave
+Run:
 
-## 4. Simulations with BA1/2 first wave and BA1/2 second wave with a worse vaccine
+`make -f makefile.main`
+
+### A. Simulations with BA1/2 first wave and BA1/2 second wave
+
+
+
+### B. Simulations with BA1/2 first wave and BA4/5-like second wave
+
+
+## 3. Supplementary materials
+
+### A. Simulations with BA1/2 first wave and BA1/2 second wave with a worse vaccine
+
+Run:
+
+`make -f makefile.worsevaccine`
