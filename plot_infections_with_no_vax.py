@@ -54,48 +54,16 @@ population_list = list(range(1,6+1))
 novax_population_list = [1]
 SIM_NUMBER = 10
 
-# LOCAL SAME VARIANT (updated vaccine efficacy)
-# folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs")
-# presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
-# novax_folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_no_vax_outputs")
-# novax_presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files_no_vax")
-
-# LOCAL NEW STRAIN
-
-# folder =  os.path.join(os.path.dirname(__file__),"..","covid_no_ttiq_450-2_ibm_4th_doses_newstrain_outputs")
-
-# CLUSTER NEW STRAIN
-# folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_outputs/'
-# presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
-# novax_folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_no_vax_outputs/'
-# novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
-
-
-# CLUSTER WORSE VACCINES
-folder = '/scratch/cm37/tpl/covid_continuous_simulations_double_exposure_no_ttiq_450-2_outputs/'
-presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
-novax_folder = '/scratch/cm37/tpl/covid_continuous_simulations_double_exposure_no_ttiq_450-2_no_vax_outputs/'
-novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
-
-
-# CLUSTER EARLIER SEED (SAME VARIANT)
-# folder = '/scratch/cm37/tpl/covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_earlier_seed_outputs/'
-# presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
-# novax_folder = '/scratch/cm37/tpl/covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_no_vax_earlier_seed_outputs/'
-# novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
-
 
 def plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger","older"],x_limits=[15,85],y_limits = [-1,60],filter=False,aspect_ratio = 'equal'):
     if y_limits[1]>80:
         fig, ax = plt.subplots(1,1, figsize=(8,7.75)) # for the second strain
     else:
         fig, ax = plt.subplots(1,1, figsize=(6,6.75))
-    # 
+    
     # first, some plotting to get some fake legends...
     legend_points = []
     marker='o'
-
-    # legend_list = ["20\% vaccination coverage, younger population", "50\% vaccination coverage, younger population","80\% vaccination coverage, younger population","20\% vaccination coverage, older population", "50\% vaccination coverage, older population","80\% vaccination coverage, older population"]
 
     for population_type in population_type_list :
         if population_type=="younger":
@@ -277,9 +245,7 @@ def plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(pop
             ax.legend(legend_points, ["no vaccination","20\% vaccination coverage", "50\% vaccination coverage","80\% vaccination coverage"],title=population_type_list[0] +" population",bbox_to_anchor=(0.6, 1), loc=1)
 
     ax.set_ylabel('near-future attack rate (t = 450 to 650)')
-    #ax.set_title('past attack rate (before t = 450)')
     ax.set_xlabel('past attack rate (before t = 450)')
-    #ax.tick_params(axis="x", bottom=True, top=True, labelbottom=True, labeltop=True)
     
 
     xticks = [15,20,30,40,50,60,70,80,85]
@@ -319,9 +285,6 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
             legend_points.append(ax.scatter(-10000,-10000,color='red', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
             legend_points.append(ax.scatter(-10000,-10000,color='firebrick', s=100, marker= 'o', alpha=1.0, edgecolors='none'))
 
-
-        
-
         for paramNum in novax_population_list:
             for TP in TP_list:
 
@@ -353,9 +316,6 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
 
                 severe_disease_after = []
 
-                # daily_deaths_after = []
-                # daily_ICU_admissions_after = []
-
                 clinical_filename = "_" + OG + "full_outcomes_dataframe.csv"
                 clinical_file = os.path.join(folder,filename,clinical_filename)
                 clinical_pd_obj = pd.read_csv(clinical_file)
@@ -381,17 +341,11 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
                         elif ICU_or_death =='ICU':
                             daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())
                             severe_disease_after.append(daily_ICU_admissions)
-
-                    # daily_deaths_after.append(daily_deaths)
-                    # daily_ICU_admissions_after.append(daily_ICU_admissions)
                 #print(severe_disease_after)
                 percent_infected_before = [x/total_population*100 for x in infections_per_sim_before]
                 
 
                 percent_infected_after = [x/total_population*100 for x in infections_per_sim_after ]
-
-                # percent_daily_deaths_after = [x/total_population*100 for x in daily_deaths_after]
-                # percent_daily_ICU_admissions_after = [x/total_population*100 for x in daily_ICU_admissions_after]
                 
                 if not filter:
                     ax.scatter(percent_infected_before, severe_disease_after, color=colour, s=scale,marker= marker, alpha=0.8, edgecolors=outline)
@@ -465,9 +419,6 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
 
                 severe_disease_after = []
 
-                # daily_deaths_after = []
-                # daily_ICU_admissions_after = []
-
                 clinical_filename = "_" + OG + "full_outcomes_dataframe.csv"
                 clinical_file = os.path.join(folder,filename,clinical_filename)
                 clinical_pd_obj = pd.read_csv(clinical_file)
@@ -493,17 +444,9 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
                         elif ICU_or_death =='ICU':
                             daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())
                             severe_disease_after.append(daily_ICU_admissions)
-
-                    # daily_deaths_after.append(daily_deaths)
-                    # daily_ICU_admissions_after.append(daily_ICU_admissions)
                 #print(severe_disease_after)
                 percent_infected_before = [x/total_population*100 for x in infections_per_sim_before]
-                
-
                 percent_infected_after = [x/total_population*100 for x in infections_per_sim_after ]
-
-                # percent_daily_deaths_after = [x/total_population*100 for x in daily_deaths_after]
-                # percent_daily_ICU_admissions_after = [x/total_population*100 for x in daily_ICU_admissions_after]
                 
                 if not filter:
                     ax.scatter(percent_infected_before, severe_disease_after, color=colour, s=scale, label=info_text, marker= marker, alpha=0.8, edgecolors='none')
@@ -571,51 +514,62 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
         plt.close()
        
 
-# same strain
+################################################################################################
+# SAME VARIANT FOR BOTH WAVES (updated vaccine efficacy)
+################################################################################################
 
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],x_limits=[19,81], y_limits = [-1,65],filter=True)
+folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_rerun_outputs")
+presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
+novax_folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_no_vax_outputs")
+novax_presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files_no_vax")
 
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],x_limits=[19,81], y_limits = [-1,65],filter=True)
+plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],x_limits=[19,81], y_limits = [-1,65],filter=True)
+plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],x_limits=[19,81], y_limits = [-1,65],filter=True)
 
 
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["younger"],ylimits=[-1,30],y_ticks = list(range(0,31,5)),x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["older"],ylimits=[-1,30],y_ticks = list(range(0,31,5)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["younger"],ylimits=[-1,30],y_ticks = list(range(0,31,5)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["older"],ylimits=[-1,30],y_ticks = list(range(0,31,5)),x_limits=[19,81],filter=True)
 
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["younger"],ylimits=[0,35],y_ticks = list(range(0,36,5)))
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["older"],ylimits=[0,35],y_ticks = list(range(0,36,5)))
-
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["younger"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["older"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
-
-# different second strain
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[19,81],filter=True)
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],y_limits = [-1,100],x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["younger"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["older"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
 
 
 
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["younger"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["older"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["younger"],ylimits=[0,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["older"],ylimits=[0,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
-
-# samoa
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[-1,100],filter=False)
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[19,81],filter=True,aspect_ratio='auto')
 
 
-# worse vaccine
+################################################################################################
+# NEW STRAIN FOR THE SECOND WAVE
+################################################################################################
+
+folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_outputs/'
+presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
+novax_folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_no_vax_outputs/'
+novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
+
+plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[19,81],filter=True)
+plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],y_limits = [-1,100],x_limits=[19,81],filter=True)
+
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["younger"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["older"],ylimits=[-1,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["younger"],ylimits=[0,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["older"],ylimits=[0,50],y_ticks = list(range(0,51,5)),x_limits=[19,81],filter=True)
+
+
+
+
+################################################################################################
+# SAME VARIANT FOR BOTH WAVES, WORSE VACCINES
+################################################################################################
+
+folder = '/scratch/cm37/tpl/covid_continuous_simulations_double_exposure_no_ttiq_450-2_outputs/'
+presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
+novax_folder = '/scratch/cm37/tpl/covid_continuous_simulations_double_exposure_no_ttiq_450-2_no_vax_outputs/'
+novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
+
 plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,70],x_limits=[19,81],filter=True)
 plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],y_limits = [-1,70],x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["younger"],ylimits=[-1,90],y_ticks = list(range(0,91,10)),x_limits=[19,81],filter=True)
-# plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["older"],ylimits=[-1,90],y_ticks = list(range(0,91,10)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["younger"],ylimits=[-1,90],y_ticks = list(range(0,91,10)),x_limits=[19,81],filter=True)
+plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('death',OG="",population_type_list = ["older"],ylimits=[-1,90],y_ticks = list(range(0,91,10)),x_limits=[19,81],filter=True)
+
 # plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["younger"],ylimits=[-1,120],y_ticks = list(range(0,201,20)),x_limits=[19,81],filter=True)
 # plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horizontal_updated('ICU',OG="",population_type_list = ["older"],ylimits=[-1,120],y_ticks = list(range(0,201,20)),x_limits=[19,81],filter=True)
-
-
-# CLUSTER EARLIER SEED
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],x_limits=[19,81], y_limits = [-1,65],filter=True)
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],x_limits=[19,81], y_limits = [-1,65],filter=True)

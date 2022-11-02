@@ -54,13 +54,7 @@ population_list = list(range(1,6+1))
 novax_population_list = [1]
 SIM_NUMBER = 10
 
-# CLUSTER NEW STRAIN
-folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_outputs/'
-presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
-novax_folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_no_vax_outputs/'
-novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
 
-SAMOA_file_name = '/fs04/cm37/prod/Le/covid-abm/Samoa_attackrates.csv'
 
 
 def plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger","older"],x_limits=[15,85],y_limits = [-1,60],filter=False,aspect_ratio = 'equal'):
@@ -287,14 +281,14 @@ def plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(pop
     plt.close()
 
 
+################################################################################################
+# NEW STRAIN FOR THE SECOND WAVE
+################################################################################################
+folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_outputs/'
+presim_parameters_folder  = '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files/'
+novax_folder = '/scratch/cm37/tpl/covid_no_ttiq_450-2_ibm_4th_doses_newstrainBA45like_no_vax_outputs/'
+novax_presim_parameters_folder =  '/fs02/cm37/prod/Le/covid-abm-presim/continuous_sim_param_files_no_vax/'
 
-
-# different second strain
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[19,81],filter=True)
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],y_limits = [-1,100],x_limits=[19,81],filter=True)
-
-# plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[-1,100],filter=False)
+SAMOA_file_name = '/fs04/cm37/prod/Le/covid-abm/Samoa_attackrates.csv'
 
 plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],y_limits = [-1,100],x_limits=[19,81],filter=True,aspect_ratio='auto')
