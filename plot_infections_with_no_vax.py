@@ -55,6 +55,90 @@ novax_population_list = [1]
 SIM_NUMBER = 10
 
 
+def plot_combined_infections_over_time_older_80_booster():
+
+    max_days = 650 
+    date_values = list(range(0,max_days+1,10))
+    date_names = [str(x) for x in date_values]
+
+    days = list(range(0,max_days+1))
+    xlim_values= [0,max_days]
+    max_infections=5000 
+
+    fig, ax = plt.subplots(1,1, figsize=(10,4)) # 16:9
+
+    for population_type in ["older"]:
+
+        for paramNum in population_list:
+            for TP in TP_list:
+
+                filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
+
+                print(filename)
+
+                datafilename = filename + ".csv"
+
+                data_file = os.path.join(folder, datafilename)
+
+                pd_obj = pd.read_csv(data_file)
+                # print(pd_obj)
+
+
+                with open(presimfilename, "r") as f:
+                    presim_parameters = json.load(f)
+
+
+                total_population = presim_parameters["total_population"]
+                population_type = presim_parameters["population_type"]
+                total_vaccination_rate = presim_parameters["total_vaccination_rate"]
+                booster_fraction = presim_parameters["booster_fraction"]
+
+                if booster_fraction==0.5:
+                    continue
+
+                new_pd = pd_obj.groupby(['day','sim'],as_index=False).n.sum()
+                df = new_pd.pivot(index='day', columns='sim', values='n')
+
+                # df.plot(legend=False)
+
+                def list_conversion_nans(dictionary, xvalues):
+                    new_list = []
+                    for x in xvalues:
+                        try:
+                            if np.isnan(dictionary[x]):
+                                new_list.append(0)
+                                
+                            else:
+                                new_list.append(dictionary[x])
+                        except:
+                            new_list.append(0)
+                    return new_list
+
+                df_dict = df.to_dict()
+
+                # colormap = plt.cm.get_cmap('inferno')
+                #num_plots = len(list(df_dict.keys()))
+                #ax.set_prop_cycle(plt.cycler('color', plt.cm.rainbow(np.linspace(0, 1, num_plots))))
+
+                #pre_infections = []
+                for simnum in df_dict.keys():
+                    infections_over_time = df_dict[simnum]
+                    infections_over_time_list = list_conversion_nans(infections_over_time, days)
+                    ax.plot(days,infections_over_time_list,alpha=0.025,color="black") 
+
+    ax.set_ylim([0,max_infections])
+    ax.set_xlim([0,max_days])
+    ax.grid(color='lightgray', linestyle='dashed')
+
+    ax.set_xlabel('time (days)')
+    ax.set_ylabel('number of infections')
+    
+    plt.savefig(os.path.join(folder, "abm_continuous_simulation_parameters_combined_older_80_booster_pop_infections_over_time.png") , bbox_inches='tight')
+    plt.close()
+
+
 def plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger","older"],x_limits=[15,85],y_limits = [-1,60],filter=False,aspect_ratio = 'equal'):
     if y_limits[1]>80:
         fig, ax = plt.subplots(1,1, figsize=(8,7.75)) # for the second strain
@@ -522,6 +606,8 @@ folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulatio
 presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files")
 novax_folder = os.path.join(os.path.dirname(__file__),"..","covid_continuous_simulations_double_exposure_no_ttiq_450-2_ibm_4th_doses_no_vax_outputs")
 novax_presim_parameters_folder =  os.path.join(os.path.dirname(__file__),"..","covid-abm-presim","continuous_sim_param_files_no_vax")
+
+plot_combined_infections_over_time_older_80_booster()
 
 plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["younger"],x_limits=[19,81], y_limits = [-1,65],filter=True)
 plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(population_type_list = ["older"],x_limits=[19,81], y_limits = [-1,65],filter=True)
