@@ -11,7 +11,7 @@
 
 
 
-// assumption: that all primary doses (1 and 2) are AZ
+// assumption: that all primary doses (1 and 2) are AZ and all booster doses are mRNA (Pfizer)
 static void create_individuals_from_input(std::stringstream &individual_group, std::vector<Individual> &residents, std::vector<std::uniform_real_distribution<double>> &generate_age, std::vector<double> &age_brackets, nlohmann::json &ve_params)
 {
     // See what the string looks like. Push it back into the residents.
@@ -26,7 +26,8 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
     size_t max_vaccine_number;
     double time_dose_1;
     double time_dose_2;
-    double time_booster;
+    double time_booster_1;
+    double time_booster_2;
     size_t infection;
     double infection_day;
 
@@ -100,19 +101,30 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
         string_value_stream >> time_dose_2;
     }
 
- // Assign values: third (booster) dose day
+ // Assign values: third (first booster) dose day
     std::getline(individual_group, string_value, ',');
     if (string_value.empty())
     {
         // What do we do for empty stuff.
-        time_booster = -1.0; //shouldn't actually be empty though, should have filler values
+        time_booster_1 = -1.0; //shouldn't actually be empty though, should have filler values
     }
     else
     {
         string_value_stream = std::stringstream(string_value);
-        string_value_stream >> time_booster;
+        string_value_stream >> time_booster_1;
     }
-
+ // Assign values: fourth (second booster) dose day
+    std::getline(individual_group, string_value, ',');
+    if (string_value.empty())
+    {
+        // What do we do for empty stuff.
+        time_booster_2 = -1.0; //shouldn't actually be empty though, should have filler values
+    }
+    else
+    {
+        string_value_stream = std::stringstream(string_value);
+        string_value_stream >> time_booster_2;
+    }
 
     // Assign values: infection
     std::getline(individual_group, string_value, ',');
@@ -169,11 +181,15 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
             // dose = VaccineType::Moderna2;
             Time_and_Vaccine.push_back(std::make_pair(time_dose_2, dose2));
         }
-        
         if (max_vaccine_number>2){
 
             VaccineType dose3 = VaccineType::Booster;
-            Time_and_Vaccine.push_back(std::make_pair(time_booster, dose3));
+            Time_and_Vaccine.push_back(std::make_pair(time_booster_1, dose3));
+        }
+        if (max_vaccine_number>3){
+
+            VaccineType dose4 = VaccineType::Booster;
+            Time_and_Vaccine.push_back(std::make_pair(time_booster_2, dose4));
         }
 
         
@@ -193,8 +209,6 @@ std::vector<Individual> read_individuals_from_input(std::string vaccination_infe
 
     if (vaccination_infection_read.is_open())
     {
-        
-
         std::string line;
         std::getline(vaccination_infection_read, line); // Get the title line (dont do anything)
                                                         // std::cout << line << std::endl;

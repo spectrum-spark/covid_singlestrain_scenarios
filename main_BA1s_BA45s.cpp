@@ -223,7 +223,7 @@ int main(int argc, char *argv[])
 
     std::vector<double> age_brackets = sim_params_json["age_brackets"];
     
-    // reads in, for each individual, their vaccination dates and (potential pre-winter) infection dates according to input values
+    // reads in, for each individual, their vaccination dates and (potential) infection date [unused] according to input values
     std::vector<Individual> residents =
         read_individuals_from_input(vaccination_infection_scenario_foldername + "/" +
                                         vaccination_infection_scenario_name + ".csv",
