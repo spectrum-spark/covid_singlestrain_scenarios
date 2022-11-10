@@ -585,7 +585,7 @@ int main(int argc, char *argv[])
       {
         daily_dt = t_vaccine - t;
       }
-      // Should this be a function
+      
       if (t >= first_exposure_time && !(first_catch_exposure))
       {
         first_catch_exposure = true; // Assign true so this will not trigger.
@@ -662,23 +662,9 @@ int main(int argc, char *argv[])
     }
     // They are not familiar with the new strain of covid.
   }
+  }
 
-  std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
-  int initial_infections = 0; // Count initial infections.
-  while (initial_infections < new_strain_total_initial_infected)
-  {
-    int exposed_resident =
-        gen_res(generator); // Randomly sample from all the population.
-    if (residents[exposed_resident].covid.infection_status != 'E')
-    {
-      new_covid.seed_exposure(residents[exposed_resident],
-                              t); // Random resident has become exposed
-      residents[exposed_resident].covid.cluster_number = 1;
-      ++initial_infections;
-      E_ref.push_back(exposed_resident); // Start tracking them.
-    }
-  }
-  }
+  
 
 
 
@@ -777,6 +763,9 @@ int main(int argc, char *argv[])
         });
     second_booster_doses.erase(second_booster_it, second_booster_doses.end());
 
+
+    
+
     double t_old = t;
     double t_vaccine = t_old + vaccination_dt;
     while (t < t_vaccine)
@@ -786,8 +775,34 @@ int main(int argc, char *argv[])
       {
         daily_dt = t_vaccine - t;
       }
+
+
+      if (t >= second_exposure_time && !(second_catch_exposure))
+      {
+        second_catch_exposure = true; // Assign true so this will not trigger.
+        // Use cluster ref to track the infections phylogenetic tree.
+        std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
+        int initial_infections = 0; // Count initial infections.
+        while (initial_infections < second_exposure_infections)
+        {
+          int exposed_resident =
+              gen_res(generator); // Randomly sample from all the population.
+          if (residents[exposed_resident].covid.infection_status != 'E' && residents[exposed_resident].covid.infection_status != 'I')
+          {
+            covid.seed_exposure(residents[exposed_resident],
+                                t); // Random resident has become exposed
+            residents[exposed_resident].covid.cluster_number = 1;
+            ++initial_infections;
+            E_ref.push_back(exposed_resident); // Start tracking them.
+          }
+        }
+      }
+
       std::vector<size_t> newly_symptomatic;
       newly_symptomatic.reserve(1000);
+
+
+      
 
       // Simulate the disease model here.
 
@@ -851,21 +866,6 @@ int main(int argc, char *argv[])
     // They are not familiar with the new strain of covid.
   }
 
-  std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
-  int initial_infections = 0; // Count initial infections.
-  while (initial_infections < new_strain_total_initial_infected)
-  {
-    int exposed_resident =
-        gen_res(generator); // Randomly sample from all the population.
-    if (residents[exposed_resident].covid.infection_status != 'E')
-    {
-      new_covid.seed_exposure(residents[exposed_resident],
-                              t); // Random resident has become exposed
-      residents[exposed_resident].covid.cluster_number = 1;
-      ++initial_infections;
-      E_ref.push_back(exposed_resident); // Start tracking them.
-    }
-  }
   }
 
 
@@ -971,6 +971,30 @@ int main(int argc, char *argv[])
       {
         daily_dt = t_vaccine - t;
       }
+
+      if (t >= third_exposure_time && !(third_catch_exposure))
+      {
+        third_catch_exposure = true; // Assign true so this will not trigger.
+        // Use cluster ref to track the infections phylogenetic tree.
+        std::uniform_int_distribution<size_t> gen_res(0, residents.size() - 1);
+        int initial_infections = 0; // Count initial infections.
+        while (initial_infections < third_exposure_infections)
+        {
+          int exposed_resident =
+              gen_res(generator); // Randomly sample from all the population.
+          if (residents[exposed_resident].covid.infection_status != 'E' && residents[exposed_resident].covid.infection_status != 'I')
+          {
+            covid.seed_exposure(residents[exposed_resident],
+                                t); // Random resident has become exposed
+            residents[exposed_resident].covid.cluster_number = 2;
+            ++initial_infections;
+            E_ref.push_back(exposed_resident); // Start tracking them.
+          }
+        }
+      }
+
+
+
       std::vector<size_t> newly_symptomatic;
       newly_symptomatic.reserve(1000);
 
