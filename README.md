@@ -1,8 +1,13 @@
-# Impact of hybrid immunity on future COVID-19 waves: theoretical populations 
+# Reactive vaccination and hybrid immunity: theoretical populations 
+
+This repository was created for the WHO work ("prosposal 1") looking at reactive vaccination. This repository contains the code for the main simulation itself. It simulates three covid waves with four rounds of vaccination. 
+
+
+Note that some files are first generated from the code here: https://bitbucket.org/thaople/covid-abm-presim/src/WHO/. The code for the immunity model can be found here............
 
 ## 1. Run the "presimulation" files 
 
-See https://bitbucket.org/thaople/covid-abm-presim/src/master/ which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
+See https://bitbucket.org/thaople/covid-abm-presim/src/WHO/ which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
 
 Copy the contact matrices into this folder (or make a note of where they are and update in the **generate_json_files_.....py** files before running them)
 
@@ -10,24 +15,17 @@ Copy the contact matrices into this folder (or make a note of where they are and
 
 Run the following to compile the C++ executables: 
 
-`make -f makefile.main`
+`make`
 
-### A. Simulations with BA1/2 first wave and BA1/2 second wave
+### Simulations
 
-The main source file is **main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses.cpp**. The simulations for the scenarios with a BA1/2 first and second wave are produced with the following steps:
+The main source file is **main_BA1s_BA45s.cpp**.
 
-1. Run the python file **generate_json_files_with_different_TP_values_and_two_exposures_no_ttiq_450-2_ibm_4th_doses.py**, updating the locations of output directories as appropriate (which are hardcoded into the file). This creates two folders with numerous different input files.
-2. **submit_all.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_function.script** and **submit_function_no_vax.script**
-3. **submit_all_matlab_R.sh**: This must be run after all the simulations are done. It groups all of the individual simulation outputs together and all the clinical pathway outcomes together. Note that `numsims` may need to be updated as appropriate. Directories need to be updated in **submit_function_matlab_R.script** and **submit_function_no_vax_matlab_R.script**.
+1. Run the python file **generate_json_files_BA1s_BA45s.py**, updating the locations of output directories as appropriate (which are hardcoded into the file). This creates two folders with numerous different input files.
+2. **submit_all_BA1s_BA45s.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_function_BA1s_BA45s.script**
+3. **submit_all_BA1s_BA45s_matlab_R.sh**: This must be run after all the simulations are done. It groups all of the individual simulation outputs together and all the clinical pathway outcomes together. Note that `numsims` may need to be updated as appropriate. Directories need to be updated in **submit_function_BA1s_BA45s_matlab_R.script**.
 
 
-### B. Simulations with BA1/2 first wave and BA4/5-like second wave
-
-Main source file: **main_continuous_simulation_double_exposure_no_ttiq_ibm_4th_doses_newstrain.cpp**
-
-1. Run the python file **generate_json_files_no_ttiq_450-2_ibm_4th_doses_newstrain.py**, updating the locations of output directories as appropriate. 
-2. Run **submit_all_newstrainBA45like.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_function_newstrainBA45like.script** and **submit_function_newstrainBA45like_no_vax.script**
-3. Run **submit_all_newstrainBA45like_matlab_R.sh**: This must be run after all the simulations are done. It groups all of the individual simulation outputs together and all the clinical pathway outcomes together. Note that `numsims` may need to be updated as appropriate. Directories need to be updated in **submit_function_newstrainBA45like_matlab_R.script** and **submit_function_newstrainBA45like_no_vax_matlab_R.script**. 
 
 ### Plotting
 
@@ -35,22 +33,4 @@ Then run the plotting scripts...
 
 1. **plot_infections_with_no_vax.py**: produces a plot of the number of infections over time for some simulations plus plots with near future attack rate and deaths and ICU admissions given past immunity. Set the correct output locations for `folder`, `presim_parameters_folder`, `novax_folder` and `novax_presim_parameters_folder`
 2. **plot_avoided_differences.py**: produces the plots of the avoided difference between infections and deaths. Set the correct output locations for `folder`, `presim_parameters_folder`, `novax_folder` and `novax_presim_parameters_folder`.
-
-## 3. Supplementary materials
-
-### A. Simulations with BA1/2 first wave and BA1/2 second wave with a worse vaccine
-
-The main source file is **main_continuous_simulation_double_exposure_no_ttiq.cpp**.
-
-Run the following to compile the C++ executable: 
-
-`make -f makefile.worsevaccine`
-
-Run the following:
-
-1. Run the python file **generate_json_files_with_different_TP_values_and_two_exposures_no_ttiq_450-2.py**, updating the locations of output directories as appropriate. 
-2. **submit_all_worse_vaccines.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_function_worse_vaccine.script** and **submit_function_worse_vaccines_no_vax.script**
-3. **submit_all_worse_vaccines_matlab_R.sh**: This must be run after all the simulations are done. It groups all of the individual simulation outputs together and all the clinical pathway outcomes together. Note that `numsims` may need to be updated as appropriate. Directories need to be updated in **submit_function_worse_vaccine_matlab_R.script** and **submit_function_worse_vaccines_no_vax_matlab_R.script**.
-4. Run the plotting code **plot_infections_with_no_vax.py** with correct parameters for `folder`, `presim_parameters_folder`, `novax_folder` and `novax_presim_parameters_folder`.
-5. Profit \o/
 
