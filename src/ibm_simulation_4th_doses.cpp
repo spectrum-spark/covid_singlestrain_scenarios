@@ -678,10 +678,10 @@ double disease_model::getNeutsWithExposure(const Individual &person,
       log10_neuts = log10_mean_neut_Pfizer_dose_3;
       break;
     case VaccineType::Booster:
-      log10_neuts = log10_mean_neut_Pfizer_dose_3;
+      log10_neuts = log10_mean_neut_Pfizer_dose_3 + log10(1.33);
       break;
     case VaccineType::Booster2:
-      log10_neuts = log10_mean_neut_Pfizer_dose_3;
+      log10_neuts = log10_mean_neut_Pfizer_dose_3 + 2*log10(1.33);
       break;
     case VaccineType::Unvaccinated:
       log10_neuts = log10_mean_neut_infection;
