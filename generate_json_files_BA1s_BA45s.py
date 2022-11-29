@@ -32,12 +32,12 @@ for new_strain_wave_start in [2,3]: # either 2 or 3, for wave 2 or wave 3
         for TP in TP_list:
             param_set = {"folder_suffix": "_SOCRATES_TP"+str(TP) ,
                         "output_directory": output_directory,
-                        "t_end": 1200.0,
+                        "t_end": 1000.0,
                         "first_exposure_time":225,
                         "first_exposure_infections":100,
                         "second_exposure_time": 450,
                         "second_exposure_infections":100,
-                        "third_exposure_time": 875,
+                        "third_exposure_time": 675,
                         "third_exposure_infections": 100,
                         "new_strain_wave_start": new_strain_wave_start, 
                         "baseline_TP": TP, # 6.32 
