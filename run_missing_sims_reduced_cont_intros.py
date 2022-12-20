@@ -15,7 +15,7 @@ for WAVESTART in WAVESTART_list:
             TP = TP_list[i]
             for PARAMFILENUM in range(0,7):
                 output_folder = "abm_continuous_simulation_parameters_" + population_type +"_" + str(PARAMFILENUM)+"_SOCRATES_TP"+str(TP)
-                for SLURM_ARRAY in range(1,11):
+                for SLURM_ARRAY in range(1,51):
                     output_file = "sim_number_" + str(SLURM_ARRAY)+".csv"
                     file_path = os.path.join(folder, output_folder,output_file)
                     if os.path.isfile(file_path):

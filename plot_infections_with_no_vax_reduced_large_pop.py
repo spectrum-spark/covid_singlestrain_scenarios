@@ -91,8 +91,8 @@ def plot_combined_infections_over_time_80_booster(younger_or_older=["younger"],l
         for paramNum in param_list:
             for TP in TP_list:
 
-                filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                 presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                 
@@ -232,7 +232,7 @@ def plot_separated_infections_over_time(younger_or_older=["younger"]):
                     for TP in local_TP_list:
 
                         
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -253,7 +253,7 @@ def plot_separated_infections_over_time(younger_or_older=["younger"]):
                         else:
                             continue 
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -386,7 +386,7 @@ def plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_
                     for TP in local_TP_list:
 
                         
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters ="simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -407,7 +407,7 @@ def plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_
                         else:
                             continue 
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename ="simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -579,7 +579,7 @@ def plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_
 
 
 def plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_escape_wave_start=2,seeding_or_continuous="seeding"):
-    max_infections=5000 
+    max_infections=5000*(total_population_mil/0.1)
     # local_days = list(range(first_exposure_time,max_days))
     # local_days = list(range(first_exposure_time-50,max_days))
     local_days = list(range(max_days))
@@ -638,7 +638,7 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_es
                     for TP in local_TP_list:
 
                         
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -659,7 +659,7 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_es
                         else:
                             continue 
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -777,25 +777,26 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_es
             # ax.axvline(x =second_exposure_time, color = 'white')
             # ax.axvline(x =third_exposure_time, color = 'white')
             
-            arrow_len = -500
-            arrow_pos = 700 - arrow_len
+            arrow_len = -500*(0.1/total_population_mil)
+            arrow_pos = 700*(0.1/total_population_mil) - arrow_len
+            annotate_pos = arrow_pos+150*(0.1/total_population_mil)
 
             if seeding_or_continuous=="seeding":
 
-                ax.arrow(x=first_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100,facecolor='white', edgecolor='none')
-                ax.annotate('BA.1 seeding', xy = (first_exposure_time-5, arrow_pos+150),rotation=90,color="white",size=14)
+                ax.arrow(x=first_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100*(0.1/total_population_mil),facecolor='white', edgecolor='none')
+                ax.annotate('BA.1 seeding', xy = (first_exposure_time-5, annotate_pos),rotation=90,color="white",size=14)
 
-                ax.arrow(x=second_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100,facecolor='white', edgecolor='none')
+                ax.arrow(x=second_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100*(0.1/total_population_mil),facecolor='white', edgecolor='none')
                 if immune_escape_wave_start==2:
-                    ax.annotate('BA.4/5 seeding', xy = (second_exposure_time-5, arrow_pos+150),rotation=90,color="white",size=14)
+                    ax.annotate('BA.4/5 seeding', xy = (second_exposure_time-5, annotate_pos),rotation=90,color="white",size=14)
                 else:
-                    ax.annotate('BA.1 seeding', xy = (second_exposure_time-5, arrow_pos+150),rotation=90,color="white",size=14)
+                    ax.annotate('BA.1 seeding', xy = (second_exposure_time-5, annotate_pos),rotation=90,color="white",size=14)
 
-                ax.arrow(x=third_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100,facecolor='white', edgecolor='none')
-                ax.annotate('BA.4/5 seeding', xy = (third_exposure_time-5, arrow_pos+150),rotation=90,color="white",size=14)
+                ax.arrow(x=third_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100*(0.1/total_population_mil),facecolor='white', edgecolor='none')
+                ax.annotate('BA.4/5 seeding', xy = (third_exposure_time-5, annotate_pos),rotation=90,color="white",size=14)
             elif seeding_or_continuous =="continuous":
-                ax.arrow(x=first_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100,facecolor='white', edgecolor='none')
-                ax.annotate('importations begin', xy = (first_exposure_time-5, arrow_pos+150),rotation=90,color="white",size=14)
+                ax.arrow(x=first_exposure_time, y=arrow_pos, dx=0, dy=arrow_len, width=2, head_width=15, head_length=100*(0.1/total_population_mil),facecolor='white', edgecolor='none')
+                ax.annotate('importations begin', xy = (first_exposure_time-5, annotate_pos),rotation=90,color="white",size=14)
 
             
 
@@ -874,7 +875,7 @@ def plot_violin_infections_over_time(younger_or_older=["younger"]):
                 for paramNum in param_list:
                     for TP in local_TP_list:
 
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters ="simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -895,7 +896,7 @@ def plot_violin_infections_over_time(younger_or_older=["younger"]):
                         else:
                             continue 
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -1116,8 +1117,8 @@ def plot_before_vs_after_infections_combined_ages_80_booster_only_horizontal(pop
             for paramNum in param_list_i:
                 for TP in TP_list:
 
-                    filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                    presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                    filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                    presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                     presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                     with open(presimfilename, "r") as f:
@@ -1288,8 +1289,8 @@ def plot_attack_rates_3D(population_type_list = ["younger","older"],x_limits=[15
             
             for paramNum in param_list_i:
                 for TP in TP_list:
-                    filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                    presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                    filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                    presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                     presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                     with open(presimfilename, "r") as f:
@@ -1443,8 +1444,8 @@ def plot_attack_rates_3D_animated(population_type_list = ["younger","older"],x_l
             
             for paramNum in param_list_i:
                 for TP in TP_list:
-                    filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                    presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                    filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                    presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                     presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                     with open(presimfilename, "r") as f:
@@ -1606,8 +1607,8 @@ def plot_attack_rates_3D_animated_combined(population_type_list = ["younger","ol
 
         for paramNum in param_list:
             for TP in TP_list:
-                filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                 presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                 with open(presimfilename, "r") as f:
@@ -1774,8 +1775,8 @@ def plot_wave_2_and_3_given_wave_1(population_type_list = ["younger","older"],x_
                 
                 for paramNum in param_list:
                     for TP in TP_list:
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -1972,8 +1973,8 @@ def plot_ICU_and_deaths_vs_before_infections_combined_ages_80_booster_only_horiz
             for paramNum in param_list_i:
                 for TP in TP_list:
 
-                    filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                    presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                    filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                    presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                     presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                     with open(presimfilename, "r") as f:
@@ -2181,8 +2182,8 @@ def plot_third_wave_ICU_and_deaths_given_second_and_first_wave(ICU_or_death,OG="
                 for paramNum in param_list:
                     for TP in TP_list:
 
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -2366,8 +2367,8 @@ def plot_comparison_third_wave_ICU_and_deaths_given_scenario(folder_start_wave_2
                 for paramNum in param_list:
                     for TP in local_TP_list:
 
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
 
                         presimfilename = os.path.join(presim_parameters_folder_start,presim_parameters)
 
@@ -2599,8 +2600,8 @@ def plot_comparison_third_wave_ICU_and_deaths_given_scenario_wavestart(folder_st
                 for paramNum in param_list:
                     for TP in local_TP_list:
 
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
 
                         presimfilename = os.path.join(presim_parameters_folder_start,presim_parameters)
 
@@ -2783,7 +2784,7 @@ def plot_comparison_third_wave_ICU_and_deaths_given_scenario_breakdown_wavestart
                     all_severe_disease_wave_3 = {0:[],0.2:[],0.5:[],0.8:[]}
 
                     for paramNum in param_list:
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
 
                         presimfilename = os.path.join(presim_parameters_folder_start,presim_parameters)
 
@@ -2806,7 +2807,7 @@ def plot_comparison_third_wave_ICU_and_deaths_given_scenario_breakdown_wavestart
                             
                         for TP in local_TP_list:
 
-                            filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                            filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                             
                             severe_disease_wave_3 = []
 
@@ -2945,7 +2946,7 @@ def plot_comparison_third_wave_ICU_and_deaths_given_scenario_wavestart_TP(folder
         
                 for paramNum in param_list:
 
-                    presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                    presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
 
                     presimfilename = os.path.join(presim_parameters_folder_start,presim_parameters)
 
@@ -2968,7 +2969,7 @@ def plot_comparison_third_wave_ICU_and_deaths_given_scenario_wavestart_TP(folder
 
                     for TP in local_TP_list:
 
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         
                         
                         severe_disease_wave_3 = []
@@ -3115,7 +3116,7 @@ def total_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older
                 for paramNum in param_list:
                     for TP in local_TP_list:
 
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -3136,7 +3137,7 @@ def total_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older
                         else:
                             continue 
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -3287,7 +3288,7 @@ def wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or
                 for paramNum in param_list:
                     for TP in local_TP_list:
 
-                        presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                        presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                         presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                         with open(presimfilename, "r") as f:
@@ -3308,7 +3309,7 @@ def wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or
                         else:
                             continue 
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -3459,7 +3460,7 @@ def comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_de
 
                 for paramNum in param_list:
 
-                    presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
+                    presim_parameters = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+".json"
                     presimfilename = os.path.join(presim_parameters_folder,presim_parameters)
 
                     with open(presimfilename, "r") as f:
@@ -3484,7 +3485,7 @@ def comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_de
 
                         
                         
-                        filename = "abm_continuous_simulation_parameters_"+population_type+"_"+str(paramNum)+"_SOCRATES_TP"+TP
+                        filename = "simulation_parameters_" + str(total_population_mil) +"mil_" + population_type+ "_" + str(paramNum)+"_SOCRATES_TP"+TP
                         print(filename)
 
                         datafilename = filename + ".csv"
@@ -3617,8 +3618,8 @@ def comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_de
 # PLOTTING Waves: BA1, BA1, BA4/5
 ################################################################################################
 
-folder = '/scratch/cm37/tpl/reduced_covid_BA1_BA45_wave_start_3_outputs/'
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
+# folder = '/scratch/cm37/tpl/reduced_covid_BA1_BA45_wave_start_3_outputs/'
+# presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
 
 # plot_combined_infections_over_time_80_booster(younger_or_older=["younger"],line_color="coloured")
 # plot_combined_infections_over_time_80_booster(younger_or_older=["older"],line_color="coloured")
@@ -3654,8 +3655,8 @@ presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_f
 # PLOTTING Waves: BA1, BA4/5, BA4/5
 ################################################################################################
 
-folder = '/scratch/cm37/tpl/reduced_covid_BA1_BA45_wave_start_2_outputs/'
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
+# folder = '/scratch/cm37/tpl/reduced_covid_BA1_BA45_wave_start_2_outputs/'
+# presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
 
 # plot_combined_infections_over_time_80_booster(younger_or_older=["younger"],line_color="coloured")
 # plot_combined_infections_over_time_80_booster(younger_or_older=["older"],line_color="coloured")
@@ -3693,8 +3694,8 @@ presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_f
 # PLOTTING Waves: BA1, BA4/5, BA4/5 with continuous seeding
 ################################################################################################
 
-folder = '/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_3_outputs/'
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
+# folder = '/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_3_outputs/'
+# presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
 
 # plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_wave_start=3,seeding_or_continuous="continuous",with_vaccination_hatch=True)
 # plot_ribbon_infections_over_time(younger_or_older=["older"],immune_escape_wave_start=3,seeding_or_continuous="continuous",with_vaccination_hatch=True)
@@ -3711,14 +3712,14 @@ presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_f
 # comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["younger"])
 # comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["older"])
 
-wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["younger"])
-wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["older"])
+# wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["younger"])
+# wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["older"])
 ################################################################################################
 # PLOTTING Waves: BA1, BA1, BA4/5 with continuous seeding
 ################################################################################################
 
-folder = '/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_2_outputs/'
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
+# folder = '/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_2_outputs/'
+# presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_reduced/'
 
 # plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_wave_start=2,seeding_or_continuous="continuous",with_vaccination_hatch=True)
 # plot_ribbon_infections_over_time(younger_or_older=["older"],immune_escape_wave_start=2,seeding_or_continuous="continuous",with_vaccination_hatch=True)
@@ -3737,8 +3738,8 @@ presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_f
 # comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["younger"])
 # comparing_reactive_vaccination_on_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["older"])
 
-wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["younger"])
-wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["older"])
+# wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["younger"])
+# wave_3_only_infections_and_deaths_histograms(ICU_or_death='death',younger_or_older=["older"])
 
 # plot_comparison_third_wave_ICU_and_deaths_given_scenario_wavestart(folder_start_wave_2= '/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_2_outputs/',presim_parameters_folder_start_wave_2=presim_parameters_folder ,folder_start_wave_3=  '/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_3_outputs/',presim_parameters_folder_start_wave_3=presim_parameters_folder , ICU_or_death="death",population_type_list = ["younger"])
 
@@ -3785,11 +3786,11 @@ for total_population_mil in total_population_mil_list:
         folder = "/scratch/cm37/tpl/reduced_cont_intros_covid_BA1_BA45_wave_start_" + str(WAVESTART) +"_"  + str(total_population_mil) +"mil"+"_outputs/"
         presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_expanded_pop_sizes/'
 
-        plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_wave_start=3,seeding_or_continuous="continuous",with_vaccination_hatch=True)
-        plot_ribbon_infections_over_time(younger_or_older=["older"],immune_escape_wave_start=3,seeding_or_continuous="continuous",with_vaccination_hatch=True)
+        # plot_ribbon_infections_over_time(younger_or_older=["younger"],immune_escape_wave_start=3,seeding_or_continuous="continuous",with_vaccination_hatch=True)
+        # plot_ribbon_infections_over_time(younger_or_older=["older"],immune_escape_wave_start=3,seeding_or_continuous="continuous",with_vaccination_hatch=True)
 
-        # plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_escape_wave_start=3,seeding_or_continuous="continuous")
-        # plot_ribbon_infections_over_time_plus(younger_or_older=["older"],immune_escape_wave_start=3,seeding_or_continuous="continuous")
+        plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_escape_wave_start=3,seeding_or_continuous="continuous")
+        plot_ribbon_infections_over_time_plus(younger_or_older=["older"],immune_escape_wave_start=3,seeding_or_continuous="continuous")
 
         # plot_violin_infections_over_time(younger_or_older=["younger"])
         # plot_violin_infections_over_time(younger_or_older=["older"])

@@ -243,7 +243,7 @@ int main(int argc, char *argv[])
 
 
   // New strain details
-  int new_strain_wave_start = sim_params_json["new_strain_wave_start"];
+  // int new_strain_wave_start = sim_params_json["new_strain_wave_start"]; // not needed
   double new_strain_wave_start_day =sim_params_json["new_strain_wave_start_day"];
 
   double new_strain_ratio = new_strain_neuts_json["R0_ratio"];

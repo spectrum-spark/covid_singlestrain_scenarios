@@ -129,7 +129,7 @@ for population_type in ["younger","older"]:
                             return wave_names[0]
                         elif value in days_wave_2:
                             return  wave_names[1]
-                        else:
+                        else: # there *may* actually a bug here, it should be days_in_wave_3 ; since the days *could* extend beyond 900 (max days, not sure)
                             return  wave_names[2]
 
                     clinical_pd_obj.insert(0,'time period','NA')
