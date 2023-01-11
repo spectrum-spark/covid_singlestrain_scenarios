@@ -19,22 +19,24 @@ original_program_time = 26*7*3
 # third_exposure_date = 675
 # boosters_only_vaccination_start_list = [original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7  , original_program_time + 52*7 ]
 
-immune_escape_times = [original_program_time, original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7 , original_program_time + 52*7] # aka every 3 months 
+# immune_escape_times = [original_program_time, original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7 , original_program_time + 52*7] # aka every 3 months 
+
+immune_escape_times = [original_program_time + 26*7]
 
 print(immune_escape_times)
 
 for immune_escape_time in immune_escape_times:
     
     # location to save the parameter files
-    folder = "annual_boosting_1_immune_escape_t" + str(immune_escape_time)
+    folder = "annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time)
     # simulation output directory
-    output_directory = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+    output_directory = "/scratch/cm37/tpl/annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time) +"_outputs/"
 
     folder_path = os.path.join(os.path.dirname(__file__),folder)
     if not os.path.exists(folder_path ):
         os.makedirs(folder_path )
     
-    for population_type in ["older", "younger"]:
+    for population_type in ["younger"]:
         number = 1
         for TP in TP_list:
             param_set = {"folder_suffix": "_SOCRATES_TP"+str(TP) ,
