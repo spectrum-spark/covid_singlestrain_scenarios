@@ -120,7 +120,7 @@ for quantile_val in [0.025,0.975]:
 
                             clinical_pd_obj = pd.read_csv(clinical_file)
 
-                            clinical_pd_obj = clinical_pd_obj[clinical_pd_obj['day'] <= days_all[-1]]
+                            clinical_pd_obj = clinical_pd_obj[clinical_pd_obj['day'].isin(days_all)]
 
                             clinical_pd_obj = clinical_pd_obj.drop('day', axis=1)
 
@@ -224,7 +224,7 @@ for quantile_val in [0.025,0.975]:
 
         mega_DF_iterated = pd.concat(mega_DF_list_iterated)
 
-        mega_DF_iterated.to_csv(iterated_full_output_file_name ,index=False)
+        # mega_DF_iterated.to_csv(iterated_full_output_file_name ,index=False)
 
         mega_DF_quantile = pd.concat(mega_DF_list_quantile)
 

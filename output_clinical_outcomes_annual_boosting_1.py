@@ -53,6 +53,9 @@ presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_f
 days_list = [ list(range(original_program_time ,max_days)) , list(range(0,max_days))]
 days_list_name = ["_1.5-3years",""]
 
+days_list = [ list(range(original_program_time ,max_days))]
+days_list_name = ["_1.5-3years"]
+
 for days_all, days_name in zip(days_list,days_list_name):
 
     mean_output_file_name =  "high_coverage_mean_clinical_outcomes_totals"+days_name+".csv"
@@ -120,7 +123,7 @@ for days_all, days_name in zip(days_list,days_list_name):
 
                             clinical_pd_obj = pd.read_csv(clinical_file)
 
-                            clinical_pd_obj = clinical_pd_obj[clinical_pd_obj['day'] <= days_all[-1]]
+                            clinical_pd_obj = clinical_pd_obj[clinical_pd_obj['day'].isin(days_all)]
 
                             clinical_pd_obj = clinical_pd_obj.drop('day', axis=1)
 

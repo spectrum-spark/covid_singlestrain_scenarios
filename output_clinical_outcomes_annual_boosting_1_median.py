@@ -120,7 +120,7 @@ for days_all, days_name in zip(days_list,days_list_name):
 
                             clinical_pd_obj = pd.read_csv(clinical_file)
 
-                            clinical_pd_obj = clinical_pd_obj[clinical_pd_obj['day'] <= days_all[-1]]
+                            clinical_pd_obj = clinical_pd_obj[clinical_pd_obj['day'].isin(days_all)]
 
                             clinical_pd_obj = clinical_pd_obj.drop('day', axis=1)
 
