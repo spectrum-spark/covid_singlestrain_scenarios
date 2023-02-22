@@ -1,0 +1,9 @@
+population size,population type,scenario,1st year vaccination coverage,1.5 year vaccination coverage,3 year vaccination coverage,1.5 year vaccination program primary doses,1.5 year vaccination program booster doses,Further primary doses (1.5 - 3 years),Further booster doses (1.5 - 3 years)
+100000,older,no further boosting,80.0%,88.00200000000001%,88.00200000000001%,176004,64000,0,0
+100000,older,further boosting pediatric,80.0%,88.00200000000001%,88.00200000000001%,176004,64000,0,11000
+100000,older,further boosting high risk,80.0%,88.00200000000001%,88.00200000000001%,176004,64000,0,11000
+100000,older,further boosting random,80.0%,88.00200000000001%,88.00200000000001%,176004,64000,0,11000
+100000,younger,no further boosting,80.0%,88.0%,88.0%,176000,64001,0,0
+100000,younger,further boosting pediatric,80.0%,88.0%,88.0%,176000,64001,0,11000
+100000,younger,further boosting high risk,80.0%,88.0%,88.0%,176000,64001,0,11000
+100000,younger,further boosting random,80.0%,88.0%,88.0%,176000,64001,0,11000
