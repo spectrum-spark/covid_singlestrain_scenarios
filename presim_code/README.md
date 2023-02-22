@@ -42,7 +42,7 @@ Note that the countries used here are not the same as the countries used in the 
 
 ## 3. Parameter files
 
-First, we run **generate_parameter_files.py** to generate the base parameter files:
+First, we run **generate_parameter_files_.....py** to generate the base parameter files:
 
 Parameters that can be changed (hard-coded) include:
 - total population size
@@ -52,6 +52,7 @@ Parameters that can be changed (hard-coded) include:
 - booster fraction (first half of the second year)
 - dose delivery priorities (first year, first boosters, second boosters)
 - output folder
+- other things...
 
 Also, make sure to move/have a copy of dim_age_band.csv inside the created folders with the parameter files
 
