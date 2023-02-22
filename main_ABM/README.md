@@ -3,11 +3,11 @@
 This repository was created for the WHO work ("prosposal 1") looking at reactive vaccination. This repository contains the code for the main simulation itself. It simulates three covid waves with four rounds of vaccination. 
 
 
-Note that some files are first generated from the code here: https://bitbucket.org/thaople/covid-abm-presim/src/WHO/. The code for the immunity model can be found here............
+Note that some files are first generated from the code here: https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/presim_code
 
 ## 1. Run the "presimulation" files 
 
-See https://bitbucket.org/thaople/covid-abm-presim/src/WHO/ which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
+See https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/presim_code which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
 
 Copy the contact matrices into this folder (or make a note of where they are and update in the **generate_json_files_.....py** files before running them)
 
