@@ -1,4 +1,4 @@
-# REACTIVE VACCINATION (extended time)
+# POPULATION & VACCINATION ROLL-OUT
 
 # Demographic and vaccination roll-out set up
 
