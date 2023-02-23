@@ -1,4 +1,4 @@
-# plots the contact matrices for the paper
+# plots the contact matrices used
 
 import os
 import numpy as np

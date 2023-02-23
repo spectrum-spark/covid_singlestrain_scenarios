@@ -1,9 +1,6 @@
 from create_and_generate_initial_conditions import *
 import csv
 
-
-
-
 original_program_time = 26*7*3
 boosters_only_vaccination_start_list = [original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7  , original_program_time + 52*7 ]
 boosters_only_vaccination_duration = 13*7# i.e. about 3 months
