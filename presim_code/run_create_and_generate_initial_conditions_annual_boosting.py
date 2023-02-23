@@ -79,18 +79,11 @@ def simulation_initial_conditions(filename,output_filename):
     plot_vaccination_distributions_time_pretty(list_of_all_people,population_type,output_file,presim_parameters)
 
 
-# for population_type in ["older"]:
-#     for number in range(1,12+1):
-#         filename =  os.path.join("parameter_files_annual_boosting_1","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
-#         output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
-#         simulation_initial_conditions(filename,output_filename)
-
-# population_type = "older"
-# number = 0
-# filename =  os.path.join("parameter_files_annual_boosting_1","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
-# output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
-# simulation_initial_conditions(filename,output_filename)
-
+for population_type in ["older"]:
+    for number in range(0,12+1):
+        filename =  os.path.join("parameter_files_annual_boosting_1","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
+        output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
+        simulation_initial_conditions(filename,output_filename)
 
 
 for population_type in ["younger"]: # younger with high coverage
@@ -99,15 +92,8 @@ for population_type in ["younger"]: # younger with high coverage
         output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
         simulation_initial_conditions(filename,output_filename)
 
-# actually, might need a different 
-# for population_type in ["younger"]:
-#     for number in range(1,6+1):
-#         filename =  os.path.join("parameter_files_annual_boosting_1_younger","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
-#         output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
-#         simulation_initial_conditions(filename,output_filename)
-
-# for population_type in ["younger"]:
-#     for number in [-1,0]:
-#         filename =  os.path.join("parameter_files_annual_boosting_1_younger","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
-#         output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
-#         simulation_initial_conditions(filename,output_filename)
+for population_type in ["younger"]:
+    for number in range(-1,6+1):
+        filename =  os.path.join("parameter_files_annual_boosting_1_younger","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
+        output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
+        simulation_initial_conditions(filename,output_filename)

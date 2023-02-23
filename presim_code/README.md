@@ -8,11 +8,11 @@ We have two demographies: "younger" and "older" populations. They are based on t
 
 Australia, Brunei, Cambodia, China, Cook Islands, Fiji, Japan, Kiribati, Laos, Malaysia, Marshall Islands, Micronesia, Mongolia, Nauru, New Zealand, Niue, Palau, Papua New Guinea, Philippines, Samoa, Singapore, Solomon Islands, South Korea, Tonga, Tuvalu, Vanuatu, Vietnam. 
 
-See the list here https://www.who.int/westernpacific/about/where-we-work
+See the list here: https://www.who.int/westernpacific/about/where-we-work
 
 The population data obtained from https://population.un.org/wpp/DataQuery/ 
 
-This data is **population/PopulationAgeSex-20220412011050.xlsx** (note that not all WHO named countries could be found)
+This data is **population/PopulationAgeSex-20220412011050.xlsx** (note that not all WHO named countries could be found).
 
 We define OADR (old-age dependency ratio) = (total 65+) / (total 20-64) *100
 
@@ -20,7 +20,7 @@ We define OADR (old-age dependency ratio) = (total 65+) / (total 20-64) *100
 
 The data file includes our added columns that calculated the OADR (column AE).
 
-We then run **population/population_distributions_abm_2021.py**
+We then run [**population/population_distributions_abm_2021.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/population/population_distributions_abm_2021.py)
 
 This creates population output files of the *averaged proportion* of the population in the age bands used for the agent-based model (abm), plus makes plots of the distributions for the paper.
 
@@ -30,40 +30,51 @@ The contact matrices are derived from data numerous sources and collected at htt
 
 The file **contact_matrices/contact_matrices_SOCRATES_notes.txt** contain the parameters used to download the data from SOCRATES. 
 
-Data from the UN (https://population.un.org/wpp/DataQuery/)is used to check which countries are "older" or "younger".
+Data from the UN (https://population.un.org/wpp/DataQuery/) was used to check which countries are "older" or "younger".
 
-**contract_matrices_SOCRATES.py** then calculates the averaged contact matrices for "older" and "younger" populations.
+[**contract_matrices_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/contact_matrices_SOCRATES.py) then calculates the averaged contact matrices for "older" and "younger" populations.
 
 Note that the countries used here are not the same as the countries used in the population distribution, due to the limited data available on SOCRATES.
 
 (PREM matrices were not used at time of this work due to a known error in them.)
 
-**contact_matrces_SOCRATES.py** plots the contact matrices used in the simulations for the paper.
+[**contact_matrces_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/contact_matrices_plot.py) plots the contact matrices used in the simulations.
 
 ## 3. Parameter files
 
-First, we run **generate_parameter_files_.....py** to generate the base parameter files:
+First, we run **generate_parameter_files_.....py** to generate the base parameter files for the scenarios with only one additional booster rollout.
 
 Parameters that can be changed (hard-coded) include:
 - total population size
 - "younger" or "older" population type
-- vaccination coverage (first year)
-- oldest group coverage
-- booster fraction (first half of the second year)
+- vaccination coverage (year 1)
+- oldest group coverage (year 1)
+- booster fraction (year 1.0 - 1.5)
 - dose delivery priorities (first year, first boosters, second boosters)
 - output folder
-- other things...
+- etc.
 
-Also, make sure to move/have a copy of dim_age_band.csv inside the created folders with the parameter files
+Also, make sure to move/have a copy of [dim_age_band.csv](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/dim_age_band.csv) inside the created folders with the parameter files
 
 ## 4. Vaccination rollout
 
-The populations, vaccination allocation and rollout are calculated using the functions in **create_and_generate_initial_conditions.py**, using the parameters generated in the previous sections.
+The populations, vaccination allocation and rollout are produced by running [**run_create_and_generate_initial_conditions_annual_boosting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/run_create_and_generate_initial_conditions_annual_boosting.py) and [**half_yearly_boosting.py**](/half_yearly_boosting.py). 
 
-The various plots are calculated using the functions in **create_and_generate_initial_conditions_plotting.py** (including the plots for the paper).
+These use the functions in [**create_and_generate_initial_conditions.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/create_and_generate_initial_conditions.py), plus the parameters generated in the previous sections.
 
-We call these functions in the appropriate order in **run_create_and_generate_initial_conditions.py** 
+The various plots are calculated using the functions in [**create_and_generate_initial_conditions_plotting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/create_and_generate_initial_conditions_plotting.py).
 
-## Next
+
+## 5. Additional
+
+The total vaccinations administered through different time periods can be calculated using **output_total_vaccinations_annual_boosting_1.py** and **output_total_vaccinations_annual_boosting_1_low_coverage.py** 
+
+## 6. Next
 
 After running all these files, the main simulation can begin!
+
+## Notes
+
+Note that "annual_boosting_1" refers to boosting within high-coverage populations (both younger and older). "annual_boosting_1_younger" refers to boosting in the lower-coverage younger populations. All of these have a single boosting program some time between 1.5-3 years.
+
+"annual_boosting_2" refers to 6-monthly boosting in high-coverage populations, with a total of three rollouts during 1.5-3 year time period.
