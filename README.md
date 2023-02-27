@@ -4,7 +4,13 @@ This repository contains the source code for an agent-based model of COVID-19 di
 
 Mathematical modelling assumptions can be found [here](https://spectrum-spark.github.io/covid-IBM/).
 
-**Important note**: This repository does not contain the code for the clinical pathways model.
+### Code authorship
+
+Major model developement and implementation of the agent-based model was done by Eamon Conway.
+
+The clinical pathways model developement and implementation was done by Camelia Walker.
+
+The vaccine rollout implementation was done by Thao P. Le.
 
 ### Instructions
 
@@ -12,5 +18,7 @@ Before the main simulations can be run, some initial set up files need to be cre
 
 The main modelling simulation code is in the folder [main_ABM](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/main_ABM). The folder contains specific instructions.
 
-Note that there are different pieces of code that require Python, C++, R.
+The clinical pathways code is in the folder [clinical_pathways](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/clinical_pathways). The folder contains specific instructions.
+
+Note that there are different pieces of code that require Python, C++, R, and Matlab.
 
