@@ -2,7 +2,7 @@
 
 This repository contains the source code for an agent-based model of COVID-19 disease spread in a population. In particular, the code produces the model figures and results for a presentation given to IVIRAC on the 13th of February 2023.
 
-Mathematical modelling assumptions can be found [here](https://spectrum-spark.github.io/covid-IBM/).
+Mathematical modelling assumptions can be found [here: Covid IBM: Waning Immunity](https://spectrum-spark.github.io/covid-IBM/).
 
 ### Code authorship
 

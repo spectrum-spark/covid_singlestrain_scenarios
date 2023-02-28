@@ -1,8 +1,0 @@
-#!/bin/bash
-#SBATCH --job-name=KnitWane
-#SBATCH --time=02:00:00
-#SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=16G
-#SBATCH --cpus-per-task=1
-
-matlab -nodisplay -r "clinical_knitting_func('/scratch/cm37/health/NSW_outputs/scenario13_2000Omicron',100);quit()"
