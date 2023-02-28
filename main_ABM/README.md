@@ -5,6 +5,8 @@ This repository was created for the WHO work ("prosposal 1") looking at vaccinat
 
 Note that some files are first generated from the code here: https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/presim_code
 
+Note that https://github.com/nlohmann/json is necessary for function.
+
 ## 1. Run the "presimulation" files 
 
 See https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/presim_code which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
