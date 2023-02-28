@@ -4,6 +4,8 @@ This repository contains the source code for an agent-based model of COVID-19 di
 
 Mathematical modelling assumptions can be found [here: Covid IBM: Waning Immunity](https://spectrum-spark.github.io/covid-IBM/).
 
+The various immunity parameters used were generated using https://github.com/goldingn/neuts2efficacy 
+
 ### Code authorship
 
 Major model developement and implementation of the agent-based model was done by Eamon Conway.
@@ -22,6 +24,8 @@ The clinical pathways code is in the folder [clinical_pathways](https://github.c
 
 Note that there are different pieces of code that require Python, C++, R, and Matlab.
 
-*This repository is the code accompanyment to:*
+---
+
+*This repository is the code accompaniment to:*
 
 Eamon Conway, Thao P. Le, Isobel Abell, Patrick Abraham, Edifofon Akpan, Christopher Baker, Mackenzie Bourke, Patricia T. Campbell, Natalie Carvalho, Deborah Cromer, Alexandra B. Hogan, Michael J. Lydeamore, Yasmine McDonough, Ivo Mueller, Gerald Ryan, Camelia Walker, Yingying Wang, and Jodie McVernon, **A flexible immunity model-based framework for evaluation of likely impacts of emerging variants & vaccines: Technical Report**, 2023.
