@@ -33,3 +33,13 @@ Then run the plotting scripts...
 
 1. **plot_infections_annual_boosting...py**
 
+### Submission scripts
+
+See [/example_cluster_submission_files](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO/main_ABM/example_cluster_submission_files) for examples of how to run all the different files together. Note that the clinical pathways is run in sequence in the example submission scripts.
+
+After changing appropriate parameters and file locations, the order to run is:
+
+1. **submit_annual_boosting_1_all.sh** (which calls **submit_annual_boosting_1_function.script**): This runs all the individual simulations and also their individual clinical pathways.
+2. **submit_annual_boosting_1_matlab_R_all.sh** (which calls **submit_annual_boosting_1_matlab_R_function.script**): this gathers all the individual outputs and pulls them into aggregated files.
+3. **submit_annual_boosting_1_plotting.script**: this plots figures
+4. (optional) **submit_clinical_gathering.script**: this outputs csv files with clinical pathways data.

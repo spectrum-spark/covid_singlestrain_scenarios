@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=matlabR
+#SBATCH --time=06:00:00
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=10G
+#SBATCH --cpus-per-task=1
+#SBATCH --output=annual_boosting_1_outputs/matlab_R-%A_%a.out
+
+module load matlab
+
+matlab -nodisplay -r "cd 'path/to/clinical_pathways';disp(pwd);sev_mat = [1/15,1/45,1/60];numsims=100;TP_list = {'1.05','1.95'};TP = TP_list{${TPvers}};disp(TP);population = '${POP}';disp(population);params = '${diffparams}';disp(params);BA45wavestart = '${BA45start}';foldername = strcat('/path/to/annual_boosting_1_immune_escape_t',BA45wavestart,'_outputs/');filename = strcat(foldername,'abm_continuous_simulation_parameters_',population,'_',params,'_SOCRATES_TP',TP,'/');disp(filename);clinical_knitting_relsev_func(filename,sev_mat,numsims);disp('done?');quit()"
+
+
+module load R/4.0.5
+Rscript compress_outputs_continuous_reduced.R /path/to/annual_boosting_1_immune_escape_t${BA45start}_outputs/ abm_continuous_simulation_parameters_${POP}_${diffparams}_SOCRATES_TP ${TPvers}

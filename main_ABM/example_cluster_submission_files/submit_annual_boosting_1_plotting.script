@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH --job-name=plotting
+#SBATCH --time=06:00:00
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=6G
+#SBATCH --cpus-per-task=1
+#SBATCH --output=plotting-%A_%a.out
+
+source /path/to/miniconda/bin/activate
+
+python plot_infections_annual_boosting_1.py
