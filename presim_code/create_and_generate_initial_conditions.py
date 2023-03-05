@@ -563,25 +563,24 @@ def vaccination_schedule_boosters(list_of_all_people,booster_uptake_probability,
         random.shuffle(two_dose_already_group[age_band])
         random.shuffle(three_dose_already_group[age_band])
 
-    to_boost =  [] 
+    potential_boost =  []  # DOES NOT YET CONSIDER AGE REQUIREMENTS FOR BOOSTING!
     for age_band in age_bands:
-        to_boost.extend(two_dose_already_group[age_band][0:int(booster_uptake_probability*len(two_dose_already_group[age_band]))])
-        to_boost.extend(three_dose_already_group[age_band][0:int(booster_uptake_probability*len(three_dose_already_group[age_band]))])
+        potential_boost.extend(two_dose_already_group[age_band][0:int(booster_uptake_probability*len(two_dose_already_group[age_band]))])
+        potential_boost.extend(three_dose_already_group[age_band][0:int(booster_uptake_probability*len(three_dose_already_group[age_band]))])
 
 
-    for i in to_boost:
+    for i in potential_boost:
         person = list_of_all_people[i]
-
-        person.max_vax = person.max_vax +1
-        person.next_vax_eligibility_date =  person.vaccination_days[-1] + days_between_doses_minimum
 
         # find the priority group they should be in
         dose_num = person.doses_received + 1
-    
+
         for priority_level in boosters_vax_priority.keys():
             if dose_num in boosters_vax_priority[priority_level]['dose_numbers'] and person.age_band in boosters_vax_priority[priority_level]['ages']:
                 people_receiving_boosters[priority_level].append(i)
                 total_people_receiving_boosters +=1
+                person.max_vax = person.max_vax +1
+                person.next_vax_eligibility_date =  person.vaccination_days[-1] + days_between_doses_minimum
                 break
 
     doses_per_day = math.ceil(total_people_receiving_boosters/ vaccination_duration)
