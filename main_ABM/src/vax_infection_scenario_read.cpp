@@ -188,7 +188,7 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
         }
         if (max_vaccine_number>3){
 
-            VaccineType dose4 = VaccineType::Booster;
+            VaccineType dose4 = VaccineType::Booster2;
             Time_and_Vaccine.push_back(std::make_pair(time_booster_2, dose4));
         }
 

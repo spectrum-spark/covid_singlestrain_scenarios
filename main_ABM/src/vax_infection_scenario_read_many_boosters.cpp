@@ -214,17 +214,17 @@ static void create_individuals_from_input_many_boosters(std::stringstream &indiv
         }
         if (max_vaccine_number>3){
 
-            VaccineType dose4 = VaccineType::Booster;
+            VaccineType dose4 = VaccineType::Booster2;
             Time_and_Vaccine.push_back(std::make_pair(time_booster_2, dose4));
         }
         if (max_vaccine_number>4){
 
-            VaccineType dose5 = VaccineType::Booster;
+            VaccineType dose5 = VaccineType::Booster2;
             Time_and_Vaccine.push_back(std::make_pair(time_booster_3, dose5));
         }
         if (max_vaccine_number>5){
 
-            VaccineType dose6 = VaccineType::Booster;
+            VaccineType dose6 = VaccineType::Booster2;
             Time_and_Vaccine.push_back(std::make_pair(time_booster_4, dose6));
         }
 
