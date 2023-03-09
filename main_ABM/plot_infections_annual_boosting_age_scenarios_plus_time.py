@@ -227,7 +227,7 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["older"],immune_esca
         
         ax.set_ylabel('number of infections')
         
-        plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+        plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) +"_" +str(max_days) + ".png") , bbox_inches='tight')
         plt.close()
 
 
@@ -1857,6 +1857,22 @@ boosting_group_colours_older = ['white','firebrick','red','salmon','navy','dodge
 
 boosting_colours_combined = ['white','firebrick','red','orange','gold','yellowgreen','navy','dodgerblue']
 
+# for younger_or_older in  [["younger"], ["older"]]:
+#     if younger_or_older == ["younger"]:
+#         boosting_colours = boosting_colours_combined # boosting_group_colours_younger
+#     else:
+#         boosting_colours = boosting_colours_combined # boosting_group_colours_older
+
+#     folder = "/scratch/cm37/tpl/annual_boosting_age_scenarios_plus_time_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+#     presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
+
+
+#     plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time,boosting_time=boosting_time)
+    
+#     total_deaths_histograms(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+
+
+# 3.1 years instead
 for younger_or_older in  [["younger"], ["older"]]:
     if younger_or_older == ["younger"]:
         boosting_colours = boosting_colours_combined # boosting_group_colours_younger
@@ -1866,6 +1882,7 @@ for younger_or_older in  [["younger"], ["older"]]:
     folder = "/scratch/cm37/tpl/annual_boosting_age_scenarios_plus_time_immune_escape_t" + str(immune_escape_time) +"_outputs/"
     presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
 
+    max_days = int(52*7*3.2)
 
     plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time,boosting_time=boosting_time)
     

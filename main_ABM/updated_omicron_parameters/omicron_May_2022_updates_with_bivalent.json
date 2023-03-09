@@ -1,0 +1,19 @@
+{
+    "c50_hospitalisation": -1.2161786725147814,
+    "c50_death": -1.1753151405677293,
+    "c50_acquisition": -0.47195962651907175,
+    "c50_transmission": 0.02953683449343693,
+    "c50_symptoms": -0.6442020773907903,
+    "log10_mean_neut_AZ_dose_1": -0.5299522095755013,
+    "log10_mean_neut_AZ_dose_2": -0.12031713312180076,
+    "log10_mean_neut_Pfizer_dose_1": -0.23154132545543396,
+    "log10_mean_neut_Pfizer_dose_2": 0.1540166902000597,
+    "log10_mean_neut_Pfizer_dose_3": 0.3225538899068383,
+    "log10_mean_neut_infection": 0,
+    "log_k": 1.686059432639791,
+    "neut_decay": 0.008235096361537353,
+    "log10_omicron_neut_fold": -0.6923808174384031,
+    "R0_ratio": 1.1131953802735288,
+    "sd_log10_neut_titres": 0.4647092,
+    "log10_mean_neut_bivalent_booster": 0.52937976593
+  }

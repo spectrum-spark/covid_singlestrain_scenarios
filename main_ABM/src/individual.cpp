@@ -126,6 +126,9 @@ std::ostream &operator<<(std::ostream &os, const VaccineType &vaccine)
   case VaccineType::Booster2:
     output = "mRNA booster 2";
     break;
+  case VaccineType::BivalentBooster:
+    output = "bivalent booster";
+    break;
     case VaccineType::Unvaccinated :
     output = "Unvaccinated";
     break;

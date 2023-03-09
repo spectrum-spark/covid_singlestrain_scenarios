@@ -14,7 +14,7 @@
 #include <iostream>
 #include "nlohmann/json.hpp"
 
-enum class VaccineType {AZ1, AZ2, Pfizer1, Pfizer2, Moderna1, Moderna2, Booster, Booster2, Unvaccinated};
+enum class VaccineType {AZ1, AZ2, Pfizer1, Pfizer2, Moderna1, Moderna2, Booster, Booster2, BivalentBooster, Unvaccinated};
 
 std::ostream& operator<<(std::ostream& os, const VaccineType& vaccine);
 

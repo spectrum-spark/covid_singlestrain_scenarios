@@ -60,6 +60,7 @@ class disease_model {
   double log10_mean_neut_Pfizer_dose_1;
   double log10_mean_neut_Pfizer_dose_2;
   double log10_mean_neut_Pfizer_dose_3;
+  double log10_mean_neut_bivalent_booster;
   // double log10_mean_additional_neut;
   double log10_omicron_neut_fold;
   double priorStrainFold;
@@ -109,6 +110,13 @@ class disease_model {
   disease_model(double beta_C, double q, double xi,
                 std::vector<std::vector<double>> contact_matrix_in,
                 std::vector<double> b, std::vector<double> w);
+
+
+    /**
+     * @brief Assigns log10_mean_neut_bivalent_booster if/when bivalent boosting is happening
+     * 
+     */
+    void set_bivalent_booster(double bivalentBoosterParam);
 
   std::vector<double> beta_C; /**<  Community transmission probability.*/
   std::vector<double> xi;     /**< Age stratified susceptibility. */
