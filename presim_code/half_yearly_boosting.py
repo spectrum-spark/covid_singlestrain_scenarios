@@ -41,7 +41,6 @@ def output_schedule_extended_6_boosters(list_of_all_people, file):
     dict_collected_details = {}
 
     for person in list_of_all_people:
-        num = 1
         vax_days = person.vaccination_days.copy()
         while len(vax_days) < 6:
             vax_days.append(-1)
@@ -100,7 +99,6 @@ def plot_vaccination_distributions_extended_percentage_pretty_6_boosters(list_of
 
     ax2.set_yticks(y_pos)
     ax2.set_yticklabels(age_bands)
-    # ax2.invert_yaxis()  # labels read top-to-bottom
     ax2.set_xlabel('Vaccination coverage percentage')
     ax2.set_title('1st year vaccination coverage: ' + str(round(100 * total_vaccination_rate, 0)) + "\%", fontsize=14)
 
@@ -157,9 +155,6 @@ def plot_vaccination_distributions_time_pretty_6_boosters(list_of_all_people, pl
 
     ax1.legend(["first doses", "second doses", "first boosters", "second boosters","third boosters","fourth boosters"], bbox_to_anchor=(1.01, 1.0),
                loc='upper left', handlelength=0.7, title="dose number")  # (1.04, 1.0)
-
-
-
 
 
     ax1.set_ylabel('doses')
@@ -274,10 +269,6 @@ for younger_or_older in ["younger","older"]:
     full_output_file_name =  os.path.join(folder_path, "abm_continuous_simulation_parameters_" + younger_or_older + ".csv")
     output_schedule_extended_6_boosters(list_of_all_people, full_output_file_name)
 
-
-
-    # and ALSO make code for plotting to check that everything looks okay.
-    # need to add various things (for 6 booster colours)
 
     output_file = os.path.join(folder_path, "abm_continuous_simulation_parameters_" + younger_or_older)
     plot_vaccination_distributions_extended_percentage_pretty_6_boosters(list_of_all_people, output_file, 0.8)

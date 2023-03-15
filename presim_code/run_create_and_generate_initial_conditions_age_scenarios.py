@@ -3,7 +3,6 @@ from create_and_generate_initial_conditions import *
 from create_and_generate_initial_conditions_plotting import *
 import sys
 
-# TODO everything is to do, need to go through each file separately
 
 def simulation_initial_conditions(filename,output_filename):
     fullfilename = os.path.join(os.path.dirname(__file__),filename)
@@ -39,7 +38,7 @@ def simulation_initial_conditions(filename,output_filename):
         if boosting_group=='none':
             pass # no second boosting
         else:
-            # TODO / check if this function actually works as expected
+            
             list_of_all_people =  vaccination_schedule_boosters(list_of_all_people,second_booster_fraction,second_additional_vax_priority,vaccination_start, vaccination_duration)
     else:
         print("lower coverage not down yet")

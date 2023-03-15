@@ -90,24 +90,24 @@ with open(full_output_file_name,  'w', newline='') as f:
                                 if max_vax==0:
                                     pass
                                 else:
-                                    if max_vax >=1:
+                                    if max_vax >=1 and vax_days[0]>=0:
                                         if vax_days[0]<= original_program_time+1:
                                             vaccinations['1.5 year vaccination program primary doses'] +=1*num_people
                                         else:
                                             vaccinations['Further primary doses (1.5 - 3 years)']+=1*num_people
 
-                                    if max_vax>=2:
+                                    if max_vax>=2 and vax_days[1]>=0:
                                         if vax_days[1]<= original_program_time+1:
                                             vaccinations['1.5 year vaccination program primary doses'] +=1*num_people
                                         else:
                                             vaccinations['Further primary doses (1.5 - 3 years)']+=1*num_people
-                                    if max_vax >=3:
+                                    if max_vax >=3 and vax_days[2]>=0:
                                         if vax_days[2]<= original_program_time+1:
                                             vaccinations['1.5 year vaccination program booster doses']+=1*num_people
                                         else:
                                             vaccinations['Further booster doses (1.5 - 3 years)']+=1*num_people
 
-                                    if max_vax >=4:
+                                    if max_vax >=4 and vax_days[3]>=0:
                                         if vax_days[3]<= original_program_time+1:
                                             vaccinations['1.5 year vaccination program booster doses']+=1*num_people
                                         else:

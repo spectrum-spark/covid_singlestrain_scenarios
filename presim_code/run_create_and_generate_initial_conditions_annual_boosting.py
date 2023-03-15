@@ -61,7 +61,6 @@ def simulation_initial_conditions(filename,output_filename):
     output_schedule_extended(list_of_all_people,output_file+".csv")
 
     # # age distribution plots
-    # # plot_age_distribution(simulated_population_by_age_band,output_file, population_type)
     # plot_age_distribution_pretty(simulated_population_by_age_band,output_file, population_type)
 
     # # vaccination-related plots
@@ -78,20 +77,14 @@ def simulation_initial_conditions(filename,output_filename):
     
     plot_vaccination_distributions_time_pretty(list_of_all_people,population_type,output_file,presim_parameters)
 
-
-for population_type in ["older"]:
+# high coverage older population and younger population
+for population_type in ["older", "younger"]:
     for number in range(0,12+1):
         filename =  os.path.join("parameter_files_annual_boosting_1","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
         output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
         simulation_initial_conditions(filename,output_filename)
 
-
-for population_type in ["younger"]: # younger with high coverage
-    for number in range(0,12+1):
-        filename =  os.path.join("parameter_files_annual_boosting_1","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")
-        output_filename="abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)
-        simulation_initial_conditions(filename,output_filename)
-
+# low coverage younger population
 for population_type in ["younger"]:
     for number in range(-1,6+1):
         filename =  os.path.join("parameter_files_annual_boosting_1_younger","abm_continuous_simulation_parameters_" + population_type+ "_" + str(number)+".json")

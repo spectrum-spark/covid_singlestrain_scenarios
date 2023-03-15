@@ -71,7 +71,7 @@ def plot_age_distribution_pretty(simulated_population_by_age_band,plotting_name,
 def plot_vaccination_distributions(simulated_population_by_age_band,vax_1_dose_by_age_band,vax_2_doses_OG_by_age_band,vax_3_doses_by_age_band, new_primary_doses_by_age_band,list_of_all_people,population_type,plotting_name,presim_parameters):
     
     total_population = presim_parameters["total_population"]
-    population_type = presim_parameters["population_type"]
+    # population_type = presim_parameters["population_type"]
     total_vaccination_rate = presim_parameters["total_vaccination_rate"]
     booster_fraction = presim_parameters["booster_fraction"]
     # total_attack_rate  = presim_parameters["total_attack_rate"]
@@ -205,7 +205,7 @@ def plot_vaccination_distributions(simulated_population_by_age_band,vax_1_dose_b
 def plot_vaccination_distributions_poster(simulated_population_by_age_band,vax_1_dose_by_age_band,vax_2_doses_OG_by_age_band,vax_3_doses_by_age_band, new_primary_doses_by_age_band,list_of_all_people,population_type,plotting_name,presim_parameters):
 
     total_population = presim_parameters["total_population"]
-    population_type = presim_parameters["population_type"]
+    # population_type = presim_parameters["population_type"]
     total_vaccination_rate = presim_parameters["total_vaccination_rate"]
     booster_fraction = presim_parameters["booster_fraction"]
     # total_attack_rate  = presim_parameters["total_attack_rate"]
@@ -262,7 +262,7 @@ def plot_vaccination_distributions_percentage_pretty(simulated_population_by_age
 
 
     total_population = presim_parameters["total_population"]
-    population_type = presim_parameters["population_type"]
+    # population_type = presim_parameters["population_type"]
     total_vaccination_rate = presim_parameters["total_vaccination_rate"]
     booster_fraction = presim_parameters["booster_fraction"]
     # total_attack_rate  = presim_parameters["total_attack_rate"]
@@ -314,7 +314,7 @@ def plot_vaccination_distributions_extended_percentage_pretty(simulated_populati
 
 
     total_population = presim_parameters["total_population"]
-    population_type = presim_parameters["population_type"]
+    # population_type = presim_parameters["population_type"]
     total_vaccination_rate = presim_parameters["total_vaccination_rate"]
     booster_fraction = presim_parameters["booster_fraction"]
     # total_attack_rate  = presim_parameters["total_attack_rate"]
@@ -385,7 +385,7 @@ def plot_vaccination_distributions_extended_percentage_pretty(simulated_populati
 def plot_vaccination_status_distributions_pretty(simulated_population_by_age_band,vax_1_dose_by_age_band,vax_2_doses_OG_by_age_band,vax_3_doses_by_age_band, new_primary_doses_by_age_band,population_type,plotting_name,presim_parameters):
 
     total_population = presim_parameters["total_population"]
-    population_type = presim_parameters["population_type"]
+    # population_type = presim_parameters["population_type"]
     total_vaccination_rate = presim_parameters["total_vaccination_rate"]
     booster_fraction = presim_parameters["booster_fraction"]
     # total_attack_rate  = presim_parameters["total_attack_rate"]

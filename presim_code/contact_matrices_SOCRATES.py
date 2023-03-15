@@ -19,8 +19,6 @@ for population_type in ['younger','older']:
             next(reader)
             for data in reader:
                 contact_matrix.append(data)
-        #print(len(contact_matrix))
-        #print(len(contact_matrix[0]))
         countries_contact_matrices[population_type][country_file] = contact_matrix
         
 

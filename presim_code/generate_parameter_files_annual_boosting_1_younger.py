@@ -1,6 +1,7 @@
 import json
 import os
 
+# this is for the low coverage younger population scenarios
 
 folder = "parameter_files_annual_boosting_1_younger"
 folder_path = os.path.join(os.path.dirname(__file__),folder)
@@ -11,9 +12,6 @@ if not os.path.exists(folder_path ):
 # dose 1 first (with oldest first), then dose 2 (with oldest first)
 
 age_bands_abm = ["0-4","5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80+']
-
-# primary doses
-
 
 
 for total_population in [100000]:
@@ -26,9 +24,6 @@ for total_population in [100000]:
                             3:{'ages':["5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64'],'dose_numbers':[2],'max_daily_allocation':1}
                             }
 
-            # if vaccination_rate==0:
-            #     oldest_group_coverage = 0
-            #     delivery_dose_then_age = {0:{'ages':[],'dose_numbers':[],'max_daily_allocation':0}}
             if vaccination_rate < 0.4: #low
                 oldest_group_coverage = 0.8
             else:
@@ -61,17 +56,7 @@ for total_population in [100000]:
                     # {0:{'ages':['65-69', '70-74', '75-79', '80+'],'dose_numbers':[1,2],'max_daily_allocation':1},
                     #         1:{'ages':["5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64'],'dose_numbers':[1,2],'max_daily_allocation':1}}
 
-                if population_type == 'older':
-                    second_boosters_doses =11000 # 12498*total_population/100000 # past_booster_fraction*  = 9998.4 LOL
-                    # populations in each age groups for older population distribution
-                    # 0-4: 5738
-                    # 5-19:  7950, 4548, 4472 = 16970 
-                    # 5-15: 7950, 4548 = 12498 
-                    # 65+: 5169, 3937, 2599, 3406 = 15111 
-                else:
-                    second_boosters_doses =11000 # for now, just keeping the same number...
-                    # print("need to define boosters available for younger population")
-                    # exit(1)
+                second_boosters_doses =11000 # same number of doses
 
                 for year in [2021]:
                     param_set = {'total_population':total_population,
@@ -115,10 +100,7 @@ for total_population in [100000]:
                             2:{'ages':['65-69', '70-74', '75-79', '80+'],'dose_numbers':[2],'max_daily_allocation':1},
                             3:{'ages':["5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64'],'dose_numbers':[2],'max_daily_allocation':1}
                             }
-
-            # if vaccination_rate==0:
-            #     oldest_group_coverage = 0
-            #     delivery_dose_then_age = {0:{'ages':[],'dose_numbers':[],'max_daily_allocation':0}}
+            
             if vaccination_rate < 0.4: #low
                 oldest_group_coverage = 0.8
             else:

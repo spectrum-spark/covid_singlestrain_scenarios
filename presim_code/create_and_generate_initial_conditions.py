@@ -33,8 +33,6 @@ def population_by_age_distribution(total_population,population_type,year=2021):
     simulated_population_by_age_band = saferound([x*total_population for x in percentage_pop_by_age_band], places=0)
 
     simulated_population_by_age_band = [int(x) for x in simulated_population_by_age_band]
-    
-    # simulated_population_by_age_band = [round(x*total_population) for x in percentage_pop_by_age_band]
 
     print("simulated_population_by_age_band:",simulated_population_by_age_band)
     print("total simulated population:",sum(simulated_population_by_age_band))
@@ -725,7 +723,7 @@ def vaccination_schedule_annual_boosters(list_of_all_people,second_additional_do
 
     return list_of_all_people
     
-def vaccination_schedule_additional_primary(list_of_all_people,second_additional_doses_available,boosters_vax_priority,vaccination_start, vaccination_duration): # TODO IN PROGRESS
+def vaccination_schedule_additional_primary(list_of_all_people,second_additional_doses_available,boosters_vax_priority,vaccination_start, vaccination_duration):
 
     if vaccination_start ==-1:
         print("no fourth boosters are given")

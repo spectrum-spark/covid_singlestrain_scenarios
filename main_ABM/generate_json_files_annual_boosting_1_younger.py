@@ -8,18 +8,10 @@ full_fixed_parameters_file = os.path.join(os.path.dirname(__file__),fixed_parame
 with open(full_fixed_parameters_file, "r") as f:
     fixed_parameters = json.load(f)
 
-#TP_list = [0.85,0.9,0.95, 1.,   1.05, 1.1  ,1.15, 1.2 , 1.25, 1.3, 1.35 ,1.4 , 1.45, 1.5,  1.55, 1.6, 1.65 ,1.7 , 1.75 ,1.8 , 1.85, 1.9 , 1.95,2.0,2.05]
 TP_list = [1.05, 1.95]
 print(TP_list)
 
-# second_exposure_time = 450.0
-# third_exposure_time = 675.0
-
 original_program_time = 26*7*3
-# third_exposure_date = 675
-# boosters_only_vaccination_start_list = [original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7  , original_program_time + 52*7 ]
-
-# immune_escape_times = [original_program_time, original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7 , original_program_time + 52*7] # aka every 3 months 
 
 immune_escape_times = [original_program_time + 26*7]
 
@@ -46,7 +38,7 @@ for immune_escape_time in immune_escape_times:
                         "regular_exposure_infections": 1,
                         "seed_every_x_days":1.0,
                         "new_strain_wave_start_day":immune_escape_time,
-                        "baseline_TP": TP, # 6.32 
+                        "baseline_TP": TP,
                         "start_restrictions": -1.0,
                         "finish_restrictions": -1.0,
                         "mobility_restrictions": 1.0,  # aka no actual mobility restrictions

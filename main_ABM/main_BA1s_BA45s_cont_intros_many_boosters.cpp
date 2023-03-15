@@ -475,10 +475,6 @@ int main(int argc, char *argv[])
 
 
 
-
-
-  
-
   // BA1 WAVE(S) /////////////////////////////////////////
 
   while (t < new_strain_wave_start_day)
@@ -798,7 +794,7 @@ int main(int argc, char *argv[])
           if (x.t <= t)
           {
             // Second Booster dose.
-            covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
+            new_covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
 
             Individual::VaccineHistory& vaccinations = residents[x.person].vaccinations;
             // Will they get another booster!
@@ -824,7 +820,7 @@ int main(int argc, char *argv[])
           if (x.t <= t)
           {
             // third Booster dose.
-            covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
+            new_covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
 
             Individual::VaccineHistory& vaccinations = residents[x.person].vaccinations;
             // Will they get another booster again!
@@ -850,7 +846,7 @@ int main(int argc, char *argv[])
           if (x.t <= t)
           {
             // fourth Booster dose.
-            covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
+            new_covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
 
 
             return true;
@@ -883,7 +879,7 @@ int main(int argc, char *argv[])
               gen_res(generator); // Randomly sample from all the population.
           if (residents[exposed_resident].covid.infection_status != 'E' && residents[exposed_resident].covid.infection_status != 'I')
           {
-            covid.seed_exposure(residents[exposed_resident],
+            new_covid.seed_exposure(residents[exposed_resident],
                                 t); // Random resident has become exposed
             residents[exposed_resident].covid.cluster_number = 1;
             ++initial_infections;

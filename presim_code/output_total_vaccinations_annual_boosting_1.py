@@ -88,15 +88,15 @@ for boosting_time in boosters_only_vaccination_start_list:
                                 vax_days = [int(time_1),int(time_2),int(time_3),int(time_4)]
                                 if max_vax==0:
                                     pass
-                                elif max_vax==2:
+                                elif max_vax==2 and vax_days[1]>=0:
                                     vaccinations['1.5 year vaccination program primary doses'] +=2*num_people
-                                elif max_vax==3:
+                                elif max_vax==3  and vax_days[2]>=0:
                                     vaccinations['1.5 year vaccination program primary doses'] +=2*num_people
                                     if vax_days[2]<boosting_time:
                                         vaccinations['1.5 year vaccination program booster doses']+=1*num_people
                                     else:
                                         vaccinations['Further booster doses (1.5 - 3 years)']+=1*num_people
-                                elif max_vax==4:
+                                elif max_vax==4  and vax_days[3]>=0:
                                     vaccinations['1.5 year vaccination program primary doses'] +=2*num_people
                                     vaccinations['1.5 year vaccination program booster doses']+=1*num_people
                                     vaccinations['Further booster doses (1.5 - 3 years)']+=1*num_people

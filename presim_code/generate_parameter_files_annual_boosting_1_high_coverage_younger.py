@@ -12,9 +12,6 @@ if not os.path.exists(folder_path ):
 
 age_bands_abm = ["0-4","5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80+']
 
-# primary doses
-
-
 
 for total_population in [100000]:
     for population_type in ["younger"]:
@@ -25,14 +22,6 @@ for total_population in [100000]:
                             2:{'ages':['65-69', '70-74', '75-79', '80+'],'dose_numbers':[2],'max_daily_allocation':1},
                             3:{'ages':["5-11","12-15",'16-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64'],'dose_numbers':[2],'max_daily_allocation':1}
                             }
-
-            # if vaccination_rate==0:
-            #     oldest_group_coverage = 0
-            #     delivery_dose_then_age = {0:{'ages':[],'dose_numbers':[],'max_daily_allocation':0}}
-            # elif vaccination_rate < 0.4: #low
-            #     oldest_group_coverage = 0.8
-            # else:
-            #     oldest_group_coverage = 0.95
 
             oldest_group_coverage = 0.95
 

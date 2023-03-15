@@ -176,7 +176,7 @@ static void create_individuals_from_input(std::stringstream &individual_group, s
             Time_and_Vaccine.push_back(std::make_pair(time_dose_1, dose));
         }
         if (max_vaccine_number>1){
- VaccineType dose2 = VaccineType::AZ2;
+            VaccineType dose2 = VaccineType::AZ2;
             // dose = VaccineType::Pfizer2;
             // dose = VaccineType::Moderna2;
             Time_and_Vaccine.push_back(std::make_pair(time_dose_2, dose2));
