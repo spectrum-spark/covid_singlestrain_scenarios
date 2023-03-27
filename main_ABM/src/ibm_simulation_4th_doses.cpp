@@ -97,11 +97,16 @@ disease_model::disease_model(std::vector<double> beta_C_in,
 
   output.reserve(10000);
   // Could do a bunch of checks on the beta q xi and contact matrix for sizes.
+
+
+  bivalent_included = false;
 };
 
 
 void disease_model::set_bivalent_booster(double bivalentBoosterParam){
-  double log10_mean_neut_bivalent_booster = bivalentBoosterParam;
+  log10_mean_neut_bivalent_booster = bivalentBoosterParam; //hopefully this works....
+  bivalent_included = true;
+
 }
 
 //  Covid model Age stratified Individual contacts. (ASCM - age stratified
@@ -839,6 +844,11 @@ void disease_model::print_params() {
             << "log10_mean_neut_Pfizer_dose_3"
             << "\n"
             << log10_mean_neut_Pfizer_dose_3 << "\n";
+  if(bivalent_included==true){
+    std::cout << "log10_mean_neut_bivalent_booster"
+            << "\n"
+            << log10_mean_neut_bivalent_booster << "\n";
+  }
 }
 
 

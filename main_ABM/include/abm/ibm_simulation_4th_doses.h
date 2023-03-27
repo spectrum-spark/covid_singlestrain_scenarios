@@ -61,6 +61,7 @@ class disease_model {
   double log10_mean_neut_Pfizer_dose_2;
   double log10_mean_neut_Pfizer_dose_3;
   double log10_mean_neut_bivalent_booster;
+  bool bivalent_included;
   // double log10_mean_additional_neut;
   double log10_omicron_neut_fold;
   double priorStrainFold;
