@@ -872,7 +872,7 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
 
         ax2.set_ylabel('Count')
         ax2.set_xlim(0,80)
-        ax2.set_ylim(bottom=0,top=400)
+        ax2.set_ylim(bottom=0,top=1000)
         if ICU_or_death == 'death':
             if minimum_age==65:
                 ax2.set_xlabel("Deaths in the 65+ age-group (t = " + str(timeframe[0])+" to " + str(timeframe[-1])+")")
@@ -967,7 +967,7 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
 
         plt.subplots_adjust(hspace=0.9)
         
-        plt.savefig(os.path.join(folder, "total_" + ICU_or_death+"_histogram_with_mean_"+"_".join(younger_or_older)+ "_"+"_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) +"_time"+str(round(timeframe[0]/(52*7),2))+"-" + str(round(timeframe[-1]/(52*7),2))+"years_minimum-age-"+str(minimum_age)+ "_test.png") , bbox_inches='tight')
+        plt.savefig(os.path.join(folder, "total_" + ICU_or_death+"_histogram_with_mean_"+"_".join(younger_or_older)+ "_"+"_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) +"_time"+str(round(timeframe[0]/(52*7),2))+"-" + str(round(timeframe[-1]/(52*7),2))+"years_minimum-age-"+str(minimum_age)+ ".png") , bbox_inches='tight')
         plt.close()
 
 
@@ -2102,6 +2102,6 @@ for younger_or_older in  [ ["older"], ["younger"],]:
     presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
 
 
-    plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time,boosting_time=boosting_time)
+    # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time,boosting_time=boosting_time)
     
-    # total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+    total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)

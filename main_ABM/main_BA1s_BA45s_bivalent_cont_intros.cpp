@@ -246,9 +246,7 @@ int main(int argc, char *argv[])
   double log10_mean_neut_bivalent_booster = neuts_json["log10_mean_neut_bivalent_booster"];
 
 
-
   // New strain details
-  // int new_strain_wave_start = sim_params_json["new_strain_wave_start"]; // not needed
   double new_strain_wave_start_day =sim_params_json["new_strain_wave_start_day"];
 
   double new_strain_ratio = new_strain_neuts_json["R0_ratio"];
@@ -419,7 +417,7 @@ int main(int argc, char *argv[])
   };
 
   disease_model covid(beta, q, xi, contact_matrix, b, w, neuts_json, mobility_function);
-  covid.set_bivalent_booster(log10_mean_neut_bivalent_booster);
+  covid.set_bivalent_booster(log10_mean_neut_bivalent_booster); // I hope this works
 
   //     double BA2_time = sim_params_json["BA2_time"];
   //   double BA2_ratio =sim_params_json["BA2_ratio"];
@@ -437,7 +435,7 @@ int main(int argc, char *argv[])
 
   disease_model new_covid(beta, q, xi, contact_matrix, b, w, new_strain_neuts_json,
                           mobility_function, neuts_json["log10_omicron_neut_fold"]);
-  new_covid.set_bivalent_booster(log10_mean_neut_bivalent_booster);
+  new_covid.set_bivalent_booster(log10_mean_neut_bivalent_booster); // I hope this works
 
   // Vaccinate people!
   std::vector<VaccinationSchedule> first_doses;
@@ -476,12 +474,6 @@ int main(int argc, char *argv[])
   E_ref.reserve(10000); // Magic number reserving memory.
   std::vector<size_t> I_ref;
   I_ref.reserve(10000); // Magic number of reserved.
-
-
-
-
-
-
   
 
   // BA1 WAVE(S) /////////////////////////////////////////
@@ -538,7 +530,7 @@ int main(int argc, char *argv[])
           } });
     second_doses.erase(second_it, second_doses.end());
 
-    // Loop through all booster doses (efficiency is not great oh well)
+    // Loop through all first booster doses (efficiency is not great oh well)
     auto booster_it = std::remove_if(
         booster_doses.begin(), booster_doses.end(), [&](auto &x) -> bool
         {
@@ -546,6 +538,7 @@ int main(int argc, char *argv[])
             // Booster dose.
             if (t>= bivalent_start_time){
                 VaccineType bivalent = VaccineType::BivalentBooster;
+                residents[x.person].vaccinations[2].second = bivalent; //updating their vaccination history, hopefully this works
                 covid.boostNeutsVaccination(residents[x.person], t, bivalent);
             }
             else{
@@ -575,8 +568,9 @@ int main(int argc, char *argv[])
           if (x.t <= t)
           {
             // Second Booster dose.
-            if (t>bivalent_start_time){
-                VaccineType bivalent = VaccineType::BivalentBooster;
+            if (t>=bivalent_start_time){
+                VaccineType bivalent = VaccineType::BivalentBooster2;
+                residents[x.person].vaccinations[3].second = bivalent; //updating their vaccination history, hopefully this works
                 covid.boostNeutsVaccination(residents[x.person], t, bivalent);
             }
             else{
@@ -741,6 +735,7 @@ int main(int argc, char *argv[])
             // Booster dose.
             if (t>= bivalent_start_time){
                 VaccineType bivalent = VaccineType::BivalentBooster;
+                residents[x.person].vaccinations[2].second = bivalent; //updating their vaccination history, hopefully this works
                 new_covid.boostNeutsVaccination(residents[x.person], t, bivalent);
             }
             else{
@@ -771,7 +766,8 @@ int main(int argc, char *argv[])
           {
             // Second Booster dose.
             if (t>= bivalent_start_time){
-                VaccineType bivalent = VaccineType::BivalentBooster;
+                VaccineType bivalent = VaccineType::BivalentBooster2;
+                residents[x.person].vaccinations[2].second = bivalent; //updating their vaccination history, hopefully this works
                 new_covid.boostNeutsVaccination(residents[x.person], t, bivalent);
             }
             else{
@@ -808,7 +804,7 @@ int main(int argc, char *argv[])
               gen_res(generator); // Randomly sample from all the population.
           if (residents[exposed_resident].covid.infection_status != 'E' && residents[exposed_resident].covid.infection_status != 'I')
           {
-            covid.seed_exposure(residents[exposed_resident],
+            new_covid.seed_exposure(residents[exposed_resident],
                                 t); // Random resident has become exposed
             residents[exposed_resident].covid.cluster_number = 1;
             ++initial_infections;

@@ -16,7 +16,7 @@ root_output_folder = "/scratch/cm37/tpl/bivalent_boosting/"
 
 immune_escape_times = [original_program_time, original_program_time + 26*7, original_program_time + 52*7] # at 1.5 yrs, 2 yrs, and 2.5 yrs
 
-bivalent_start_times = immune_escape_times # same timing, of 1.5 yrs, 2 yrs, and 2.5 yrs
+bivalent_start_times = [original_program_time, original_program_time + 26*7, original_program_time + 52*7] # the earlier times since we never have singular boosting at 2.5 years? hmmm I guess have it all for now?
 
 TP_list = [1.05, 1.95]
 
