@@ -688,6 +688,9 @@ double disease_model::getNeutsWithExposure(const Individual &person,
     case VaccineType::BivalentBooster:
       log10_neuts = log10_mean_neut_bivalent_booster + log10(1.33);
       break;
+    case VaccineType::BivalentBooster2:
+      log10_neuts = log10_mean_neut_bivalent_booster + 2*log10(1.33);
+      break;
     case VaccineType::Unvaccinated:
       log10_neuts = log10_mean_neut_infection;
       break;
@@ -732,6 +735,10 @@ double disease_model::getNeutsNaive(const Individual &person, const double &t,
       break;
     case VaccineType::BivalentBooster:
       log10_neuts = log10_mean_neut_bivalent_booster + log10_omicron_neut_fold;
+      break;
+    case VaccineType::BivalentBooster2:
+      log10_neuts = log10_mean_neut_bivalent_booster + log10_omicron_neut_fold+
+                    log10_booster2_additional;
       break;
     default:
       throw std::logic_error(
