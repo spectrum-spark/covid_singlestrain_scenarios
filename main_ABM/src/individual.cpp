@@ -129,7 +129,10 @@ std::ostream &operator<<(std::ostream &os, const VaccineType &vaccine)
   case VaccineType::BivalentBooster:
     output = "bivalent booster";
     break;
-    case VaccineType::Unvaccinated :
+  case VaccineType::BivalentBooster2:
+    output = "bivalent booster 2";
+    break;
+  case VaccineType::Unvaccinated :
     output = "Unvaccinated";
     break;
     default:
