@@ -569,9 +569,9 @@ int main(int argc, char *argv[])
           {
             // Second Booster dose.
             if (t>=bivalent_start_time){
-                VaccineType bivalent = VaccineType::BivalentBooster2;
-                residents[x.person].vaccinations[3].second = bivalent; //updating their vaccination history, hopefully this works
-                covid.boostNeutsVaccination(residents[x.person], t, bivalent);
+                VaccineType bivalent2 = VaccineType::BivalentBooster2;
+                residents[x.person].vaccinations[3].second = bivalent2; //updating their vaccination history, hopefully this works
+                covid.boostNeutsVaccination(residents[x.person], t, bivalent2);
             }
             else{
                 covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
@@ -766,9 +766,9 @@ int main(int argc, char *argv[])
           {
             // Second Booster dose.
             if (t>= bivalent_start_time){
-                VaccineType bivalent = VaccineType::BivalentBooster2;
-                residents[x.person].vaccinations[2].second = bivalent; //updating their vaccination history, hopefully this works
-                new_covid.boostNeutsVaccination(residents[x.person], t, bivalent);
+                VaccineType bivalent2 = VaccineType::BivalentBooster2;
+                residents[x.person].vaccinations[3].second = bivalent2; //updating their vaccination history, hopefully this works
+                new_covid.boostNeutsVaccination(residents[x.person], t, bivalent2);
             }
             else{
                 new_covid.boostNeutsVaccination(residents[x.person], t, x.vaccine);
@@ -826,6 +826,10 @@ int main(int argc, char *argv[])
     }
   }
 
+  covid.print_params();
+
+  new_covid.print_params();
+
 
   // simulations done, now output!
 
@@ -853,59 +857,70 @@ int main(int argc, char *argv[])
   }
 
   // // Writing each individual's data out to file
-  // std::string individuals_output_filename = directory + "/sim_number_" + std::to_string(sim_number) + "_individuals.csv";
-  // std::ofstream individuals_output_file(individuals_output_filename);
+  std::string individuals_output_filename = directory + "/sim_number_" + std::to_string(sim_number) + "_individuals.csv";
+  std::ofstream individuals_output_file(individuals_output_filename);
 
-  // if (individuals_output_file.is_open())
-  // {
-  //   individuals_output_file << "age, age bracket, dose times, infection times, symptom onset times \n";
+  if (individuals_output_file.is_open())
+  {
+    individuals_output_file << "age, age bracket, dose times, dose types, infection times, symptom onset times \n";
 
-  //   for (int i = 0; i < residents.size(); ++i)
-  //   {
-  //     Individual &person = residents[i];
-  //     Individual::VaccineHistory &vaccinations = person.vaccinations;
+    for (int i = 0; i < residents.size(); ++i)
+    {
+      Individual &person = residents[i];
+      Individual::VaccineHistory &vaccinations = person.vaccinations;
 
-  //     individuals_output_file << person.age << ", " << person.age_bracket << ",";
-  //     for (int v = 0; v < vaccinations.size(); ++v)
-  //     {
-  //       if (v > 0)
-  //       {
-  //         individuals_output_file << ";"; // using ; to be different from the csv comma
-  //       }
-  //       individuals_output_file << vaccinations[v].first;
-  //     }
+      individuals_output_file << person.age << ", " << person.age_bracket << ",";
+      for (int v = 0; v < vaccinations.size(); ++v)
+      {
+        if (v > 0)
+        {
+          individuals_output_file << ";"; // using ; to be different from the csv comma
+        }
+        individuals_output_file << vaccinations[v].first ; 
+      }
 
-  //     individuals_output_file << ",";
+      individuals_output_file << ",";
 
-  //     for (int inft = 0; inft < person.infection_dates.size(); ++inft)
-  //     {
-  //       if (inft > 0)
-  //       {
-  //         individuals_output_file << ";";
-  //       }
-  //       individuals_output_file << person.infection_dates[inft];
-  //     }
+      for (int v = 0; v < vaccinations.size(); ++v)
+      {
+        if (v > 0)
+        {
+          individuals_output_file << ";"; // using ; to be different from the csv comma
+        }
+        individuals_output_file << vaccinations[v].second; 
+      }
 
-  //     individuals_output_file << ",";
+      individuals_output_file << ",";
 
-  //     for (int inft = 0; inft < person.symptom_onset_dates.size(); ++inft)
-  //     {
-  //       if (inft > 0)
-  //       {
-  //         individuals_output_file << ";";
-  //       }
-  //       individuals_output_file << person.symptom_onset_dates[inft];
-  //     }
+      for (int inft = 0; inft < person.infection_dates.size(); ++inft)
+      {
+        if (inft > 0)
+        {
+          individuals_output_file << ";";
+        }
+        individuals_output_file << person.infection_dates[inft];
+      }
 
-  //     individuals_output_file << "\n";
-  //   }
+      individuals_output_file << ",";
 
-  //   individuals_output_file.close();
-  // }
-  // else
-  // {
-  //   std::cout << "Unable to open the individuals' output file for some reason????";
-  // }
+      for (int inft = 0; inft < person.symptom_onset_dates.size(); ++inft)
+      {
+        if (inft > 0)
+        {
+          individuals_output_file << ";";
+        }
+        individuals_output_file << person.symptom_onset_dates[inft];
+      }
+
+      individuals_output_file << "\n";
+    }
+
+    individuals_output_file.close();
+  }
+  else
+  {
+    std::cout << "Unable to open the individuals' output file for some reason????";
+  }
 
   return 0;
 }
