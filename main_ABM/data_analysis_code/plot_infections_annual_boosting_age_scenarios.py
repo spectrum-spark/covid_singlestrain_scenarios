@@ -872,7 +872,7 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
 
         ax2.set_ylabel('Count')
         ax2.set_xlim(0,80)
-        ax2.set_ylim(bottom=0,top=1000)
+        ax2.set_ylim(bottom=0,top=1750)
         if ICU_or_death == 'death':
             if minimum_age==65:
                 ax2.set_xlabel("Deaths in the 65+ age-group (t = " + str(timeframe[0])+" to " + str(timeframe[-1])+")")
@@ -898,7 +898,7 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
                       rowColours=colors,
                       colLabels=columns,
                        loc='center',
-                      colWidths=[0.12,0.12,0.24])
+                      colWidths=[0.11,0.11,0.22])
         cell = the_table[2,-1]
         cell.get_text().set_color('white')
         cell = the_table[3,-1]
@@ -2101,7 +2101,16 @@ for younger_or_older in  [ ["older"], ["younger"],]:
     folder = "/scratch/cm37/tpl/annual_boosting_age_scenarios_immune_escape_t" + str(immune_escape_time) +"_outputs/"
     presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
 
-
-    # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time,boosting_time=boosting_time)
-    
     total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+
+for younger_or_older in  [ ["older"], ["younger"],]:
+    if younger_or_older == ["younger"]:
+        boosting_colours = boosting_colours_combined # boosting_group_colours_younger
+    else:
+        boosting_colours = boosting_colours_combined # boosting_group_colours_older
+
+    folder = "/scratch/cm37/tpl/annual_boosting_age_scenarios_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+    presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
+
+
+    plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time,boosting_time=boosting_time)

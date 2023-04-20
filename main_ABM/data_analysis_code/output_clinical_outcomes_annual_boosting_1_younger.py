@@ -15,7 +15,7 @@ TP_reduced_list =  [TP_low, TP_high]
 TP_type_list = ['TP_low','TP_high']
 
 
-SIM_NUMBER = 100
+# SIM_NUMBER = 100
 
 first_exposure_time =225
 max_days = 52*3*7 # 3 years 
