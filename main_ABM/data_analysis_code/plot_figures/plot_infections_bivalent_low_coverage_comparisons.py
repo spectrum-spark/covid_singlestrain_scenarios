@@ -1,7 +1,10 @@
+#
+# Produces plots for "bivalent boosting" scenarios (low coverage younger population)
+#
+
 import os
 import pandas as pd
 import json
-import scipy.io
 import numpy as np
 import csv
 import matplotlib.font_manager
@@ -609,6 +612,10 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
             plt.savefig(os.path.join(bivalent_folder, "total_" + ICU_or_death+"_histogram_with_mean_"+"_".join(younger_or_older) + "_vax_" + str(vaccination_coverage)+ "_"+"_boosting_"+str(boosting_time)+ "_TP_"+str(TP) +"_time"+str(round(timeframe[0]/(52*7),2))+"-" + str(round(timeframe[-1]/(52*7),2))+"years_minimum-age-"+str(minimum_age)+ ".png") , bbox_inches='tight')
             plt.close()
 
+
+################################################################################################
+# PLOTTING
+################################################################################################
 
 total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe =list(range(original_program_time,max_days)),minimum_age = 0)
 

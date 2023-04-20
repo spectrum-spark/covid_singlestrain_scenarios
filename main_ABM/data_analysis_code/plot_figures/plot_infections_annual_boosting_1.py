@@ -1,7 +1,10 @@
+#
+# Produces plots for older and younger population, high coverage boosting scenarios, i.e. scenarios 1, 2, 7, 8, 9, 10
+#
+
 import os
 import pandas as pd
 import json
-import scipy.io
 import numpy as np
 import csv
 import matplotlib.font_manager
@@ -2178,6 +2181,8 @@ original_program_time = 26*7*3
 
 immune_escape_times = [original_program_time, original_program_time + 13*7, original_program_time + 26*7  , original_program_time + 39*7 , original_program_time + 52*7] 
 
+
+
 # for younger_or_older in  [["younger"], ["older"]]:
 #     if younger_or_older == ["younger"]:
 #         no_boosting_colour = 'white'
@@ -2223,7 +2228,7 @@ immune_escape_times = [original_program_time, original_program_time + 13*7, orig
     # plot_before_vs_after_infections_ALL_animated(population_type_list =younger_or_older,x_limits=[0,230],y_limits = [0,160],aspect_ratio = 'equal',infections_or_deaths_plotting="infections")
     # plot_before_vs_after_infections_ALL_animated(population_type_list = younger_or_older,x_limits=[0,230],y_limits = [0,72],aspect_ratio = 'equal',infections_or_deaths_plotting="deaths")
 
-# results to match Natalie's
+
 # for younger_or_older in  [["younger"], ["older"]]:
 #     if younger_or_older == ["younger"]:
 #         no_boosting_colour = 'white'
@@ -2266,9 +2271,36 @@ immune_escape_times = [original_program_time, original_program_time + 13*7, orig
 
 #         total_deaths_histograms_fixed_boosting_group(immune_escape_time,boosting_group_here = "65+",ICU_or_death='death',younger_or_older=younger_or_older,timeframe =list(range(original_program_time,max_days)))
 
+
+
+TP_segregated_list = [TP_high] # just TP high
+for younger_or_older in  [["older"]]:
+    if younger_or_older == ["younger"]:
+        no_boosting_colour = 'white'
+        pedatric_boosting_colour = 'lightskyblue'
+        old_boosting_colour ='dodgerblue'
+        random_boosting_colour = 'navy'
+    else:
+        pedatric_boosting_colour = 'salmon'
+        old_boosting_colour = 'red'
+        random_boosting_colour = 'firebrick'
+        no_boosting_colour = 'white'
+    for immune_escape_time in [original_program_time, original_program_time + 52*7]:
+
+        folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+        presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+
+        # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
+
+        for boosting_time in [original_program_time + 26*7 ]:
+            total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+
+############# focused plotting
 param_list = [0,4,5,6]
 boosters_only_vaccination_start_list = [original_program_time + 26*7 ] # 2.0 year boosting only
-TP_segregated_list = [TP_low] # just TP_low-- don't know why, it seems wrong plot wise 
+
+# older population low and high TP
+TP_segregated_list = [TP_low,TP_high]
 
 for younger_or_older in  [["older"]]:
     pedatric_boosting_colour = 'salmon'
@@ -2280,76 +2312,29 @@ for younger_or_older in  [["older"]]:
         folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
         presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
 
-        # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
+        plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
         for boosting_time in [original_program_time + 26*7 ]:
             total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
 
 
-# TP_segregated_list = [TP_high] # just TP high
-# for younger_or_older in  [["older"]]:
-#     if younger_or_older == ["younger"]:
-#         no_boosting_colour = 'white'
-#         pedatric_boosting_colour = 'lightskyblue'
-#         old_boosting_colour ='dodgerblue'
-#         random_boosting_colour = 'navy'
-#     else:
-#         pedatric_boosting_colour = 'salmon'
-#         old_boosting_colour = 'red'
-#         random_boosting_colour = 'firebrick'
-#         no_boosting_colour = 'white'
-#     for immune_escape_time in [original_program_time, original_program_time + 52*7]:
+# younger population high TP only
+TP_segregated_list = [TP_high]
 
-#         folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-#         presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+for younger_or_older in  [["younger"]]:
+    no_boosting_colour = 'white'
+    pedatric_boosting_colour = 'lightskyblue'
+    old_boosting_colour ='dodgerblue'
+    random_boosting_colour = 'navy'
 
-#         # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
+    for immune_escape_time in [original_program_time, original_program_time + 52*7]:
 
-#         for boosting_time in [original_program_time + 26*7 ]:
-#             total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+        folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+        presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
 
+        plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
-
-# ############# focused plotting
-# param_list = [0,4,5,6]
-# boosters_only_vaccination_start_list = [original_program_time + 26*7 ] # 2.0 year boosting only
-
-# # older population low and high TP
-# TP_segregated_list = [TP_low,TP_high]
-
-# for younger_or_older in  [["older"]]:
-#     pedatric_boosting_colour = 'salmon'
-#     old_boosting_colour = 'red'
-#     random_boosting_colour = 'firebrick'
-#     no_boosting_colour = 'white'
-#     for immune_escape_time in [original_program_time, original_program_time + 52*7]:
-
-#         folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-#         presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
-
-#         plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
-
-#         for boosting_time in [original_program_time + 26*7 ]:
-#             total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
-
-
-# # younger population high TP only
-# TP_segregated_list = [TP_high]
-
-# for younger_or_older in  [["younger"]]:
-#     no_boosting_colour = 'white'
-#     pedatric_boosting_colour = 'lightskyblue'
-#     old_boosting_colour ='dodgerblue'
-#     random_boosting_colour = 'navy'
-
-#     for immune_escape_time in [original_program_time, original_program_time + 52*7]:
-
-#         folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-#         presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
-
-#         plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
-
-#         for boosting_time in [original_program_time + 26*7 ]:
-#             total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+        for boosting_time in [original_program_time + 26*7 ]:
+            total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
 
 
