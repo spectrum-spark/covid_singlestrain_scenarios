@@ -1,0 +1,9 @@
+﻿population size,population type,scenario,1st year vaccination coverage,1.5 year vaccination coverage,3 year vaccination coverage,1.5 year vaccination program primary doses,1.5 year vaccination program booster doses,Further primary doses (1.5 - 3 years),Monovalent booster doses (1.5 - 3 years),Bivalent booster doses (1.5 - 3 years)
+100000,younger,no further vaccination,20.00%,22.00%,22.00%,44002,16002,0,0,0
+100000,younger,further monovalent boosting high risk,20.00%,22.00%,22.00%,44002,16002,0,11000,0
+100000,younger,further bivalent boosting high risk,20.00%,22.00%,22.00%,44002,16002,0,0,11000
+100000,younger,no further vaccination,50.00%,55.00%,55.00%,110000,40001,0,0,0
+100000,younger,further monovalent boosting high risk,50.00%,55.00%,55.00%,110000,40001,0,11000,0
+100000,younger,further bivalent boosting high risk,50.00%,55.00%,55.00%,110000,40001,0,0,11000
+,,,,,,,,,,
+,,,,,,,,,,

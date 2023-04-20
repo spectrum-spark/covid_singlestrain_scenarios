@@ -6,6 +6,10 @@ Mathematical modelling assumptions can be found [here: Covid IBM: Waning Immunit
 
 The various immunity parameters used were generated using https://github.com/goldingn/neuts2efficacy 
 
+*Note!*
+
+The pink book results come from all the code in the main branch, named [singlestrain-WHO](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO), while the final report with updated plots and additional scenarios come from the branch [singlestrain-WHO-final](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-WHO-final).
+
 ### Code authorship
 
 Major model developement and implementation of the agent-based model was done by Eamon Conway.
@@ -29,3 +33,4 @@ Note that there are different pieces of code that require Python, C++, R, and Ma
 *This repository is the code accompaniment to:*
 
 Eamon Conway, Thao P. Le, Isobel Abell, Patrick Abraham, Edifofon Akpan, Christopher Baker, Mackenzie Bourke, Patricia T. Campbell, Natalie Carvalho, Deborah Cromer, Alexandra B. Hogan, Michael J. Lydeamore, Yasmine McDonough, Ivo Mueller, Gerald Ryan, Camelia Walker, Yingying Wang, and Jodie McVernon, **A flexible immunity model-based framework for evaluation of likely impacts of emerging variants & vaccines: Technical Report**, 2023.
+
