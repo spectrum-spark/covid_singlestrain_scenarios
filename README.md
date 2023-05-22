@@ -1,6 +1,6 @@
 # Single-strain Modelling of COVID-19: exploration of vaccination and boosting scenarios
 
-This repository contains the source code for an agent-based model of COVID-19 disease spread in a population. In particular, the code produces the model figures and results for a presentation given to IVIRAC on the 13th of February 2023.
+This repository contains the source code for an agent-based model of COVID-19 disease spread in a population. In particular, the code produces the model figures and results for a presentation given to IVIRAC on the 13th of February 2023, with additional code to produce extra results for the final report.
 
 Mathematical modelling assumptions can be found [here: Covid IBM: Waning Immunity](https://spectrum-spark.github.io/covid-IBM/).
 
