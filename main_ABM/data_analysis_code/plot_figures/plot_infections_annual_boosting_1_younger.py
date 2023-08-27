@@ -297,7 +297,12 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["older"],immune_esca
                 
                 ax.set_ylabel('number of infections')
                 
-                plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+                # plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+
+                plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".pdf") , bbox_inches='tight')
+                plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".svg") , bbox_inches='tight')
+                plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".eps") , bbox_inches='tight')
+
                 plt.close()
 
 
@@ -1016,9 +1021,9 @@ for immune_escape_time in immune_escape_times:
 
     plot_ribbon_infections_over_time_plus(younger_or_older=["younger"],immune_escape_time=immune_escape_time)
 
-    for boosting_time in boosters_only_vaccination_start_list:
+    # for boosting_time in boosters_only_vaccination_start_list:
 
-        total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+    #     total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
 
 
         # plot_before_vs_after_infections(boosting_time,population_type_list = ["younger"],x_limits=[0,200],y_limits = [0,200],aspect_ratio = 'equal',cut_time=original_program_time)

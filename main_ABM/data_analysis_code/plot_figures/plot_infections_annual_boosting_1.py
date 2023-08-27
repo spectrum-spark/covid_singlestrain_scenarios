@@ -285,7 +285,14 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["older"],immune_esca
             
             ax.set_ylabel('number of infections')
             
-            plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+            # plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+
+            plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".pdf") , bbox_inches='tight')
+
+            plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".svg") , bbox_inches='tight')
+
+            plt.savefig(os.path.join(folder, "ribbon_infections_over_time_plus_"+younger_or_older[0]+ "_boosting_"+str(boosting_time)+ "_maxTP_"+str(max(local_TP_list)) + ".eps") , bbox_inches='tight')
+
             plt.close()
 
 
@@ -2273,27 +2280,27 @@ immune_escape_times = [original_program_time, original_program_time + 13*7, orig
 
 
 
-TP_segregated_list = [TP_high] # just TP high
-for younger_or_older in  [["older"]]:
-    if younger_or_older == ["younger"]:
-        no_boosting_colour = 'white'
-        pedatric_boosting_colour = 'lightskyblue'
-        old_boosting_colour ='dodgerblue'
-        random_boosting_colour = 'navy'
-    else:
-        pedatric_boosting_colour = 'salmon'
-        old_boosting_colour = 'red'
-        random_boosting_colour = 'firebrick'
-        no_boosting_colour = 'white'
-    for immune_escape_time in [original_program_time, original_program_time + 52*7]:
+# TP_segregated_list = [TP_high] # just TP high
+# for younger_or_older in  [["older"]]:
+#     if younger_or_older == ["younger"]:
+#         no_boosting_colour = 'white'
+#         pedatric_boosting_colour = 'lightskyblue'
+#         old_boosting_colour ='dodgerblue'
+#         random_boosting_colour = 'navy'
+#     else:
+#         pedatric_boosting_colour = 'salmon'
+#         old_boosting_colour = 'red'
+#         random_boosting_colour = 'firebrick'
+#         no_boosting_colour = 'white'
+#     for immune_escape_time in [original_program_time, original_program_time + 52*7]:
 
-        folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-        presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+#         folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+#         presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
 
-        # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
+#         # plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
-        for boosting_time in [original_program_time + 26*7 ]:
-            total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+#         for boosting_time in [original_program_time + 26*7 ]:
+#             total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
 
 ############# focused plotting
 param_list = [0,4,5,6]
@@ -2314,8 +2321,8 @@ for younger_or_older in  [["older"]]:
 
         plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
-        for boosting_time in [original_program_time + 26*7 ]:
-            total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+        # for boosting_time in [original_program_time + 26*7 ]:
+        #     total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
 
 
 # younger population high TP only
@@ -2334,7 +2341,7 @@ for younger_or_older in  [["younger"]]:
 
         plot_ribbon_infections_over_time_plus(younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
-        for boosting_time in [original_program_time + 26*7 ]:
-            total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
+        # for boosting_time in [original_program_time + 26*7 ]:
+        #     total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=younger_or_older,timeframe=list(range(original_program_time,max_days)),minimum_age = 0)
 
 

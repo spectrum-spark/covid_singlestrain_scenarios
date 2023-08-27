@@ -327,7 +327,12 @@ def plot_ribbon_infections_comparison():
             
             ax.set_ylabel('number of infections')
             
-            plt.savefig(os.path.join(bivalent_folder, "ribbon_infections_over_time_plus_"+population_type+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_TP_"+str(TP) + ".png") , bbox_inches='tight')
+            # plt.savefig(os.path.join(bivalent_folder, "ribbon_infections_over_time_plus_"+population_type+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_TP_"+str(TP) + ".png") , bbox_inches='tight')
+
+            plt.savefig(os.path.join(bivalent_folder, "ribbon_infections_over_time_plus_"+population_type+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_TP_"+str(TP) + ".pdf") , bbox_inches='tight')
+            plt.savefig(os.path.join(bivalent_folder, "ribbon_infections_over_time_plus_"+population_type+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_TP_"+str(TP) + ".svg") , bbox_inches='tight')
+            plt.savefig(os.path.join(bivalent_folder, "ribbon_infections_over_time_plus_"+population_type+ "_vax_"+str(vaccination_coverage)+ "_boosting_"+str(boosting_time)+ "_TP_"+str(TP) + ".eps") , bbox_inches='tight')
+
             plt.close()
 
 
@@ -617,7 +622,7 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
 # PLOTTING
 ################################################################################################
 
-total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe =list(range(original_program_time,max_days)),minimum_age = 0)
+# total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe =list(range(original_program_time,max_days)),minimum_age = 0)
 
 plot_ribbon_infections_comparison()
 

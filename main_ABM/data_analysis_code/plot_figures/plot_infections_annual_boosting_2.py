@@ -172,8 +172,8 @@ def plot_ribbon_infections_over_time_plus_fixed_boosting_group(boosting_group_he
                         all_curves_over_local_days[sims_boosting_time].append(infections_over_time_list)
 
                         # ax.plot(local_days,infections_over_time_list,alpha=1,color=plot_colour)
-                        plot_colour = boosters_start_colour_list[boosters_only_vaccination_start_list.index(sims_boosting_time)]
-                        ax.plot(local_days,infections_over_time_list,color = plot_colour,linestyle='solid',alpha=0.5)
+                        # plot_colour = boosters_start_colour_list[boosters_only_vaccination_start_list.index(sims_boosting_time)]
+                        # ax.plot(local_days,infections_over_time_list,color = plot_colour,linestyle='solid',alpha=0.5)
             
             upper_ribbon = {booster_start_time:[] for booster_start_time in boosters_only_vaccination_start_list}
             lower_ribbon =  {booster_start_time:[] for booster_start_time in boosters_only_vaccination_start_list}
@@ -248,15 +248,15 @@ def plot_ribbon_infections_over_time_plus_fixed_boosting_group(boosting_group_he
                     all_curves_over_local_days.append(infections_over_time_list)
 
                     # ax.plot(local_days,infections_over_time_list,alpha=1,color=plot_colour)
-                    plot_colour = many_boosters_colour
-                    ax.plot(local_days,infections_over_time_list,color = plot_colour,linestyle='solid',alpha=0.1)
+                    # plot_colour = many_boosters_colour
+                    # ax.plot(local_days,infections_over_time_list,color = plot_colour,linestyle='solid',alpha=0.1)
             
             upper_ribbon_many_boosters = [max([all_curves_over_local_days[simnum][i] for simnum in range(len(all_curves_over_local_days))]) for i in range(len(local_days))]
             lower_ribbon_many_boosters =   [min([all_curves_over_local_days[simnum][i] for simnum in range(len(all_curves_over_local_days))]) for i in range(len(local_days))]
             median_line_many_boosters =  [np.median([all_curves_over_local_days[simnum][i] for simnum in range(len(all_curves_over_local_days))]) for i in range(len(local_days))]
 
 
-            ax.fill_between(local_days,upper_ribbon_many_boosters,lower_ribbon_many_boosters,facecolor=many_boosters_colour,alpha=0.1)
+            ax.fill_between(local_days,upper_ribbon_many_boosters,lower_ribbon_many_boosters,facecolor=many_boosters_colour,alpha=0.8)
         
             ################################################
 
@@ -339,7 +339,13 @@ def plot_ribbon_infections_over_time_plus_fixed_boosting_group(boosting_group_he
             
             ax.set_ylabel('number of infections')
             
-            plt.savefig(os.path.join(folder_many_boosters, "ribbon_infections_over_time_plus_fixed_boosting_group"+younger_or_older[0]+ "_boosting_"+str(boosting_group_here)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+            # plt.savefig(os.path.join(folder_many_boosters, "ribbon_infections_over_time_plus_fixed_boosting_group"+younger_or_older[0]+ "_boosting_"+str(boosting_group_here)+ "_maxTP_"+str(max(local_TP_list)) + ".png") , bbox_inches='tight')
+
+            plt.savefig(os.path.join(folder_many_boosters, "ribbon_infections_over_time_plus_fixed_boosting_group"+younger_or_older[0]+ "_boosting_"+str(boosting_group_here)+ "_maxTP_"+str(max(local_TP_list)) + ".pdf") , bbox_inches='tight')
+            plt.savefig(os.path.join(folder_many_boosters, "ribbon_infections_over_time_plus_fixed_boosting_group"+younger_or_older[0]+ "_boosting_"+str(boosting_group_here)+ "_maxTP_"+str(max(local_TP_list)) + ".svg") , bbox_inches='tight')
+            plt.savefig(os.path.join(folder_many_boosters, "ribbon_infections_over_time_plus_fixed_boosting_group"+younger_or_older[0]+ "_boosting_"+str(boosting_group_here)+ "_maxTP_"+str(max(local_TP_list)) + ".eps") , bbox_inches='tight')
+
+
             plt.close()
 
 def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,boosting_group_here = "65+",ICU_or_death='death',younger_or_older=["older"],timeframe =local_days,minimum_age = 0):
@@ -701,4 +707,4 @@ for younger_or_older in  [["older"],["younger"]]:
 
         plot_ribbon_infections_over_time_plus_fixed_boosting_group(boosting_group_here = "65+",younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
-        total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,boosting_group_here = "65+",ICU_or_death='death',younger_or_older=younger_or_older,timeframe =list(range(original_program_time,max_days)))
+        # total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,boosting_group_here = "65+",ICU_or_death='death',younger_or_older=younger_or_older,timeframe =list(range(original_program_time,max_days)))
