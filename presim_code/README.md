@@ -20,7 +20,7 @@ We define OADR (old-age dependency ratio) = (total 65+) / (total 20-64) *100
 
 The data file includes our added columns that calculated the OADR (column AE).
 
-We then run [**population/population_distributions_abm_2021.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/population/population_distributions_abm_2021.py)
+We then run [**population/population_distributions_abm_2021.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/population/population_distributions_abm_2021.py)
 
 This creates population output files of the *averaged proportion* of the population in the age bands used for the agent-based model (abm), plus makes plots of the distributions for the paper.
 
@@ -32,13 +32,13 @@ The file **contact_matrices/contact_matrices_SOCRATES_notes.txt** contain the pa
 
 Data from the UN (https://population.un.org/wpp/DataQuery/) was used to check which countries are "older" or "younger".
 
-[**contract_matrices_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/contact_matrices_SOCRATES.py) then calculates the averaged contact matrices for "older" and "younger" populations.
+[**contract_matrices_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/contact_matrices_SOCRATES.py) then calculates the averaged contact matrices for "older" and "younger" populations.
 
 Note that the countries used here are not the same as the countries used in the population distribution, due to the limited data available on SOCRATES.
 
 (PREM matrices were not used at time of this work due to a known error in them.)
 
-[**contact_matrces_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/contact_matrices_plot.py) plots the contact matrices used in the simulations.
+[**contact_matrces_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/contact_matrices_plot.py) plots the contact matrices used in the simulations.
 
 ## 3. Parameter files
 
@@ -54,15 +54,15 @@ Parameters that can be changed (hard-coded) include:
 - output folder
 - etc.
 
-Also, make sure to move/have a copy of [dim_age_band.csv](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/dim_age_band.csv) inside the created folders with the parameter files
+Also, make sure to move/have a copy of [dim_age_band.csv](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/dim_age_band.csv) inside the created folders with the parameter files
 
 ## 4. Vaccination rollout
 
-The populations, vaccination allocation and rollout are produced by running [**run_create_and_generate_initial_conditions_annual_boosting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/run_create_and_generate_initial_conditions_annual_boosting.py) and [**half_yearly_boosting.py**](/half_yearly_boosting.py). 
+The populations, vaccination allocation and rollout are produced by running [**run_create_and_generate_initial_conditions_annual_boosting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/run_create_and_generate_initial_conditions_annual_boosting.py) and [**half_yearly_boosting.py**](/half_yearly_boosting.py). 
 
-These use the functions in [**create_and_generate_initial_conditions.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/create_and_generate_initial_conditions.py), plus the parameters generated in the previous sections.
+These use the functions in [**create_and_generate_initial_conditions.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/create_and_generate_initial_conditions.py), plus the parameters generated in the previous sections.
 
-The various plots are calculated using the functions in [**create_and_generate_initial_conditions_plotting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-WHO/presim_code/create_and_generate_initial_conditions_plotting.py).
+The various plots are calculated using the functions in [**create_and_generate_initial_conditions_plotting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/create_and_generate_initial_conditions_plotting.py).
 
 
 ## 5. Additional
