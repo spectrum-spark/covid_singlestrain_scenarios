@@ -2,6 +2,8 @@
 
 # Demographic and vaccination roll-out set up
 
+*Note* that all code has be run already and parameter files etc. have been completely included in this folder.
+
 ## 1. Demographics
 
 We have two demographies: "younger" and "older" populations. They are based on the averages of the population demographies of various nations in the World Health Organization (WHO) Western Pacific Region (WPR).
@@ -67,7 +69,7 @@ The various plots are calculated using the functions in [**create_and_generate_i
 
 ## 5. Additional
 
-The total vaccinations administered through different time periods can be calculated using **output_total_vaccinations_annual_boosting_1.py** and **output_total_vaccinations_annual_boosting_1_low_coverage.py** 
+The total vaccinations administered through different time periods can be calculated using **output_total_vaccinations_annual_boosting_1.py**, **output_total_vaccinations_annual_boosting_1_low_coverage.py**, and **output_total_vaccinations_annual_boosting_age_scenarios.py**.
 
 ## 6. Next
 
