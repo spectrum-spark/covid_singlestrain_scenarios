@@ -14,7 +14,7 @@ See the list here: https://www.who.int/westernpacific/about/where-we-work
 
 The population data obtained from https://population.un.org/wpp/DataQuery/ 
 
-This data is **population/PopulationAgeSex-20220412011050.xlsx** (note that not all WHO named countries could be found).
+This data is [**population/PopulationAgeSex-20220412011050.xlsx**](/population/PopulationAgeSex-20220412011050.xlsx) (note that not all WHO named countries could be found).
 
 We define OADR (old-age dependency ratio) = (total 65+) / (total 20-64) *100
 
@@ -22,7 +22,7 @@ We define OADR (old-age dependency ratio) = (total 65+) / (total 20-64) *100
 
 The data file includes our added columns that calculated the OADR (column AE).
 
-We then run [**population/population_distributions_abm_2021.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/population/population_distributions_abm_2021.py)
+We then run [**population/population_distributions_abm_2021.py**](/population/population_distributions_abm_2021.py)
 
 This creates population output files of the *averaged proportion* of the population in the age bands used for the agent-based model (abm), plus makes plots of the distributions for the paper.
 
@@ -30,21 +30,25 @@ This creates population output files of the *averaged proportion* of the populat
 
 The contact matrices are derived from data numerous sources and collected at http://www.socialcontactdata.org/socrates/ 
 
-The file **contact_matrices/contact_matrices_SOCRATES_notes.txt** contain the parameters used to download the data from SOCRATES. 
+The file [**contact_matrices/contact_matrices_SOCRATES_notes.txt**](/contact_matrices/contact_matrices_SOCRATES_notes.txt) contain the parameters used to download the data from SOCRATES. 
 
 Data from the UN (https://population.un.org/wpp/DataQuery/) was used to check which countries are "older" or "younger".
 
-[**contract_matrices_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/contact_matrices_SOCRATES.py) then calculates the averaged contact matrices for "older" and "younger" populations.
+[**contract_matrices_SOCRATES.py**](/contact_matrices_SOCRATES.py) then calculates the averaged contact matrices for "older" and "younger" populations.
 
 Note that the countries used here are not the same as the countries used in the population distribution, due to the limited data available on SOCRATES.
 
 (PREM matrices were not used at time of this work due to a known error in them.)
 
-[**contact_matrces_SOCRATES.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/contact_matrices_plot.py) plots the contact matrices used in the simulations.
+[**contact_matrces_SOCRATES.py**](/contact_matrices_plot.py) plots the contact matrices used in the simulations.
 
 ## 3. Parameter files
 
-First, we run **generate_parameter_files_.....py** to generate the base parameter files for the scenarios with only one additional booster rollout.
+First, we run **generate_parameter_files_.....py** to generate the base parameter files for the scenarios with only one additional booster rollout:
+- [**generate_parameter_files_annual_boosting_1.py**](/generate_parameter_files_annual_boosting_1.py)
+- [**generate_parameter_files_annual_boosting_1_high_coverage_younger.py**](/generate_parameter_files_annual_boosting_1_high_coverage_younger.py)
+- [**generate_parameter_files_annual_boosting_1_younger.py**](/generate_parameter_files_annual_boosting_1_younger.py)
+- [**generate_parameter_files_annual_boosting_age_scenarios.py**](/generate_parameter_files_annual_boosting_age_scenarios.py)
 
 Parameters that can be changed (hard-coded) include:
 - total population size
@@ -56,20 +60,20 @@ Parameters that can be changed (hard-coded) include:
 - output folder
 - etc.
 
-Also, make sure to move/have a copy of [dim_age_band.csv](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/dim_age_band.csv) inside the created folders with the parameter files
+Also, make sure to move/have a copy of [dim_age_band.csv](/dim_age_band.csv) inside the created folders with the parameter files
 
 ## 4. Vaccination rollout
 
-The populations, vaccination allocation and rollout are produced by running [**run_create_and_generate_initial_conditions_annual_boosting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/run_create_and_generate_initial_conditions_annual_boosting.py) and [**half_yearly_boosting.py**](/half_yearly_boosting.py). 
+The populations, vaccination allocation and rollout are produced by running [**run_create_and_generate_initial_conditions_annual_boosting.py**](/run_create_and_generate_initial_conditions_annual_boosting.py), [**run_create_and_generate_initial_conditions_age_scenarios.py**](/run_create_and_generate_initial_conditions_age_scenarios.py) and [**run_half_yearly_boosting.py**](/run_half_yearly_boosting.py). 
 
-These use the functions in [**create_and_generate_initial_conditions.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/create_and_generate_initial_conditions.py), plus the parameters generated in the previous sections.
+These use the functions in [**create_and_generate_initial_conditions.py**](/create_and_generate_initial_conditions.py), plus the parameters generated in the previous sections.
 
-The various plots are calculated using the functions in [**create_and_generate_initial_conditions_plotting.py**](https://github.com/spectrum-spark/covid_singlestrain_scenarios/blob/singlestrain-paper/presim_code/create_and_generate_initial_conditions_plotting.py).
+The various plots are calculated using the functions in [**create_and_generate_initial_conditions_plotting.py**](/create_and_generate_initial_conditions_plotting.py).
 
 
 ## 5. Additional
 
-The total vaccinations administered through different time periods can be calculated using **output_total_vaccinations_annual_boosting_1.py**, **output_total_vaccinations_annual_boosting_1_low_coverage.py**, and **output_total_vaccinations_annual_boosting_age_scenarios.py**.
+The total vaccinations administered through different time periods can be calculated using [**output_total_vaccinations_annual_boosting_1.py**](/output_total_vaccinations_annual_boosting_1.py), [**output_total_vaccinations_annual_boosting_1_low_coverage.py**](/output_total_vaccinations_annual_boosting_1_low_coverage.py), and [**output_total_vaccinations_annual_boosting_age_scenarios.py**](output_total_vaccinations_annual_boosting_age_scenarios.py).
 
 ## 6. Next
 
