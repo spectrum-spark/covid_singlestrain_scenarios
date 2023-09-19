@@ -1,6 +1,6 @@
 # Boosting and hybrid immunity: theoretical populations 
 
-TThis repository contains the code for the agent-based transmission simulation. It simulates multiple covid waves with multiple rounds of vaccination. 
+This repository contains the code for the agent-based transmission simulation. It simulates multiple covid waves with multiple rounds of vaccination. 
 
 Note that https://github.com/nlohmann/json is necessary for function.
 
@@ -8,17 +8,26 @@ Note that https://github.com/nlohmann/json is necessary for function.
 
 See https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-paper/presim_code which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
 
-Copy the contact matrices into this folder (or make a note of where they are and update in the **generate_json_files_.....py** files before running them)
+The contact matrices need to be copied into this folder (note, they are already here).
 
 ## 2. Main results
+
+The main source files are [**main_BA1s_BA45s_cont_intros.cpp**](/main_BA1s_BA45s_cont_intros.cpp), [**main_BA1s_BA45s_cont_intros_many_boosters.cpp**](/main_BA1s_BA45s_cont_intros_many_boosters.cpp), and  [**main_BA1s_BA45s_bivalent_cont_intros.cpp**](/main_BA1s_BA45s_bivalent_cont_intros.cpp).
 
 Run the following to compile the C++ executables: 
 
 `make`
 
+This will produce three executables:
+
+1. `Run_BA1s_BA45s_cont_intros` which is for the majority of simulations
+2. `Run_BA1s_BA45s_cont_intros_many_boosters` for the six-monthly/half-yearly boosting simulations
+3. `Run_BA1s_BA45s_bivalent_cont_intros` for the use of bivalent doses after 1.5 years. 
+
+
 ### Simulations
 
-The main source files are **main_BA1s_BA45s_cont_intros.cpp**, **main_BA1s_BA45s_cont_intros_many_boosters.cpp**, and  **main_BA1s_BA45s_bivalent_cont_intros.cpp**
+To run the simulations, some more set-up files need to be created:
 
 1. Run the python files **generate_json_files_....py**, updating the locations of output directories in the `output_directory` variable as appropriate (which are hardcoded into the file). This creates two folders with numerous different input files.
 2. **submit_...all.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_..._function.script**
