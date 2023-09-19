@@ -21,12 +21,14 @@ for immune_escape_time in immune_escape_times:
     
     # location to save the parameter files
     folder = "annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time)
-    # simulation output directory
-    output_directory = "/scratch/cm37/tpl/annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-
-    folder_path = os.path.join(os.path.dirname(__file__),folder)
+    folder_path = os.path.join(os.path.dirname(__file__), "simulation_params",folder)
     if not os.path.exists(folder_path ):
         os.makedirs(folder_path )
+
+    # simulation output directory
+    output_directory = os.path.join(os.path.dirname(__file__),"..","outputs",folder)
+    if not os.path.exists(output_directory ):
+        os.makedirs(output_directory )
     
     for population_type in ["younger"]:
         number = 1

@@ -27,9 +27,17 @@ This will produce three executables:
 
 ### Simulations
 
-To run the simulations, some more set-up files need to be created:
+To run the simulations, some more set-up files need to be created, starting with running the following:
 
-1. Run the python files **generate_json_files_....py**, updating the locations of output directories in the `output_directory` variable as appropriate (which are hardcoded into the file). This creates two folders with numerous different input files.
+- [**generate_json_files_annual_boosting_1.py**](/generate_json_files_annual_boosting_1.py) (for the high-vaccination coverage simulations)
+- [**generate_json_files_annual_boosting_1_younger.py**](/generate_json_files_annual_boosting_1_younger.py) (for the low-coverage younger population simulations)
+- [**generate_json_files_annual_boosting_2.py**](/generate_json_files_annual_boosting_2.py) (for the half-yearly boosting simulations)
+- [**generate_json_files_annual_boosting_age_scenarios.py**](/generate_json_files_annual_boosting_age_scenarios.py) (for the age cutoff simulations)
+
+The simulation parameter files will be stored in the 
+
+
+
 2. **submit_...all.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_..._function.script**
 3. **submit_..._matlab_R_all.sh**: This must be run after all the simulations are done. It groups all of the individual simulation outputs together and all the clinical pathway outcomes together. Note that `numsims` may need to be updated as appropriate. Directories need to be updated in **submit_..._matlab_R_function.script**.
 
