@@ -34,28 +34,22 @@ To run the simulations, some more set-up files need to be created, starting with
 - [**generate_json_files_annual_boosting_2.py**](/generate_json_files_annual_boosting_2.py) (for the half-yearly boosting simulations)
 - [**generate_json_files_annual_boosting_age_scenarios.py**](/generate_json_files_annual_boosting_age_scenarios.py) (for the age cutoff simulations)
 
-The simulation parameter files will be stored in the 
+e.g., with commands
 
+`python generate_json_files_annual_boosting_1.py`
 
+`python generate_json_files_annual_boosting_1_younger.py`
 
-2. **submit_...all.sh**: This generates the simulations and also produces the clinical outcomes for each individual simulation. Note that this requires the clinical pathways model as well, and directories need to be updated in **submit_..._function.script**
-3. **submit_..._matlab_R_all.sh**: This must be run after all the simulations are done. It groups all of the individual simulation outputs together and all the clinical pathway outcomes together. Note that `numsims` may need to be updated as appropriate. Directories need to be updated in **submit_..._matlab_R_function.script**.
+and so forth.
+
+The simulation parameter files will be stored in a folder called ****main_ABM/simulation_params/** and the overall output folder is **outputs/**
+
+Now, the simulations can be run (from within this folder)
+
+To make it easier, see [run_annual_boosting_1.sh](/run_annual_boosting_1.sh) for an example script for the high-coverage simulations.
 
 
 
 ### Plotting
 
-Then run the plotting scripts, found in the data_analysis_code/plot_figures/ folder.
-
-1. **plot_infections_annual_boosting...py**
-
-### Submission scripts
-
-See [/example_cluster_submission_files](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-paper/main_ABM/example_cluster_submission_files) for examples of how to run all the different files together. Note that the clinical pathways is run in sequence in the example submission scripts.
-
-After changing appropriate parameters and file locations, the order to run is:
-
-1. **submit_annual_boosting_1_all.sh** (which calls **submit_annual_boosting_1_function.script**): This runs all the individual simulations and also their individual clinical pathways.
-2. **submit_annual_boosting_1_matlab_R_all.sh** (which calls **submit_annual_boosting_1_matlab_R_function.script**): this gathers all the individual outputs and pulls them into aggregated files.
-3. **submit_annual_boosting_1_plotting.script**: this plots figures
-4. (optional) **submit_clinical_gathering.script**: this outputs csv files with clinical pathways data.
+The plotting scrips are found in the [data_analysis_code/plot_figures/](/data_analysis_code/plot_figures/) folder.

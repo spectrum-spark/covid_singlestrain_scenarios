@@ -11,8 +11,18 @@ with open(full_fixed_parameters_file, "r") as f:
 
 original_program_time = 26*7*3
 
-root_parameter_folder =  os.path.join(os.path.dirname(__file__),"bivalent_boosting_jsons" ) # putting all the subfolders in here for neatness
-root_output_folder = "/scratch/cm37/tpl/bivalent_boosting/"
+root_parameter_folder =  os.path.join(os.path.dirname(__file__),"simulation_params","bivalent_boosting_jsons" ) # putting all the subfolders in here for neatness
+if not os.path.exists(root_parameter_folder ):
+    os.makedirs(root_parameter_folder )
+
+root_output_folder = os.path.join(os.path.dirname(__file__),"..","outputs","bivalent_boosting/")
+if not os.path.exists(root_output_folder ):
+    os.makedirs(root_output_folder )
+
+
+
+
+
 
 immune_escape_times = [original_program_time, original_program_time + 26*7, original_program_time + 52*7] # at 1.5 yrs, 2 yrs, and 2.5 yrs
 
@@ -34,7 +44,7 @@ if run_high_coverage:
             # location to save the parameter files
             folder = "high_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t" + str(bivalent_start_time)
             # simulation output directory
-            output_directory =root_output_folder + folder +"_outputs/"
+            output_directory =root_output_folder + folder +"/"
 
             folder_path = os.path.join(root_parameter_folder,folder)
             if not os.path.exists(folder_path):

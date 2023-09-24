@@ -1,3 +1,4 @@
 bivalent_boosting_jsons/
 annual_boosting_*
 nlohmann/
+simulation_params/annual*

@@ -26,7 +26,7 @@ for immune_escape_time in immune_escape_times:
         os.makedirs(folder_path )
 
     # simulation output directory
-    output_directory = os.path.join(os.path.dirname(__file__),"..","outputs",folder)
+    output_directory = os.path.join(os.path.dirname(__file__),"..","outputs",folder+"/")
     if not os.path.exists(output_directory ):
         os.makedirs(output_directory )
     

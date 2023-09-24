@@ -232,12 +232,7 @@ def plot_subfigure_ribbon_infections_over_time_plus(ax, folder, presim_parameter
                     # ax.fill_between(local_days,upper_ribbon[vax],lower_ribbon[vax],facecolor=plot_colour,alpha=0.5)
                     ax.plot(local_days,median_line[boosting_group],color = plot_colour,linestyle='solid')
 
-            # average_days_per_month = 30.437
-            # months_on_day = [i*average_days_per_month for i in range(30) ]
-            # months_numbering = list(range(0,len(months_on_day ),1))
-            # ax.set_xticks(months_on_day)
-            # ax.set_xticklabels(months_numbering)
-            # ax2.set_xlabel('time (months-ish)') # ax.set_xlabel('time (months-ish)')
+           
             
             days_per_year = 52*7 
             days_per_six_months = 26*7
@@ -281,10 +276,6 @@ def plot_subfigure_ribbon_infections_over_time_plus(ax, folder, presim_parameter
             
             if immune_escape_time==original_program_time:
                 pass 
-                # leg = Legend(ax, legend_points,legend_labels ,title=younger_or_older[0] +" population",loc="upper right",borderaxespad=0,frameon=False,  labelcolor='w', fontsize=14,title_fontsize=15,labelspacing =0.5)
-                # plt.setp(leg.get_title(), color='white')
-                # leg._legend_box.align = "left"
-                # ax.add_artist(leg)
             else:
                 leg = Legend(ax, legend_points,legend_labels ,title=younger_or_older[0] +" population", loc="upper center",bbox_to_anchor=(0.55,0.975),borderaxespad=0,frameon=False,  labelcolor='w', fontsize=14,title_fontsize=15,labelspacing =0.1,handletextpad=0.1)
             
@@ -302,7 +293,7 @@ def plot_figure_2():
     TP_segregated_list = [TP_high] # high TP only
     local_TP_list = TP_high
 
-    presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+    presim_parameters_folder  = presim_parameters_folder  =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
     
 
     # make figure with 6 subplots 
@@ -317,13 +308,15 @@ def plot_figure_2():
     boosting_colours = [no_boosting_colour, pedatric_boosting_colour, old_boosting_colour, random_boosting_colour]
     scenario_list = [param_list, boosters_only_vaccination_start_list, TP_segregated_list]
 
-    save_folder =  "/scratch/cm37/tpl/boosting_paper_figures/"
+    save_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","boosting_paper_figures"))
+    if not os.path.exists(save_folder ):
+        os.makedirs(save_folder )
     
 
     # Figure 1 a
 
     immune_escape_time = original_program_time
-    folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+    folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
 
     plot_subfigure_ribbon_infections_over_time_plus(axa, folder, presim_parameters_folder, boosting_colours,scenario_list, younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
@@ -331,7 +324,7 @@ def plot_figure_2():
     # Figure 1 c
 
     immune_escape_time=original_program_time + 52*7
-    folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+    folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
 
     plot_subfigure_ribbon_infections_over_time_plus(axc, folder, presim_parameters_folder, boosting_colours, scenario_list, younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
@@ -348,7 +341,7 @@ def plot_figure_2():
     # Figure 1 b
 
     immune_escape_time = original_program_time
-    folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+    folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
 
     plot_subfigure_ribbon_infections_over_time_plus(axb, folder, presim_parameters_folder, boosting_colours, scenario_list,younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
@@ -356,7 +349,7 @@ def plot_figure_2():
     # Figure 1 d
 
     immune_escape_time = original_program_time + 52*7
-    folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+    folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
 
     plot_subfigure_ribbon_infections_over_time_plus(axd, folder, presim_parameters_folder, boosting_colours, scenario_list,younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 

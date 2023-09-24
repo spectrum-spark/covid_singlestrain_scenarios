@@ -36,17 +36,7 @@ boosters_only_vaccination_duration = 13*7# i.e. about 3 months
 # main function
 
 
-def create_mega_data_frame(
-        TP_list = ["1.05", "1.95"],
-        TP_type_list = ['TP_low','TP_high'],
-        param_list = [0,1,2,3,4,5,6,7],
-        population_type_list = ["younger","older"],
-        boosting_group_names = {'none':'no further boosting', '65+': 'boosting 65+','55+':'boosting 55+','45+':'boosting 45+','35+':'boosting 35+','25+':'boosting 25+','16+':'boosting 16+','5+':'boosting 5+'},
-        immune_escape_time = 0,
-        presim_parameters_folder = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/',
-        folder = '/scratch/cm37/tpl/', # need to put immune escape times
-        days_all = list(range(0,100))
-        ):
+def create_mega_data_frame(TP_list, TP_type_list,param_list,  population_type_list,boosting_group_names,immune_escape_time,presim_parameters_folder,folder,days_all = list(range(0,100))):
     mega_DF_list_iterated = dict()
 
     # for different sub-scenarios (TPs, population type, and param nums), gather the clinical outcomes into a huge dataframe 
@@ -146,7 +136,7 @@ def create_mega_data_frame(
 
 def plot_mean_or_median(mega_DF_list_iterated,starting_x = 251,
         clinical_outcome_columns =  [ 'total_infections_all_ages', 'total_symptomatic_infections_all_ages', 'total_admissions_all_ages', 'total_ward_occupancy_all_ages', 'total_ICU_admissions_all_ages', 'total_ICU_occupancy_all_ages', 'total_deaths_all_ages', 'total_deaths_ages_0-9', 'total_deaths_ages_10-19', 'total_deaths_ages_20-29', 'total_deaths_ages_30-39', 'total_deaths_ages_40-49', 'total_deaths_ages_50-59', 'total_deaths_ages_60-69', 'total_deaths_ages_70-79', 'total_deaths_ages_80+'],
-        folder = '/scratch/cm37/tpl/', # need to put immune escape times
+        folder = 'outputs/', # need to put immune escape times
         days_all = list(range(0,100)),
         days_name = "100_days",
         mean_or_median = "mean",
@@ -216,15 +206,7 @@ def plot_mean_or_median(mega_DF_list_iterated,starting_x = 251,
         plt.close()
 
 
-def plot_clinical_outcomes_over_simulations(
-        TP_list = ["1.05", "1.95"],
-        TP_type_list = ['TP_low','TP_high'],
-        param_list = [0,1,2,3,4,5,6,7],
-        population_type_list = ["younger","older"],
-        boosting_group_names = {'none':'no further boosting', '65+': 'boosting 65+','55+':'boosting 55+','45+':'boosting 45+','35+':'boosting 35+','25+':'boosting 25+','16+':'boosting 16+','5+':'boosting 5+'},
-        immune_escape_time = 0,
-        presim_parameters_folder = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/',
-        folder = '/scratch/cm37/tpl/', # need to put immune escape times
+def plot_clinical_outcomes_over_simulations(TP_list ,TP_type_list,  param_list,population_type_list,boosting_group_names,immune_escape_time,presim_parameters_folder ,folder,
         days_all = list(range(0,100)),
         days_name = "100_days",
         mean_or_median = "mean",
@@ -236,6 +218,7 @@ def plot_clinical_outcomes_over_simulations(
         param_list = param_list ,
         population_type_list =  population_type_list,
         boosting_group_names = boosting_group_names,
+        immune_escape_time = immune_escape_time,
         presim_parameters_folder = presim_parameters_folder,
         folder =folder, 
         days_all = days_all)
@@ -317,93 +300,3 @@ def plot_clinical_outcomes_over_simulations(
 
             plt.savefig(os.path.join(folder, "all_scenarios_"+ clinical_outcome +days_name +"_per_sim_and_hist.png") , bbox_inches='tight')
             plt.close()
-
-    # # output the sim number after which the percentage change is under the tolerance
-    # tolerance_percentage = 0.01 
-    # csv_file = os.path.join(folder, "all_scenarios_"+ mean_or_median + days_name +"_percentage_change_under_tolerance_"+str(tolerance_percentage)+".csv")
-    # header = ["scenario","clinical outcome","sim number after which percentage change is under tolerance"]
-    # with open(csv_file, 'w', newline='') as f:
-    # # create the csv writer
-    #     writer = csv.writer(f)
-
-    #     # write the header
-    #     writer.writerow(header)
-    #     for clinical_outcome in clinical_outcome_columns:
-    #         for scenario, DF in mega_DF_list_iterated.items():
-    #             relevant_list = DF[clinical_outcome].tolist()
-    #             x_num_included_sims = list(range(starting_x,len(relevant_list)+1))
-    #             x_num_main = [x/5 for x in x_num_included_sims] # this is because 5 clinical pathways sims are made per main simulation
-
-    #             if mean_or_median =="mean":
-    #                 y = [np.mean(relevant_list[:x]) for x in x_num_included_sims]
-    #                 final_mean_or_median = np.mean(relevant_list)
-    #             elif mean_or_median =="median":
-    #                 y = [np.median(relevant_list[:x]) for x in x_num_included_sims]
-    #                 final_mean_or_median = np.median(relevant_list)
-
-    #             else:
-    #                 print("invalid mean_or_median parameter")
-    #                 exit(1)
-
-                 
-
-    #             sim_number_under_tolerance = "not found"
-    #             for i in reversed(range(len(y))):
-    #                 if final_mean_or_median!=0:
-    #                     percentage_change = np.abs(y[i] - final_mean_or_median)/final_mean_or_median
-    #                 else:
-    #                     percentage_change = np.abs(y[i] - final_mean_or_median)
-                    
-    #                 if percentage_change<tolerance_percentage:
-    #                     sim_number_under_tolerance= x_num_main[i]
-    #                 else:
-    #                     break # the moment we find a percentage change this is no good, we break
-                
-    #             row = [scenario,clinical_outcome,sim_number_under_tolerance]
-
-       
-    #             writer.writerow(row)
-
-
-
-    # # plot the difference between the mean and the median 
-    # if mean_or_median=="mean":
-    #     for clinical_outcome in clinical_outcome_columns:
-    #         fig, ax = plt.subplots(1,1, figsize=(10,6.75))
-    #         # legend_names = []
-
-    #         plt.set_cmap('jet')
-
-    #         for scenario, DF in mega_DF_list_iterated.items():
-    #             relevant_list = DF[clinical_outcome].tolist()
-    #             x_num_included_sims = list(range(starting_x,len(relevant_list)+1))
-    #             x_num_main = [x/5 for x in x_num_included_sims] # this is because 5 clinical pathways sims are made per main simulation
-
-    #             y_mean = [np.mean(relevant_list[:x]) for x in x_num_included_sims]
-    #             y_median = [np.median(relevant_list[:x]) for x in x_num_included_sims]
-    #             difference = [y_mean[i] - y_median[i] for i in range(len(y_mean))]
-    #             percentange =  [difference[i]/y_mean[i]*100 for i in range(len(y_mean))]
-                
-    #             ax.plot(x_num_main,percentange,label = scenario)
-    #             # legend_names.append(scenario)
-
-    #         ax.axhline(y=1,linestyle ='dashed')
-    #         ax.axhline(y=-1,linestyle ='dashed')
-
-    #         ax.grid()
-
-    #         # ax.set_ylabel(mean_or_median + " of " + clinical_outcome)
-    #         ax.set_title("percentage difference (mean - median)/mean of " + clinical_outcome)
-    #         vals = ax.get_yticks()
-    #         ax.set_yticklabels([str(x)+"\%" for x in vals])
-
-    #         ax.set_xlabel("number of simulations included")
-
-    #         ax.legend(bbox_to_anchor=(1.01,0), loc="lower left",borderaxespad=0,frameon=False)
-
-    #         days_name = "_" + str(round(days_all[0]/one_year,1))+"-"+str(round(days_all[-1]/one_year,1))+"years"
-
-    #         plt.savefig(os.path.join(folder, "all_scenarios_difference_between_mean_and_median_of_"+ clinical_outcome +days_name +".png") , bbox_inches='tight')
-    #         plt.close()
-
-    

@@ -1,12 +1,15 @@
 #!/usr/bin/env Rscript
 
+library(dplyr)
+library(readr)
+
 args = commandArgs(trailingOnly=TRUE)
 root_folder = args[1] # paste0(root_folder,"abm_continuous_simulation_parameters_",population_type,"_",paramNum,"_SOCRATES_TP",TP)
 
 folderpart2 = args[2] # "abm_continuous_simulation_parameters_",population_type,"_",paramNum,"_SOCRATES_TP"
 
 TP_i = strtoi(args[3])
-TP_list = c('0.85','0.9','0.95','1.0','1.05', '1.1','1.15', '1.2','1.25', '1.3','1.35', '1.4', '1.45','1.5','1.55','1.6','1.65','1.7','1.75','1.8','1.85','1.9','1.95','2.0','2.05')
+TP_list = c('1.05', '1.95')
 TP = TP_list[TP_i]
 
 folder = paste0(root_folder,folderpart2,TP)
@@ -15,8 +18,6 @@ print(folder)
 
 setwd(folder)
 
-library(dplyr)
-library(readr)
 
 filenames_all <- list.files(pattern = "sim_number*")
 filenames_individuals <- list.files(pattern = "*individuals.csv")
@@ -34,7 +35,8 @@ print(filenames_main)
 #savefilename <- paste0(prefix[1],".csv",sep="")
 #savefilename <- paste0(prefix[1],"_abm_ages.csv",sep="")
 
-savefilename <- paste0(folder,".csv",sep="")
+#savefilename <- paste0(folder,".csv",sep="")
+savefilename <- paste0("../",folderpart2,TP,".csv",sep="") 
 print(savefilename)
 
 

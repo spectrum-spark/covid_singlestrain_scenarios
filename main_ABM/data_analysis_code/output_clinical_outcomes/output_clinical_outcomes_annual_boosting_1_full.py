@@ -44,7 +44,7 @@ boosting_only_group =  ['none','5-15','65+','random']
 boosting_group_names = {'none':'no further boosting', '5-15': 'further boosting pediatric','65+':'further boosting high risk','random':'further boosting random'}
 
 ###########################################################################################
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+presim_parameters_folder  =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
 
 
 days_list = [ list(range(original_program_time ,max_days)) , list(range(0,max_days))]
@@ -55,6 +55,7 @@ quantile_list = [0.025,0.975]
 
 scenario_file_name = "high_coverage_"
 
+output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs/"))
 
 for days_all, days_name in zip(days_list,days_list_name):
 
@@ -67,10 +68,10 @@ for days_all, days_name in zip(days_list,days_list_name):
 
     individual_full_output_names = {}
     for key,item in individual_output_names.items():
-        individual_full_output_names[key]='/scratch/cm37/tpl/'+item
+        individual_full_output_names[key]=output_folder+item
 
     iterated_output_file_name =  scenario_file_name+ "ALL_clinical_outcomes_totals"+days_name+".csv"
-    iterated_full_output_file_name = '/scratch/cm37/tpl/'+iterated_output_file_name
+    iterated_full_output_file_name = output_folder+iterated_output_file_name
 
 
     mega_DF_list =  {'mean':[],'median':[],0.025:[],0.975:[]}
@@ -83,7 +84,7 @@ for days_all, days_name in zip(days_list,days_list_name):
 
                 for immune_escape_time in immune_escape_time_list:
 
-                    folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+                    folder =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
 
                     if boosting_group_wanted!="none":
                         local_boosting_list = boosters_only_vaccination_start_list
