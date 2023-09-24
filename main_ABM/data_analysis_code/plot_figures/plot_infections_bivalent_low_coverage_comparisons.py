@@ -83,11 +83,11 @@ local_days = list(range(max_days))
 
 
 
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1_younger/'
+presim_parameters_folder  = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1_younger")) 
 
-bivalent_folder = "/scratch/cm37/tpl/bivalent_boosting/low_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t"+str(bivalent_start_time) +"_outputs/"
+bivalent_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","bivalent_boosting","low_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t"+str(bivalent_start_time) ))
 
-monovalent_folder = "/scratch/cm37/tpl/annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+monovalent_folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time)))
 
 
 
@@ -280,13 +280,6 @@ def plot_ribbon_infections_comparison():
 
                     # ax.fill_between(local_days,upper_ribbon[vax],lower_ribbon[vax],facecolor=plot_colour,alpha=0.5)
                     ax.plot(local_days,median_line[boosting_group],color = plot_colour,linestyle='solid')
-
-            # average_days_per_month = 30.437
-            # months_on_day = [i*average_days_per_month for i in range(30) ]
-            # months_numbering = list(range(0,len(months_on_day ),1))
-            # ax.set_xticks(months_on_day)
-            # ax.set_xticklabels(months_numbering)
-            # ax2.set_xlabel('time (months-ish)') # ax.set_xlabel('time (months-ish)')
             
             days_per_year = 52*7 
             days_per_six_months = 26*7
@@ -622,11 +615,9 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
 # PLOTTING
 ################################################################################################
 
-# total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe =list(range(original_program_time,max_days)),minimum_age = 0)
 
 plot_ribbon_infections_comparison()
 
 
-
-
+total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_death='death',younger_or_older=["younger"],timeframe =list(range(original_program_time,max_days)),minimum_age = 0)
 

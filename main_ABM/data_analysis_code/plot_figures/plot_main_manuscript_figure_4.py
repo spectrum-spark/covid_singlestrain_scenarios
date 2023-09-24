@@ -102,10 +102,6 @@ def plot_subfigures_boosting_ribbons(ax_single,ax_many,boosting_colours):
 
     legend0 = [p1,p2,p3,(p4,p5,p6,p7,p8,p9)]         
 
-    # legend0.append(ax_many.scatter(-10000,-10000,color=BA1_colour, s=100, marker= marker, alpha=1.0, edgecolors='none'))
-    # legend0.append(ax_many.scatter(-10000,-10000,color=BA45_colour, s=100, marker= marker, alpha=1.0, edgecolors='none'))
-    # legend0.append(ax_many.scatter(-10000,-10000,color=vaccinating_colour, s=100, marker= marker, alpha=1.0, edgecolors='none'))
-
 
 
     ax_many.set_xlabel('time (years)', fontsize=16)
@@ -325,9 +321,6 @@ def plot_subfigure_ribbon_infections_over_time_plus_fixed_boosting_group(ax,all_
             ################################################
 
             for boosting_time in boosters_only_vaccination_start_list:
-                # if population_type == "younger":
-                #     pass
-                # else:
                 plot_colour = boosters_start_colour_list[boosters_only_vaccination_start_list.index(boosting_time)]
                 edge_colour = boosters_start_edgecolour_list[boosters_only_vaccination_start_list.index(boosting_time)]
 
@@ -413,7 +406,9 @@ def plot_figure_4():
     ax_time_list = [[ax0,ax2],[ax1,ax3]]
     ax_t_i = 0
 
-    save_folder =  "/scratch/cm37/tpl/boosting_paper_figures/"
+    save_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","boosting_paper_figures"))
+    if not os.path.exists(save_folder ):
+        os.makedirs(save_folder )
 
     # time dependancies
     figure_legends = []
@@ -436,10 +431,11 @@ def plot_figure_4():
         for immune_escape_time in immune_escape_times:
             ax = ax_list[ax_i]
 
-            folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-            presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+            folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
 
-            folder_many_boosters = "/scratch/cm37/tpl/annual_boosting_2_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+            presim_parameters_folder  = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
+
+            folder_many_boosters =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_2_immune_escape_t" + str(immune_escape_time)))
 
             all_other_parameters = [boosting_colours, folder, presim_parameters_folder, folder_many_boosters]
 

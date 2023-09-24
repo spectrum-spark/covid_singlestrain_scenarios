@@ -293,7 +293,7 @@ def plot_figure_2():
     TP_segregated_list = [TP_high] # high TP only
     local_TP_list = TP_high
 
-    presim_parameters_folder  = presim_parameters_folder  =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
+    presim_parameters_folder  = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
     
 
     # make figure with 6 subplots 

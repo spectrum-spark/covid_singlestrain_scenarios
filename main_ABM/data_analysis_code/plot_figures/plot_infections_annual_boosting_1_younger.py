@@ -53,8 +53,6 @@ TP_high = ["1.95"]
 TP_segregated_list = [TP_low,TP_high]
 
 param_list = list(range(-1,6+1))
-# novax_index = 0
-# SIM_NUMBER = 100
 
 max_days = 52*3*7 # 3 years 
 first_exposure_time =225

@@ -84,13 +84,12 @@ local_days = list(range(max_days))
 
 
 
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1_younger/'
-
-bivalent_folder = "/scratch/cm37/tpl/bivalent_boosting/low_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t"+str(bivalent_start_time) +"_outputs/"
-
-monovalent_folder = "/scratch/cm37/tpl/annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+presim_parameters_folder  = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1_younger"))
 
 
+bivalent_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","bivalent_boosting","low_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t"+str(bivalent_start_time) ))
+
+monovalent_folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time)))
 
 
 no_boosting_colour = 'white'
@@ -360,7 +359,9 @@ def plot_figure_8():
     # make figure with 4 subplots 
     fig, ((axa,axb),(ax0,ax1)) = plt.subplots(2,2, sharex=True, gridspec_kw={'height_ratios': [6, 1]},figsize = (13,4.5))
 
-    save_folder =  "/scratch/cm37/tpl/boosting_paper_figures/"
+    save_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","boosting_paper_figures"))
+    if not os.path.exists(save_folder ):
+        os.makedirs(save_folder )
 
     vaccination_coverage = 0.2
     plot_ribbon_infections_comparison(axa,vaccination_coverage)

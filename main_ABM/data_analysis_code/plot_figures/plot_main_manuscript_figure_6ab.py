@@ -56,8 +56,6 @@ TP_segregated_list = [TP_high]
 
 
 param_list = list(range(0,7+1))
-# novax_index = 0
-# SIM_NUMBER = 100
 
 max_days = 52*3*7 # 3 years 
 first_exposure_time =225
@@ -214,13 +212,6 @@ def plot_ribbon_infections_over_time_plus(ax,all_other_parameters,younger_or_old
                 
                 # ax.fill_between(local_days,upper_ribbon[vax],lower_ribbon[vax],facecolor=plot_colour,alpha=0.5)
                 ax.plot(local_days,median_line[boosting_group],color = plot_colour,linestyle='solid')
-
-        # average_days_per_month = 30.437
-        # months_on_day = [i*average_days_per_month for i in range(30) ]
-        # months_numbering = list(range(0,len(months_on_day ),1))
-        # ax.set_xticks(months_on_day)
-        # ax.set_xticklabels(months_numbering)
-        # ax2.set_xlabel('time (months-ish)') # ax.set_xlabel('time (months-ish)')
         
         days_per_year = 52*7 
         days_per_six_months = 26*7
@@ -271,19 +262,20 @@ def plot_figure_6ab():
     boosting_time = immune_escape_time
 
     boosting_groups = ['none','65+','55+','45+','35+','25+','16+','5+']
-    # boosting_group_colours_younger = ['white','firebrick','red','salmon','navy','dodgerblue','lightskyblue','forestgreen']
-    # boosting_group_colours_older = ['white','firebrick','red','salmon','navy','dodgerblue','lightskyblue','forestgreen']
 
     boosting_colours_combined = ['white','firebrick','red','orange','gold','yellowgreen','navy','dodgerblue']
     boosting_colours = boosting_colours_combined 
 
-    folder = "/scratch/cm37/tpl/annual_boosting_age_scenarios_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-    presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
+    folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_age_scenarios_immune_escape_t" + str(immune_escape_time)))
+    
+    presim_parameters_folder  = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_age_scenarios"))
 
     # make figure with 4 subplots 
     fig, ((axa,axb),(ax0,ax1)) = plt.subplots(2,2, sharex=True, gridspec_kw={'height_ratios': [6, 1]},figsize = (13,4))
 
-    save_folder =  "/scratch/cm37/tpl/boosting_paper_figures/"
+    save_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","boosting_paper_figures"))
+    if not os.path.exists(save_folder ):
+        os.makedirs(save_folder )
 
     all_other_parameters = [boosting_colours,boosting_groups,folder,presim_parameters_folder]
 

@@ -1,5 +1,5 @@
 #
-# Produces plots for the "many boosters" scenarios, i.e. Scenarios 3, 4, 11, 12
+# Produces plots for the "many boosters" scenarios
 #
 
 import os
@@ -53,8 +53,6 @@ TP_high = ["1.95"]
 TP_segregated_list = [TP_low,TP_high]
 
 param_list = list(range(0,12+1))
-# novax_index = 0
-# SIM_NUMBER = 100
 
 max_days = 52*3*7 # 3 years 
 first_exposure_time =225
@@ -370,11 +368,6 @@ def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,bo
 
             legend_points = []
             marker = "o" # "s"
-
-            # if population_type=="younger":
-            #     print("colours not determined yet")
-            #     exit(1)
-            # if population_type=="older":
             for plot_colour,edge_colour in zip(boosters_start_colour_list,boosters_start_edgecolour_list):
                 legend_points.append(ax2.scatter(-10000,-10000,color=plot_colour, s=100, marker= 'o', alpha=1.0, edgecolors=edge_colour))
             # total_infections_local_days =  {booster_start_time:[] for booster_start_time in boosters_only_vaccination_start_list}
@@ -412,23 +405,6 @@ def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,bo
 
                     datafilename = filename + ".csv"
 
-                    # data_file = os.path.join(folder, datafilename)
-
-                    # if os.path.isfile(data_file):
-                    #     pass
-                    # else:
-                    #     print(data_file)
-                    #     print("This file ^ doesn't exist????")
-                    #     continue
-
-                    # pd_obj = pd.read_csv(data_file)
-                    # # print(pd_obj)
-
-                    # new_pd = pd_obj.groupby(['day','sim'],as_index=False).n.sum()
-                    # df = new_pd.pivot(index='day', columns='sim', values='n')
-
-                    # df_dict = df.to_dict()
-
                     clinical_filename = "_full_outcomes_dataframe.csv"
                     clinical_file = os.path.join(folder,filename,clinical_filename)
 
@@ -457,24 +433,6 @@ def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,bo
                         daily_ICU_admissions =clinical_pd_obj['daily_ICU_admissions'].to_list()
                         total_severe_disease_local_days[sims_boosting_time] = daily_ICU_admissions
 
-                    # scale = 40
-                    # aug_num = 5
-                    # for simnum in df_dict.keys():
-                    #     # infections_over_time = df_dict[simnum]
-                    #     # total_infections = sum(list_conversion_nans(infections_over_time, timeframe ))
-                    #     # total_infections_local_days[sims_boosting_time].append(total_infections ) 
-
-                    #     for aug in range(1,aug_num+1):
-                    #         new_pd_ICU = clinical_pd_obj.loc[(clinical_pd_obj['iteration']==(simnum-1)*aug_num+aug) & (clinical_pd_obj['day'].isin(timeframe )) & (clinical_pd_obj['age']>=minimum_age)]
-                            
-                    #         if ICU_or_death == 'death':
-                    #             daily_deaths = sum(new_pd_ICU['daily_deaths'].to_list())
-                    #             total_severe_disease_local_days[sims_boosting_time].append(daily_deaths) 
-                    #         elif ICU_or_death =='ICU':
-                    #             daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())
-                    #             total_severe_disease_local_days[sims_boosting_time].append(daily_ICU_admissions) 
-            ###########
-
             # many boosters
 
             for TP in local_TP_list:
@@ -484,22 +442,7 @@ def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,bo
 
                 datafilename = filename + ".csv"
 
-                # data_file = os.path.join(folder_many_boosters, datafilename)
-
-                # if os.path.isfile(data_file):
-                #     pass
-                # else:
-                #     print(data_file)
-                #     print("This file ^ doesn't exist????")
-                #     continue
-
-                # pd_obj = pd.read_csv(data_file)
-                # # print(pd_obj)
-
-                # new_pd = pd_obj.groupby(['day','sim'],as_index=False).n.sum()
-                # df = new_pd.pivot(index='day', columns='sim', values='n')
-
-                # df_dict = df.to_dict()
+                
 
                 clinical_filename = "_full_outcomes_dataframe.csv"
                 clinical_file = os.path.join(folder_many_boosters,filename,clinical_filename)
@@ -530,21 +473,7 @@ def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,bo
                     daily_ICU_admissions =clinical_pd_obj['daily_ICU_admissions'].to_list()
                     total_severe_disease_local_days["many boosters"] = daily_ICU_admissions
 
-                # scale = 40
-                # aug_num = 5
-                # for simnum in df_dict.keys():
-
-                #     for aug in range(1,aug_num+1):
-                #         new_pd_ICU = clinical_pd_obj.loc[(clinical_pd_obj['iteration']==(simnum-1)*aug_num+aug) & (clinical_pd_obj['day'].isin(timeframe )) & (clinical_pd_obj['age']>=minimum_age)]
-                        
-                #         if ICU_or_death == 'death':
-                #             daily_deaths = sum(new_pd_ICU['daily_deaths'].to_list())
-                #             total_severe_disease_local_days["many boosters"].append(daily_deaths) 
-                #         elif ICU_or_death =='ICU':
-                #             daily_ICU_admissions = sum(new_pd_ICU['daily_ICU_admissions'].to_list())
-                #             total_severe_disease_local_days["many boosters"].append(daily_ICU_admissions) 
-
-
+               
 
             ########
             outline = 'none'
@@ -700,11 +629,11 @@ for younger_or_older in  [["older"],["younger"]]:
     many_boosters_colour = 'mediumpurple'
     for immune_escape_time in immune_escape_times:
 
-        folder = "/scratch/cm37/tpl/annual_boosting_1_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-        presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+        folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_immune_escape_t" + str(immune_escape_time)))
+        presim_parameters_folder  = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
 
-        folder_many_boosters = "/scratch/cm37/tpl/annual_boosting_2_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+        folder_many_boosters = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_2_immune_escape_t" + str(immune_escape_time)))
 
         plot_ribbon_infections_over_time_plus_fixed_boosting_group(boosting_group_here = "65+",younger_or_older=younger_or_older,immune_escape_time=immune_escape_time)
 
-        # total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,boosting_group_here = "65+",ICU_or_death='death',younger_or_older=younger_or_older,timeframe =list(range(original_program_time,max_days)))
+        total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,boosting_group_here = "65+",ICU_or_death='death',younger_or_older=younger_or_older,timeframe =list(range(original_program_time,max_days)))

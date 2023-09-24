@@ -52,4 +52,4 @@ To make it easier, see [run_annual_boosting_1.sh](/main_ABM/run_annual_boosting_
 
 ### Plotting
 
-The plotting scrips are found in the [data_analysis_code/plot_figures/](/main_ABM/data_analysis_code/plot_figures/) folder.
+The plotting scripts are found in the [data_analysis_code/plot_figures/](/main_ABM/data_analysis_code/plot_figures/) folder.
