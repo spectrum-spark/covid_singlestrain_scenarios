@@ -6,13 +6,13 @@ Note that https://github.com/nlohmann/json is necessary for function.
 
 ## 1. Run the "presimulation" files 
 
-See https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-paper/presim_code which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
+See the [**/presim_code**](/presim_code/) folder which generates various parameter files and inputs such as demographics, contact matrices, and vaccination rollout.
 
 The contact matrices need to be copied into this folder (note, they are already here).
 
 ## 2. Main results
 
-The main source files are [**main_BA1s_BA45s_cont_intros.cpp**](/main_BA1s_BA45s_cont_intros.cpp), [**main_BA1s_BA45s_cont_intros_many_boosters.cpp**](/main_BA1s_BA45s_cont_intros_many_boosters.cpp), and  [**main_BA1s_BA45s_bivalent_cont_intros.cpp**](/main_BA1s_BA45s_bivalent_cont_intros.cpp).
+The main source files are [**main_BA1s_BA45s_cont_intros.cpp**](/main_ABM/main_BA1s_BA45s_cont_intros.cpp), [**main_BA1s_BA45s_cont_intros_many_boosters.cpp**](/main_ABM/main_BA1s_BA45s_cont_intros_many_boosters.cpp), and  [**main_BA1s_BA45s_bivalent_cont_intros.cpp**](/main_ABM/main_BA1s_BA45s_bivalent_cont_intros.cpp).
 
 Run the following to compile the C++ executables: 
 
@@ -29,10 +29,10 @@ This will produce three executables:
 
 To run the simulations, some more set-up files need to be created, starting with running the following:
 
-- [**generate_json_files_annual_boosting_1.py**](/generate_json_files_annual_boosting_1.py) (for the high-vaccination coverage simulations)
-- [**generate_json_files_annual_boosting_1_younger.py**](/generate_json_files_annual_boosting_1_younger.py) (for the low-coverage younger population simulations)
-- [**generate_json_files_annual_boosting_2.py**](/generate_json_files_annual_boosting_2.py) (for the half-yearly boosting simulations)
-- [**generate_json_files_annual_boosting_age_scenarios.py**](/generate_json_files_annual_boosting_age_scenarios.py) (for the age cutoff simulations)
+- [**generate_json_files_annual_boosting_1.py**](/main_ABM/generate_json_files_annual_boosting_1.py) (for the high-vaccination coverage simulations)
+- [**generate_json_files_annual_boosting_1_younger.py**](/main_ABM/generate_json_files_annual_boosting_1_younger.py) (for the low-coverage younger population simulations)
+- [**generate_json_files_annual_boosting_2.py**](/main_ABM/generate_json_files_annual_boosting_2.py) (for the half-yearly boosting simulations)
+- [**generate_json_files_annual_boosting_age_scenarios.py**](/main_ABM/generate_json_files_annual_boosting_age_scenarios.py) (for the age cutoff simulations)
 
 e.g., with commands
 
@@ -42,14 +42,14 @@ e.g., with commands
 
 and so forth.
 
-The simulation parameter files will be stored in a folder called ****main_ABM/simulation_params/** and the overall output folder is **outputs/**
+The simulation parameter files will be stored in a folder called **main_ABM/simulation_params/** and the overall output folder is **outputs/**
 
 Now, the simulations can be run (from within this folder)
 
-To make it easier, see [run_annual_boosting_1.sh](/run_annual_boosting_1.sh) for an example script for the high-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4).
+To make it easier, see [run_annual_boosting_1.sh](/main_ABM/run_annual_boosting_1.sh) for an example script for the high-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/main_ABM/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4).
 
 
 
 ### Plotting
 
-The plotting scrips are found in the [data_analysis_code/plot_figures/](/data_analysis_code/plot_figures/) folder.
+The plotting scrips are found in the [data_analysis_code/plot_figures/](/main_ABM/data_analysis_code/plot_figures/) folder.
