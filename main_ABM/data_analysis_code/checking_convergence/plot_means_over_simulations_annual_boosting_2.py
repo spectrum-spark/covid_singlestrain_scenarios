@@ -10,8 +10,9 @@ days_name = "_1.5-3years"
 
 for mean_or_median in ["mean"]:#,"median"]:
     for immune_escape_time in immune_escape_times:
-        folder = "/scratch/cm37/tpl/annual_boosting_2_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-        presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
+        folder =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_2_immune_escape_t" + str(immune_escape_time)))
+        
+        presim_parameters_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1"))
         
         
         plot_clinical_outcomes_over_simulations(

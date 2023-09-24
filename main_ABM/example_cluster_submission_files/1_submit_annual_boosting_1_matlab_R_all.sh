@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for WAVESTART in 546 637 728 819 910
+for WAVESTART in 546 910
 do
 for POPTYPE in older younger
 do

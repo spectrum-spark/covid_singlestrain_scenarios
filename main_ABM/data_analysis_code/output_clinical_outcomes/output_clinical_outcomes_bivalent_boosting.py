@@ -44,11 +44,15 @@ boosting_scenarios = ['none', 'monovalent','bivalent']
 boosting_group_names = {'none':'no further boosting', 'monovalent': 'further monovalent high risk boosting','bivalent': 'further bivalent high risk boosting'}
 
 ###########################################################################################
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1_younger/'
+presim_parameters_folder  =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1_younger"))
 
-bivalent_folder = "/scratch/cm37/tpl/bivalent_boosting/low_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t"+str(bivalent_start_time) +"_outputs/"
 
-monovalent_folder = "/scratch/cm37/tpl/annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs/"))
+
+bivalent_folder = os.path.join(output_folder, 'bivalent_boosting',"low_coverage_immune_escape_t" + str(immune_escape_time) +"_bivalent_t"+str(bivalent_start_time) +"/")
+
+monovalent_folder =os.path.join(output_folder,"annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time))
+
 
 days_list = [ list(range(original_program_time ,max_days)) , list(range(0,max_days))]
 days_list_name = ["_1.5-3years","_0-3years"]
@@ -57,6 +61,7 @@ quantile_list = [0.025,0.975]
 
 
 old_columns_to_rename = [ 'total_infections_all_ages', 'total_symptomatic_infections_all_ages', 'total_admissions_all_ages', 'total_ward_occupancy_all_ages', 'total_ICU_admissions_all_ages', 'total_ICU_occupancy_all_ages', 'total_deaths_all_ages', 'total_deaths_ages_0-9', 'total_deaths_ages_10-19', 'total_deaths_ages_20-29', 'total_deaths_ages_30-39', 'total_deaths_ages_40-49', 'total_deaths_ages_50-59', 'total_deaths_ages_60-69', 'total_deaths_ages_70-79', 'total_deaths_ages_80+']
+
 
 def get_iterated_clinical_DF(population_type, paramNum,folder,TP_val,days_all,boosting_scenario):
     presim_parameters = "abm_continuous_simulation_parameters_" + population_type+ "_" + str(paramNum)+".json"
@@ -69,11 +74,11 @@ def get_iterated_clinical_DF(population_type, paramNum,folder,TP_val,days_all,bo
     total_population = presim_parameters["total_population"]
     # population_type = presim_parameters["population_type"]
     total_vaccination_rate = presim_parameters["total_vaccination_rate"]
-    booster_fraction = presim_parameters["booster_fraction"]
-    original_vax_priority = presim_parameters["original_vax_priority"]
-    first_additional_vax_priority= presim_parameters["first_additional_vax_priority"]
-    second_additional_vax_priority= presim_parameters["second_additional_vax_priority"]
-    second_additional_doses_available = presim_parameters['second_additional_doses_available']
+    # booster_fraction = presim_parameters["booster_fraction"]
+    # original_vax_priority = presim_parameters["original_vax_priority"]
+    # first_additional_vax_priority= presim_parameters["first_additional_vax_priority"]
+    # second_additional_vax_priority= presim_parameters["second_additional_vax_priority"]
+    # second_additional_doses_available = presim_parameters['second_additional_doses_available']
     vaccination_start = presim_parameters["boosters_only_vaccination_start"]
     vaccination_duration = presim_parameters["boosters_only_vaccination_duration"]
     boosting_group = presim_parameters['boosting_group']
@@ -232,10 +237,10 @@ for days_all, days_name in zip(days_list,days_list_name):
 
     individual_full_output_names = {}
     for key,item in individual_output_names.items():
-        individual_full_output_names[key]='/scratch/cm37/tpl/bivalent_boosting/'+item
+        individual_full_output_names[key]=os.path.join(output_folder ,'bivalent_boosting',item)
 
     iterated_output_file_name = "bivalent_low_coverage_ALL_clinical_outcomes_totals"+days_name+".csv"
-    iterated_full_output_file_name = '/scratch/cm37/tpl/bivalent_boosting/'+iterated_output_file_name
+    iterated_full_output_file_name = os.path.join(output_folder ,'bivalent_boosting',iterated_output_file_name)
 
 
     mega_DF_list =  {'mean':[],'median':[],0.025:[],0.975:[]}

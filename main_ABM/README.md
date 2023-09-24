@@ -46,7 +46,7 @@ The simulation parameter files will be stored in a folder called ****main_ABM/si
 
 Now, the simulations can be run (from within this folder)
 
-To make it easier, see [run_annual_boosting_1.sh](/run_annual_boosting_1.sh) for an example script for the high-coverage simulations.
+To make it easier, see [run_annual_boosting_1.sh](/run_annual_boosting_1.sh) for an example script for the high-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4).
 
 
 

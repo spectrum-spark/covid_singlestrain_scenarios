@@ -43,18 +43,19 @@ scenario = "high risk boosting"
 boosting_starts = 637
 
 ###########################################################################################
-# presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
 
 days_list = [ list(range(original_program_time ,max_days)) , list(range(0,max_days))]
 days_list_name = ["_1.5-3years",""]
+
+output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs/"))
 
 for days_all, days_name in zip(days_list,days_list_name):
 
     mean_output_file_name =  "many_boosters_high_coverage_mean_clinical_outcomes_totals"+days_name+".csv"
     iterated_output_file_name = "many_boosters_high_coverage_ALL_clinical_outcomes_totals"+days_name+".csv"
 
-    mean_full_output_file_name = '/scratch/cm37/tpl/'+mean_output_file_name 
-    iterated_full_output_file_name = '/scratch/cm37/tpl/'+iterated_output_file_name
+    mean_full_output_file_name = output_folder+mean_output_file_name 
+    iterated_full_output_file_name =output_folder+iterated_output_file_name
 
 
     mega_DF_list_mean = []
@@ -65,7 +66,7 @@ for days_all, days_name in zip(days_list,days_list_name):
         for population_type in ["older","younger"]:
 
             for immune_escape_time in immune_escape_times:
-                folder = "/scratch/cm37/tpl/annual_boosting_2_immune_escape_t" + str(immune_escape_time) +"_outputs/"    
+                folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_2_immune_escape_t" + str(immune_escape_time)))
 
                 total_population =100000
                 total_vaccination_rate = 0.8

@@ -38,11 +38,12 @@ scenario = "high risk boosting"
 boosting_starts = 637
 
 ###########################################################################################
-# presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1/'
 
 days_list = [ list(range(original_program_time ,max_days)) ]#, list(range(0,max_days))]
 days_list_name = ["_1.5-3years"]#,""]
 
+
+output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs/"))
 for quantile_val in [0.025,0.975]:
 
     header = ['population size', 'population type', 'scenario','1st year vaccination coverage','transmission potential level','boosting starts','immune escape starts', 'time period (days inclusive)', "total_quantile_"+str(quantile_val)+"_infections_all_ages", "total_quantile_"+str(quantile_val)+"_symptomatic_infections_all_ages","total_quantile_"+str(quantile_val)+"_admissions_all_ages","total_quantile_"+str(quantile_val)+"_ward_occupancy_all_ages","total_quantile_"+str(quantile_val)+"_ICU_admissions_all_ages","total_quantile_"+str(quantile_val)+"_ICU_occupancy_all_ages","total_quantile_"+str(quantile_val)+"_deaths_ages_all_ages"]
@@ -57,8 +58,8 @@ for quantile_val in [0.025,0.975]:
         quantile_output_file_name =  "many_boosters_high_coverage_quantile_"+str(quantile_val)+"_clinical_outcomes_totals"+days_name+".csv"
         iterated_output_file_name = "many_boosters_high_coverage_ALL_clinical_outcomes_totals"+days_name+".csv"
 
-        quantile_full_output_file_name = '/scratch/cm37/tpl/'+quantile_output_file_name 
-        iterated_full_output_file_name = '/scratch/cm37/tpl/'+iterated_output_file_name
+        quantile_full_output_file_name = output_folder+quantile_output_file_name 
+        iterated_full_output_file_name =output_folder+iterated_output_file_name
 
 
         mega_DF_list_quantile = []
@@ -71,7 +72,7 @@ for quantile_val in [0.025,0.975]:
                 
 
                 for immune_escape_time in immune_escape_times:
-                    folder = "/scratch/cm37/tpl/annual_boosting_2_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+                    folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_2_immune_escape_t" + str(immune_escape_time)))
 
                     total_population =100000
                     total_vaccination_rate = 0.8

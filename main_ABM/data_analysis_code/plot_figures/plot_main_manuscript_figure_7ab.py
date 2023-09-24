@@ -53,8 +53,6 @@ TP_high = ["1.95"]
 TP_segregated_list = [TP_low,TP_high]
 
 param_list = list(range(-1,6+1))
-# novax_index = 0
-# SIM_NUMBER = 100
 
 max_days = 52*3*7 # 3 years 
 first_exposure_time =225
@@ -229,12 +227,6 @@ def plot_ribbon_infections_over_time_plus(ax, all_other_parameters, younger_or_o
                     plot_colour = no_boosting_colour
             else:
                 pass 
-                # if boosting_group == '5-15':
-                #     plot_colour = pedatric_boosting_colour
-                # elif boosting_group == '65+':
-                #     plot_colour = old_boosting_colour
-                # elif boosting_group == 'random':
-                #     plot_colour = random_boosting_colour
             
             ax.fill_between(local_days,upper_ribbon[boosting_group],lower_ribbon[boosting_group],facecolor=plot_colour,alpha=0.5)
             # ax.plot(local_days,median_line[vax],color = plot_colour,linestyle='solid')
@@ -250,12 +242,6 @@ def plot_ribbon_infections_over_time_plus(ax, all_other_parameters, younger_or_o
                     plot_colour = no_boosting_colour
             else:
                 pass
-                # if boosting_group == '5-15':
-                #     plot_colour = pedatric_boosting_colour
-                # elif boosting_group == '65+':
-                #     plot_colour = old_boosting_colour
-                # elif boosting_group == 'random':
-                #     plot_colour = random_boosting_colour
             # ax.fill_between(local_days,upper_ribbon[vax],lower_ribbon[vax],facecolor=plot_colour,alpha=0.5)
             ax.plot(local_days,median_line[boosting_group],color = plot_colour,linestyle='solid')
 
@@ -307,14 +293,16 @@ def plot_figure_7ab():
     original_program_time = 26*7*3
 
     immune_escape_time = original_program_time + 26*7
-    save_folder =  "/scratch/cm37/tpl/boosting_paper_figures/"
+    save_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","boosting_paper_figures"))
+    if not os.path.exists(save_folder ):
+        os.makedirs(save_folder )
 
     # figure with 3 subplots
     fig, (axa, axb,ax0) = plt.subplots(3,1, sharex=True, gridspec_kw={'height_ratios': [6,6, 1]},figsize = (7.5,7.5))
 
 
-    folder = "/scratch/cm37/tpl/annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time) +"_outputs/"
-    presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_1_younger/'
+    folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_1_younger_immune_escape_t" + str(immune_escape_time)))
+    presim_parameters_folder  =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_1_younger"))
 
     # boosters_only_vaccination_start_list = [original_program_time + 26*7]
     boosting_time = original_program_time + 26*7

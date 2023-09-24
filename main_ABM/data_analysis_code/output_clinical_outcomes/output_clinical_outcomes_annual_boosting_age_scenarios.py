@@ -42,13 +42,14 @@ boosting_only_group = ['none','65+','55+','45+','35+','25+','16+','5+']
 boosting_group_names = {'none':'no further boosting', '65+': 'boosting 65+','55+':'boosting 55+','45+':'boosting 45+','35+':'boosting 35+','25+':'boosting 25+','16+':'boosting 16+','5+':'boosting 5+'}
 
 ###########################################################################################
-presim_parameters_folder  = '/fs04/cm37/prod/Le/WHO/covid-abm-presim/parameter_files_annual_boosting_age_scenarios/'
+presim_parameters_folder  =  os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "presim_code","parameter_files_annual_boosting_age_scenarios"))
 
 days_list = [ list(range(original_program_time ,max_days)) , list(range(0,max_days))]
 days_list_name = ["_1.5-3years","_0-3years"]
 
 quantile_list = [0.025,0.975]
 
+output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs/"))
 for days_all, days_name in zip(days_list,days_list_name):
 
     mean_output_file_name =  "age_scenarios_mean_clinical_outcomes_totals"+days_name+".csv"
@@ -60,10 +61,10 @@ for days_all, days_name in zip(days_list,days_list_name):
 
     individual_full_output_names = {}
     for key,item in individual_output_names.items():
-        individual_full_output_names[key]='/scratch/cm37/tpl/'+item
+        individual_full_output_names[key]=output_folder+item
 
     iterated_output_file_name = "age_scenarios_ALL_clinical_outcomes_totals"+days_name+".csv"
-    iterated_full_output_file_name = '/scratch/cm37/tpl/'+iterated_output_file_name
+    iterated_full_output_file_name = output_folder+iterated_output_file_name
 
 
     mega_DF_list =  {'mean':[],'median':[],0.025:[],0.975:[]}
@@ -74,7 +75,7 @@ for days_all, days_name in zip(days_list,days_list_name):
         for population_type in ["younger","older"]:
 
             for boosting_group_wanted in boosting_only_group: # getting the order how I like it
-                folder = "/scratch/cm37/tpl/annual_boosting_age_scenarios_immune_escape_t" + str(immune_escape_time) +"_outputs/"
+                folder =os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","..", "outputs","annual_boosting_age_scenarios_immune_escape_t" + str(immune_escape_time)))
 
                 if boosting_group_wanted!="none":
                     boosting_time_wanted = boosting_time
