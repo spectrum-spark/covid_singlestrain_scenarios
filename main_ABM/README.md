@@ -46,10 +46,22 @@ The simulation parameter files will be stored in a folder called **main_ABM/simu
 
 Now, the simulations can be run (from within this folder)
 
-To make it easier, see [run_annual_boosting_1.sh](/main_ABM/run_annual_boosting_1.sh) for an example script for the high-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/main_ABM/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4).
+To make it easier, see [run_annual_boosting_1.sh](/main_ABM/run_annual_boosting_1.sh) for an example script for the high-vaccination-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/main_ABM/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4).
+
+Similarly
+- [run_annual_boosting_1_younger.sh](/main_ABM/run_annual_boosting_1_younger.sh) for low and medium vaccination-coverage simulations in the younger population
+- [run_annual_boosting_2.sh](/main_ABM/run_annual_boosting_2.sh) for additional half-yearly boosting 
+- [run_annual_boosting_age_scenarios.sh](/main_ABM/run_annual_boosting_age_scenarios.sh) for lowering the eligibility of boosters (from 65+ down to 5+)
+- [run_bivalent_low_coverage_boosting.sh](/main_ABM/run_bivalent_low_coverage_boosting.s.sh) for bivalent doses in the younger population, low and medium vaccination-coverage setting.
 
 
 
 ### Plotting
 
 The plotting scripts are found in the [data_analysis_code/plot_figures/](/main_ABM/data_analysis_code/plot_figures/) folder.
+
+## Notes
+
+Note that "annual_boosting_1" refers to boosting within high-coverage populations (both younger and older). "annual_boosting_1_younger" refers to boosting in the lower-coverage younger populations. All of these have a single boosting program some time between 1.5-3 years.
+
+"annual_boosting_2" refers to 6-monthly boosting in high-coverage populations, with a total of three rollouts during 1.5-3 year time period.

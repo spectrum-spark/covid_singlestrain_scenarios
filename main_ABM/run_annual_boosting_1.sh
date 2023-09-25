@@ -30,8 +30,6 @@ do
 
                 Rscript compress_outputs_continuous_reduced.R ../outputs/annual_boosting_1_immune_escape_t${BA45start}/ abm_continuous_simulation_parameters_${POP}_${diffparams}_SOCRATES_TP ${TPvers}
 
-                exit 
-
             done
 
         done

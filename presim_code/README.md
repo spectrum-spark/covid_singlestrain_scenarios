@@ -1,8 +1,9 @@
 # POPULATION & VACCINATION ROLL-OUT
 
+*Note* that all code has be run already and parameter files etc. have been completely included in this folder.
+
 # Demographic and vaccination roll-out set up
 
-*Note* that all code has be run already and parameter files etc. have been completely included in this folder.
 
 ## 1. Demographics
 

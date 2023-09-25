@@ -11,7 +11,7 @@ do
         for (( diffparams=-1; diffparams<=6; diffparams++ )) # different boosting times and allocations
         do
 
-            for TPvers in 1 2 #1 for low TP, 2 for high TP (results in main paper)
+            for TPvers in 1 2 #1 for low TP, 2 for high TP
             do
 
                 for (( i=1; i<=$NUM_SIMS; i++ ))
@@ -29,8 +29,6 @@ do
                 matlab -batch "cd '../clinical_pathways';disp(pwd);sev_mat = [1/15,1/45,1/60];numsims=${NUM_SIMS};TP_list = {'1.05','1.95'};TP = TP_list{${TPvers}};disp(TP);population = '${POP}';disp(population);params = '${diffparams}';disp(params);BA45wavestart = '${BA45start}';foldername = strcat('../outputs/annual_boosting_1_younger_immune_escape_t',BA45wavestart,'/');filename = strcat(foldername,'abm_continuous_simulation_parameters_',population,'_',params,'_SOCRATES_TP',TP,'/');disp(filename);clinical_knitting_relsev_func(filename,sev_mat,numsims);disp('done?');quit()"
 
                 Rscript compress_outputs_continuous_reduced.R ../outputs/annual_boosting_1_younger_immune_escape_t${BA45start}/ abm_continuous_simulation_parameters_${POP}_${diffparams}_SOCRATES_TP ${TPvers}
-
-                exit 
 
             done
 
