@@ -25,7 +25,11 @@ Major model developement and implementation of the agent-based model was done by
 
 The clinical pathways model developement and implementation was done by Camelia Walker.
 
-The vaccine rollout implementation was done by Thao P. Le.
+The vaccine rollout implementation and figures was done by Thao P. Le.
+
+Additional contributes and code checking by Yasmine Mcdonough.
+
+Additional contributions by Logan Wu. 
 
 ### Instructions
 
