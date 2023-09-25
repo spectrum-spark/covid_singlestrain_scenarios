@@ -53,7 +53,7 @@ Note that there are different pieces of code that require Python, C++, R, and Ma
 *This repository is the code accompaniment to:*
 
 
-Thao P. Le, Eamon Conway, Isobel Abell, Patrick Abraham, Edifofon Akpan, Christopher M. Baker, Patricia T. Campbell, Natalie Carvalho, Deborah Cromer, Michael J. Lydeamore, Yasmine McDonough, Ivo Mueller, Gerard Ryan, Camelia Walker, Yingying Wang and Jodie McVernon, **Cost-effective boosting allocations in the post-Omicron era of COVID-19 management**, in preparation, 2023.
+Thao P. Le, Eamon Conway, Edifofon Akpan, Isobel Abell, Patrick Abraham, Christopher M. Baker, Patricia T. Campbell, Deborah Cromer, Michael J. Lydeamore, Yasmine McDonough, Ivo Mueller, Gerard Ryan, Camelia Walker, Yingying Wang, Natalie Carvalho and Jodie McVernon, **Cost-effective boosting allocations in the post-Omicron era of COVID-19 management**, in preparation, 2023.
 
 
 Eamon Conway, Thao P. Le, Isobel Abell, Patrick Abraham, Edifofon Akpan, Christopher Baker, Mackenzie Bourke, Patricia T. Campbell, Natalie Carvalho, Deborah Cromer, Alexandra B. Hogan, Michael J. Lydeamore, Yasmine McDonough, Ivo Mueller, Gerald Ryan, Camelia Walker, Yingying Wang, and Jodie McVernon, **A flexible immunity model-based framework for evaluation of likely impacts of emerging variants & vaccines: Technical Report**, 2023.
