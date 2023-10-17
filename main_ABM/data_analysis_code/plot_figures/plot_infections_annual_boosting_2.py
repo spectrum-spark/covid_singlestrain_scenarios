@@ -597,7 +597,7 @@ def total_deaths_histograms_fixed_boosting_group_with_mean(immune_escape_time,bo
             ax4.set_xticks(six_months_on_day)
             ax4.set_xticklabels(x_tick_labels)
             ax4.set_xlabel('time (years)')
-            ax4.legend(legend1, ["main vaccinaton program"],bbox_to_anchor=(1.01,-0.2), loc="lower left",borderaxespad=0,frameon=False)
+            ax4.legend(legend1, ["main vaccination program"],bbox_to_anchor=(1.01,-0.2), loc="lower left",borderaxespad=0,frameon=False)
 
 
             plt.subplots_adjust(hspace=0.9)

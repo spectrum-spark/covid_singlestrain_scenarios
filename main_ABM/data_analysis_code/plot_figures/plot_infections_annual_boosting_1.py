@@ -238,7 +238,7 @@ def plot_ribbon_infections_over_time_plus(younger_or_older=["older"],immune_esca
             ax2.axvspan(boosting_time,boosting_time+13*7,facecolor= boosting_colour_general,zorder=0)
             ax2.set_yticklabels([])
 
-            ax2.legend(legend0, ["circulating BA.1","circulating BA.4/5", "main vaccinaton program","further boosting program"],bbox_to_anchor=(1.01,-0.1), loc="lower left",borderaxespad=0,frameon=False)
+            ax2.legend(legend0, ["circulating BA.1","circulating BA.4/5", "main vaccination program","further boosting program"],bbox_to_anchor=(1.01,-0.1), loc="lower left",borderaxespad=0,frameon=False)
 
             if population_type=="older":
                 leg = Legend(ax, legend_points, ["no further boosting", "pediatric boosting (ages 5-15)","high risk boosting (65+)", "random boosting"],title=younger_or_older[0] +" population",bbox_to_anchor=(1.01,0), loc="lower left",borderaxespad=0,frameon=False)
@@ -505,7 +505,7 @@ def total_deaths_histograms_with_mean(boosting_time,immune_escape_time,ICU_or_de
         ax4.set_xticks(six_months_on_day)
         ax4.set_xticklabels(x_tick_labels)
         ax4.set_xlabel('time (years)')
-        ax4.legend(legend1, ["main vaccinaton program","further boosting program"],bbox_to_anchor=(1.01,-0.2), loc="lower left",borderaxespad=0,frameon=False)
+        ax4.legend(legend1, ["main vaccination program","further boosting program"],bbox_to_anchor=(1.01,-0.2), loc="lower left",borderaxespad=0,frameon=False)
 
         plt.subplots_adjust(hspace=0.9)
         

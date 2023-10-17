@@ -89,7 +89,7 @@ def plot_subfigure_boosting_ribbon(ax,boosting_time):
 
     legend0.append(ax.scatter(-10000,-10000,color=vaccinating_colour, s=100, marker= marker, alpha=1.0, edgecolors='none'))
     legend0.append(ax.scatter(-10000,-10000,color=boosting_colour_general, s=100, marker= marker, alpha=1.0, edgecolors='none'))
-    legend_labels = [ "circulating BA.1","circulating BA.4/5", "main vaccinaton program","further boosting program"]
+    legend_labels = [ "circulating BA.1","circulating BA.4/5", "main vaccination program","further boosting program"]
 
     # little vaccination bar 
     ax.set_xlabel('time (years)', fontsize=16)
