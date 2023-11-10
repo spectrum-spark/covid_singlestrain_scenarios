@@ -58,10 +58,17 @@ Similarly
 
 ### Plotting
 
-The plotting scripts are found in the [data_analysis_code/plot_figures/](/main_ABM/data_analysis_code/plot_figures/) folder.
+The plotting scripts for the figures in the main manuscript are found in the [data_analysis_code/plot_figures/](/main_ABM/data_analysis_code/plot_figures/) folder.
 
 ## Notes
 
-Note that "annual_boosting_1" refers to boosting within high-coverage populations (both younger and older). "annual_boosting_1_younger" refers to boosting in the lower-coverage younger populations. All of these have a single boosting program some time between 1.5-3 years.
+Note that "annual_boosting_1" refers to boosting within high-coverage populations (both younger and older). The single boosting program occurs some time between 1.5-3 years.
+
+
+"annual_boosting_1_younger" refers to boosting in the lower-coverage younger populations. All of these have a single boosting program occurs some time between 1.5-3 years.
 
 "annual_boosting_2" refers to 6-monthly boosting in high-coverage populations, with a total of three rollouts during 1.5-3 year time period.
+
+## Help
+
+Need further help? Contact TK at tk.le[at]unimelb.edu.au

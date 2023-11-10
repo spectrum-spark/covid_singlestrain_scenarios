@@ -44,7 +44,7 @@ python data_analysis_code/checking_convergence/plot_means_over_simulations_age_s
 
 python data_analysis_code/plot_figures/plot_infections_annual_boosting_age_scenarios.py # for plots (general)
 
-python data_analysis_code/plot_figures/plot_main_manuscript_figure_6ab.py # for plots in the paper 
+python data_analysis_code/plot_figures/plot_main_manuscript_figure_5ab.py # for plots in the paper 
 
 python data_analysis_code/output_clinical_outcomes/output_clinical_outcomes_annual_boosting_age_scenarios.py # to produce outputs needed to feed into the cost-effectiveness analysis
 
