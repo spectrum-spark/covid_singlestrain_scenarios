@@ -1,5 +1,5 @@
 #
-# Produces epidemic wave plots the main manuscript Figure 2
+# Produces epidemic wave plots the main manuscript Figure 2 (boosting in high-coverage populations)
 #
 
 import os

@@ -1,6 +1,6 @@
 
 #
-# Produces epidemic wave plots the main manuscript Figure 4
+# Produces epidemic wave plots the main manuscript Figure 4 (high-risk boosting timing)
 #
 
 
