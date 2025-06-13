@@ -46,7 +46,7 @@ The simulation parameter files will be stored in a folder called **main_ABM/simu
 
 Now, the simulations can be run (from within this folder)
 
-To make it easier, see [run_annual_boosting_1.sh](/main_ABM/run_annual_boosting_1.sh) for an example script for the high-vaccination-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/main_ABM/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4).
+To make it easier, see [run_annual_boosting_1.sh](/main_ABM/run_annual_boosting_1.sh) for an example script for the high-vaccination-coverage simulations. Note that even with only `NUM_SIMS=2`, the simulations take a while. The scripts in the [/example_cluster_submission_files](/main_ABM/example_cluster_submission_files) folder provide an outline as to how to submit 1000 runs to a computational cluster and produce plots (run files 1-4). **Note that R and MATLAB are required as part of the process.**
 
 Similarly
 - [run_annual_boosting_1_younger.sh](/main_ABM/run_annual_boosting_1_younger.sh) for low and medium vaccination-coverage simulations in the younger population
