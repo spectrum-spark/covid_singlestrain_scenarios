@@ -16,13 +16,13 @@ for population_type in ['younger','older']:
     with open(csvfile, 'r') as f:
         array = np.loadtxt(f, delimiter=",")
 
-        fig, ax = plt.subplots(1,1, figsize=(6,6))
+        fig, ax = plt.subplots(1,1, figsize=(5,5))
 
-        img = ax.imshow(array, cmap='YlOrRd', interpolation='nearest', vmin=0, vmax=10) # 
+        img = ax.imshow(array, cmap='viridis', interpolation='nearest', vmin=0, vmax=10) #  'YlOrRd'
         if population_type=='older':
-            ax.set_title('contact matrix for an ' + population_type +' population')
+            ax.set_title('(a) contact matrix for an ' + population_type +' population')
         else:
-            ax.set_title('contact matrix for a ' + population_type +' population')
+            ax.set_title('(b) contact matrix for a ' + population_type +' population')
         ax.set_xticks(list(range(0,17)))
         ax.set_yticks(list(range(0,17)))
         ax.set_xticklabels(age_bands_used, rotation = 90)
