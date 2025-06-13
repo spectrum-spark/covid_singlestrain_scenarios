@@ -4,7 +4,7 @@ function clinical_knitting_relsev_func(broad_scenario_name,rel_sev, num_sims)
 %num_sims = 3;
 
 trunc_T = 1100; % not used anyway
-max_T = 1200;
+max_T = 1500;
 aug_num = 5;
 
 day_vec = (1:ceil(max_T))-0.5;
