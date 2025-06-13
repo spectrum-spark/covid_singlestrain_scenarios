@@ -1,15 +1,13 @@
 # POPULATION & VACCINATION ROLL-OUT
 
-*Note* that all code has be run already and parameter files etc. have been completely included in this folder.
+*Note* that all code has been run already and parameter files etc. have been completely included in this folder.
 
 # Demographic and vaccination roll-out set up
 
 
 ## 1. Demographics
 
-We have two demographies: "younger" and "older" populations. They are based on the averages of the population demographies of various nations in the World Health Organization (WHO) Western Pacific Region (WPR).
-
-Australia, Brunei, Cambodia, China, Cook Islands, Fiji, Japan, Kiribati, Laos, Malaysia, Marshall Islands, Micronesia, Mongolia, Nauru, New Zealand, Niue, Palau, Papua New Guinea, Philippines, Samoa, Singapore, Solomon Islands, South Korea, Tonga, Tuvalu, Vanuatu, Vietnam. 
+We have two demographies: "younger" and "older" populations. They are based on the averages of the population demographies of various nations in the World Health Organization (WHO) Western Pacific Region (WPR): Australia, Brunei, Cambodia, China, Cook Islands, Fiji, Japan, Kiribati, Laos, Malaysia, Marshall Islands, Micronesia, Mongolia, Nauru, New Zealand, Niue, Palau, Papua New Guinea, Philippines, Samoa, Singapore, Solomon Islands, South Korea, Tonga, Tuvalu, Vanuatu, Vietnam. 
 
 See the list here: https://www.who.int/westernpacific/about/where-we-work
 
@@ -21,7 +19,7 @@ We define OADR (old-age dependency ratio) = (total 65+) / (total 20-64) *100
 
 "Older populations" are those with OADR> 15, while "younger populations" have OADR < 12. Countries with OADR in-between are not included.
 
-The data file includes our added columns that calculated the OADR (column AE).
+The data file version in this repo includes our added columns that calculated the OADR (column AE).
 
 We then run [**population/population_distributions_abm_2021.py**](/population/population_distributions_abm_2021.py)
 

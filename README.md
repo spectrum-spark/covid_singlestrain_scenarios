@@ -33,7 +33,7 @@ Additional contributions by Logan Wu.
 
 ### Instructions
 
-Immunity parameters were first generated using the [immunity model that extracts vaccine efficacy parameters from antibody titres](https://github.com/goldingn/neuts2efficacy) 
+Immunity parameters were first generated using the [immunity model that extracts vaccine efficacy parameters from antibody titres](https://github.com/goldingn/neuts2efficacy) (note that relevant parameters have already been incorporated into the code and parameter files in this repo.)
 
 Next, we need to make some initial set up files before the agent-based simuation, in particular, defining the vaccination rollout. This is done in folder [presim_code](https://github.com/spectrum-spark/covid_singlestrain_scenarios/tree/singlestrain-paper/presim_code).
 
