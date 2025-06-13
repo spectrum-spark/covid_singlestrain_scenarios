@@ -56,9 +56,12 @@ def plot_age_distribution_pretty(simulated_population_by_age_band,plotting_name,
     ax.set_yticklabels(age_bands )
     # ax.invert_yaxis()  # labels read top-to-bottom
     ax.set_xlabel('Population')
-    ax.set_title( '“' + population_type.title() +  '” '+' Population',fontsize=14)
+    ax.set_title( '“' + population_type.title() +  '” '+' population',fontsize=14)
     ax.set_xlim([0,15500])
+    ax.minorticks_on()
+    ax.yaxis.set_tick_params(which='minor', left=False)
     ax.xaxis.grid()
+    ax.xaxis.grid(which="minor")
     ax.set_axisbelow(True)
     ax.set_ylim([-0.4,16.4])
     
